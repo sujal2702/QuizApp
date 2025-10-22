@@ -2,41 +2,36 @@ import React from 'react';
 import { Screen } from '../hooks/useQuiz';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import { CreativePricing, PricingTier } from '../components/ui/creative-pricing';
+import { Sparkles, Zap, Users, Building2 } from 'lucide-react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 interface PricingScreenProps {
   setScreen: (screen: Screen) => void;
 }
 
 const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
-  const plans = [
+  // Professional pricing tiers for CreativePricing component
+  const pricingTiers: PricingTier[] = [
     {
       name: 'Free',
-      price: '₹0',
-      period: 'forever',
-      icon: '🎯',
+      icon: <Sparkles className="w-6 h-6" />,
+      price: 0,
       description: 'Perfect for trying out ArenaQuest',
       features: [
         '5 quizzes per month',
         'Up to 15 participants',
-        'Basic AI question generation',
-        '7-day analytics history',
-        'Standard support',
-        'Community features'
+        'Basic AI generation',
+        '7-day analytics',
+        'Community support'
       ],
-      limitations: [
-        'No custom branding',
-        'Limited quiz templates',
-        'No API access'
-      ],
-      color: 'gray',
-      popular: false,
-      cta: 'Get Started Free'
+      color: 'gray'
     },
     {
       name: 'Pro',
-      price: '₹1,499',
-      period: 'per month',
-      icon: '⚡',
+      icon: <Zap className="w-6 h-6" />,
+      price: 1499,
       description: 'For serious educators and trainers',
       features: [
         'Unlimited quizzes',
@@ -44,66 +39,40 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
         'Advanced AI features',
         'Unlimited analytics',
         'Custom branding',
-        'Priority email support',
-        'Quiz templates library',
-        'Export reports (PDF, Excel)',
-        'Remove ArenaQuest branding',
-        'Advanced question types'
+        'Priority support'
       ],
-      limitations: [],
       color: 'yellow',
-      popular: true,
-      cta: 'Start 14-Day Trial',
-      badge: '🔥 Most Popular'
+      popular: true
     },
     {
       name: 'Team',
-      price: '₹3,999',
-      period: 'per month',
-      icon: '👥',
+      icon: <Users className="w-6 h-6" />,
+      price: 3999,
       description: 'For organizations and teams',
       features: [
-        'Everything in Pro, plus:',
+        'Everything in Pro',
         'Up to 500 participants',
-        'Team collaboration tools',
-        'Shared quiz library',
-        'Role-based permissions',
-        'Advanced analytics dashboard',
+        'Team collaboration',
         'API access',
-        'Webhook integrations',
-        'Priority chat support',
-        'Custom integrations',
-        'Bulk operations'
+        'Advanced dashboards',
+        'Priority chat support'
       ],
-      limitations: [],
-      color: 'cyan',
-      popular: false,
-      cta: 'Start 14-Day Trial'
+      color: 'purple'
     },
     {
       name: 'Enterprise',
-      price: 'Custom',
-      period: 'contact us',
-      icon: '🏢',
-      description: 'For large organizations',
+      icon: <Building2 className="w-6 h-6" />,
+      price: 0,
+      description: 'For large organizations with custom needs',
       features: [
-        'Everything in Team, plus:',
+        'Everything in Team',
         'Unlimited participants',
         'White-label solution',
-        'Custom domain',
-        'SSO/SAML authentication',
-        'Dedicated account manager',
-        '99.9% SLA guarantee',
-        'Custom development',
-        'On-premise deployment option',
-        'Advanced security features',
-        'Compliance support',
-        'Training & onboarding'
+        'SSO/SAML',
+        'Dedicated manager',
+        'Custom development'
       ],
-      limitations: [],
-      color: 'purple',
-      popular: false,
-      cta: 'Contact Sales'
+      color: 'blue'
     }
   ];
 
@@ -170,96 +139,17 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
   ];
 
   return (
-    <div className="w-full max-w-7xl animate-fade-in-up space-y-8 px-4 py-8">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <div className="w-20 h-20 rounded-full bg-yellow-400 flex items-center justify-center mx-auto mb-6 shadow-lg">
-          <span className="text-5xl">💳</span>
-        </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4">
-          ✨ Simple, Transparent Pricing
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-          Choose the perfect plan for your needs. All plans include a 14-day free trial. 🚀
-        </p>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <span className="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
-            ✅ No credit card required
-          </span>
-          <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-            💰 Money-back guarantee
-          </span>
-          <span className="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold">
-            🔄 Cancel anytime
-          </span>
-        </div>
-      </div>
-
-      {/* Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        {plans.map((plan) => {
-          const colorClasses = {
-            gray: 'border-gray-300 hover:border-gray-400',
-            yellow: 'border-yellow-400 hover:border-yellow-500 ring-4 ring-yellow-100',
-            cyan: 'border-cyan-300 hover:border-cyan-400',
-            purple: 'border-purple-300 hover:border-purple-400'
-          };
-
-          return (
-            <div
-              key={plan.name}
-              className={`relative bg-white border-2 ${colorClasses[plan.color]} rounded-3xl p-6 transition-all hover:shadow-xl ${
-                plan.popular ? 'transform scale-105' : ''
-              }`}
-            >
-              {plan.badge && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-                  {plan.badge}
-                </div>
-              )}
-              
-              <div className="text-center mb-6">
-                <div className="text-5xl mb-3">{plan.icon}</div>
-                <h3 className="text-2xl font-black text-gray-900 mb-2">{plan.name}</h3>
-                <p className="text-sm text-gray-600 mb-4">{plan.description}</p>
-                <div className="mb-4">
-                  <span className="text-4xl font-black text-gray-900">{plan.price}</span>
-                  {plan.period !== 'contact us' && (
-                    <span className="text-sm text-gray-600 ml-1">/ {plan.period}</span>
-                  )}
-                </div>
-                <Button
-                  onClick={() => setScreen('home')}
-                  variant={plan.popular ? 'default' : 'outline'}
-                  className="w-full"
-                >
-                  {plan.cta}
-                </Button>
-              </div>
-
-              <div className="space-y-3 mb-4">
-                {plan.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <span className="text-green-500 text-lg flex-shrink-0">✓</span>
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </div>
-                ))}
-              </div>
-
-              {plan.limitations.length > 0 && (
-                <div className="border-t pt-4 space-y-2">
-                  {plan.limitations.map((limitation, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <span className="text-gray-400 text-lg flex-shrink-0">✗</span>
-                      <span className="text-sm text-gray-500">{limitation}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-purple-50">
+      <Header setScreen={setScreen} />
+      
+      <div className="w-full max-w-7xl mx-auto px-4 py-12 space-y-16">
+        {/* Professional Pricing Component */}
+        <CreativePricing
+          tag="Pricing Plans"
+          title="Choose Your Perfect Plan"
+          description="Start free and scale as you grow. All paid plans include a 14-day trial."
+          tiers={pricingTiers}
+        />
 
       {/* Feature Comparison Table */}
       <div className="bg-white border-2 border-gray-200 rounded-3xl p-6 md:p-8 shadow-xl">
@@ -368,7 +258,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-3xl p-8 md:p-12 text-center shadow-xl">
+      <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-3xl p-8 md:p-12 text-center shadow-xl border-4 border-black">
         <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
           🚀 Ready to Get Started?
         </h2>
@@ -378,7 +268,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
         <div className="flex gap-4 justify-center flex-wrap">
           <Button
             onClick={() => setScreen('home')}
-            variant="secondary"
+            variant="default"
             size="lg"
           >
             Start Free Trial ✨
@@ -387,12 +277,15 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
             onClick={() => setScreen('home')}
             variant="outline"
             size="lg"
-            className="bg-white hover:bg-gray-100"
+            className="bg-white hover:bg-gray-100 border-2 border-black"
           >
             Contact Sales 💬
           </Button>
         </div>
       </div>
+      </div>
+      
+      <Footer />
     </div>
   );
 };
