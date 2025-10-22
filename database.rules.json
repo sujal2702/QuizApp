@@ -1,0 +1,33 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "false",
+
+    "rooms": {
+      "$roomId": {
+        "meta": {
+          ".write": "root.child('admins').child(auth.uid).exists()"
+        },
+
+        "questions": {
+          ".write": "root.child('admins').child(auth.uid).exists()"
+        },
+
+        "responses": {
+          "$responseId": {
+            ".write": "auth != null && (newData.child('userId').val() === auth.uid)"
+          }
+        },
+
+        "control": {
+          ".write": "root.child('admins').child(auth.uid).exists()"
+        }
+      }
+    },
+
+    "admins": {
+      ".read": "root.child('admins').child(auth.uid).exists()",
+      ".write": "false"
+    }
+  }
+}
