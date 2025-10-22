@@ -11,7 +11,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
   const plans = [
     {
       name: 'Free',
-      price: '$0',
+      price: '₹0',
       period: 'forever',
       icon: '🎯',
       description: 'Perfect for trying out ArenaQuest',
@@ -34,7 +34,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
     },
     {
       name: 'Pro',
-      price: '$19',
+      price: '₹1,499',
       period: 'per month',
       icon: '⚡',
       description: 'For serious educators and trainers',
@@ -58,7 +58,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ setScreen }) => {
     },
     {
       name: 'Team',
-      price: '$49',
+      price: '₹3,999',
       period: 'per month',
       icon: '👥',
       description: 'For organizations and teams',

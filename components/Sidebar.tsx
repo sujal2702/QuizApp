@@ -1,9 +1,10 @@
 import React from 'react';
-import { Screen, UserRole } from '../hooks/useQuiz';
+import { Screen, UserRole, useQuiz } from '../hooks/useQuiz';
 import { QuizIcon } from './icons/QuizIcon';
 import { AnalyticsIcon } from './icons/AnalyticsIcon';
 import { GraduationCapIcon } from './icons/GraduationCapIcon';
 import { CrownIcon } from './icons/CrownIcon';
+import { useToast } from '../hooks/useToast';
 
 interface SidebarProps {
   screen: Screen;
@@ -14,18 +15,30 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ screen, userRole, setScreen, isOpen, onClose }) => {
+  const { quizRoom } = useQuiz();
+  const { showToast } = useToast();
+  
   const menuItems = userRole === 'admin' ? [
-    { id: 'admin_dashboard', label: 'Dashboard', icon: AnalyticsIcon, color: 'bg-yellow-400' },
-    { id: 'lobby', label: 'Lobby', icon: GraduationCapIcon, color: 'bg-cyan-200' },
-    { id: 'quiz', label: 'Quiz', icon: QuizIcon, color: 'bg-green-500' },
-    { id: 'results', label: 'Results', icon: CrownIcon, color: 'bg-gray-900' },
+    { id: 'admin_dashboard', label: 'Dashboard', icon: AnalyticsIcon, color: 'bg-yellow-400', requiresRoom: false },
+    { id: 'lobby', label: 'Lobby', icon: GraduationCapIcon, color: 'bg-cyan-200', requiresRoom: true },
+    { id: 'quiz', label: 'Quiz', icon: QuizIcon, color: 'bg-green-500', requiresRoom: true },
+    { id: 'results', label: 'Results', icon: CrownIcon, color: 'bg-gray-900', requiresRoom: true },
   ] : userRole === 'student' ? [
-    { id: 'lobby', label: 'Lobby', icon: GraduationCapIcon, color: 'bg-cyan-200' },
-    { id: 'quiz', label: 'Quiz', icon: QuizIcon, color: 'bg-yellow-400' },
-    { id: 'results', label: 'Results', icon: CrownIcon, color: 'bg-gray-900' },
+    { id: 'lobby', label: 'Lobby', icon: GraduationCapIcon, color: 'bg-cyan-200', requiresRoom: true },
+    { id: 'quiz', label: 'Quiz', icon: QuizIcon, color: 'bg-yellow-400', requiresRoom: true },
+    { id: 'results', label: 'Results', icon: CrownIcon, color: 'bg-gray-900', requiresRoom: true },
   ] : [];
 
   if (menuItems.length === 0) return null;
+
+  const handleNavigation = (itemId: string, requiresRoom: boolean) => {
+    if (requiresRoom && !quizRoom) {
+      showToast('⚠️ Please create or join a quiz room first!', 'error');
+      return;
+    }
+    setScreen(itemId as Screen);
+    onClose();
+  };
 
   return (
     <>
@@ -76,33 +89,45 @@ const Sidebar: React.FC<SidebarProps> = ({ screen, userRole, setScreen, isOpen, 
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = screen === item.id;
+              const isDisabled = item.requiresRoom && !quizRoom;
               
               return (
                 <button
                   key={item.id}
-                  onClick={() => {
-                    setScreen(item.id as Screen);
-                    onClose();
-                  }}
+                  onClick={() => handleNavigation(item.id, item.requiresRoom)}
+                  disabled={isDisabled}
                   className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-200 group ${
-                    isActive
+                    isDisabled
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+                      : isActive
                       ? `${item.color} text-gray-900 shadow-lg`
                       : 'bg-gray-50 hover:bg-gray-100 text-gray-600'
                   }`}
                 >
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-                    isActive 
+                    isDisabled
+                      ? 'bg-gray-200'
+                      : isActive 
                       ? 'bg-black/10' 
                       : 'bg-white'
                   }`}>
-                    <Icon className={`w-6 h-6 ${isActive ? 'text-gray-900' : 'text-gray-600'}`} />
+                    <Icon className={`w-6 h-6 ${
+                      isDisabled 
+                        ? 'text-gray-400' 
+                        : isActive ? 'text-gray-900' : 'text-gray-600'
+                    }`} />
                   </div>
-                  <span className={`font-bold text-base ${
-                    isActive ? 'text-gray-900' : 'text-gray-600'
-                  }`}>
-                    {item.label}
-                  </span>
-                  {isActive && (
+                  <div className="flex-1">
+                    <span className={`font-bold text-base block ${
+                      isDisabled ? 'text-gray-400' : isActive ? 'text-gray-900' : 'text-gray-600'
+                    }`}>
+                      {item.label}
+                    </span>
+                    {isDisabled && (
+                      <span className="text-xs text-gray-400">Requires active quiz</span>
+                    )}
+                  </div>
+                  {isActive && !isDisabled && (
                     <div className="ml-auto w-2 h-2 rounded-full bg-gray-900 animate-pulse" />
                   )}
                 </button>

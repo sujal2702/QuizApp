@@ -149,8 +149,8 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
   
   useEffect(() => {
     if (!quizRoom) {
-      const timer = setTimeout(() => setScreen('home'), 1000);
-      return () => clearTimeout(timer);
+      console.log('No quiz room found in QuizScreen, redirecting to home');
+      setScreen('home');
     }
   }, [quizRoom, setScreen]);
 

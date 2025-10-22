@@ -30,9 +30,9 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
 
   React.useEffect(() => {
     if (!quizRoom) {
-      console.log('No quiz room found, redirecting to home in 2s');
-      const timer = setTimeout(() => setScreen('home'), 2000);
-      return () => clearTimeout(timer);
+      console.log('No quiz room found, redirecting to home');
+      setScreen('home');
+      return;
     }
   }, [quizRoom, setScreen]);
 
