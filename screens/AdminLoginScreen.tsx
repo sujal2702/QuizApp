@@ -96,8 +96,8 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
           direction="diagonal"
           speed={0.3}
           squareSize={50}
-          borderColor="rgba(139, 92, 246, 0.2)"
-          hoverFillColor="rgba(139, 92, 246, 0.1)"
+          borderColor="rgba(250, 204, 21, 0.15)" 
+          hoverFillColor="rgba(250, 204, 21, 0.08)"
         />
       </div>
       

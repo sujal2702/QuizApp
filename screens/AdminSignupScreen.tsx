@@ -88,18 +88,21 @@ const AdminSignupScreen: React.FC<AdminSignupScreenProps> = ({ setScreen }) => {
           direction="diagonal"
           speed={0.3}
           squareSize={50}
-          borderColor="rgba(139, 92, 246, 0.2)"
-          hoverFillColor="rgba(139, 92, 246, 0.1)"
+          borderColor="rgba(250, 204, 21, 0.15)"
+          hoverFillColor="rgba(250, 204, 21, 0.08)"
         />
       </div>
       
-      <div className="p-8 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
-        <div className="text-center mb-6">
-          <h2 className="text-4xl font-black mb-2 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-            Create Admin Account
-          </h2>
-          <p className="text-zinc-400">Sign up to start hosting quizzes</p>
+      <div className="p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
+        <div className="flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
+            <span className="text-3xl">✨</span>
+          </div>
         </div>
+        <h2 className="text-4xl font-black mb-2 text-center text-gray-900">
+          Create Admin Account
+        </h2>
+        <p className="text-gray-600 text-center mb-6">Sign up to start hosting quizzes</p>
       
       <form onSubmit={handleSignup} className="space-y-5">
         <Input
@@ -143,14 +146,14 @@ const AdminSignupScreen: React.FC<AdminSignupScreenProps> = ({ setScreen }) => {
         />
         
         {error && (
-          <div className="p-3 bg-red-500/10 border-2 border-red-500/30 rounded-lg animate-pulse">
-            <p className="text-red-400 text-sm text-center font-medium">{error}</p>
+          <div className="p-3 bg-red-50 border-2 border-red-300 rounded-lg">
+            <p className="text-red-700 text-sm text-center font-medium">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="p-3 bg-green-500/10 border-2 border-green-500/30 rounded-lg">
-            <p className="text-green-400 text-sm text-center font-medium">{success}</p>
+          <div className="p-3 bg-green-50 border-2 border-green-300 rounded-lg">
+            <p className="text-green-700 text-sm text-center font-medium">{success}</p>
           </div>
         )}
         
@@ -160,11 +163,11 @@ const AdminSignupScreen: React.FC<AdminSignupScreenProps> = ({ setScreen }) => {
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-gray-600">
           Already have an account?{' '}
           <button
             onClick={() => setScreen('admin_login')}
-            className="text-violet-400 font-bold hover:text-violet-300 transition-colors underline"
+            className="text-gray-900 font-bold hover:text-yellow-600 transition-colors underline"
           >
             Login here
           </button>
@@ -182,9 +185,9 @@ const AdminSignupScreen: React.FC<AdminSignupScreenProps> = ({ setScreen }) => {
         </Button>
       </div>
       
-      <div className="mt-6 p-4 bg-violet-500/10 rounded-lg border border-violet-500/30">
-        <p className="text-xs text-zinc-400 text-center leading-relaxed">
-          ⚠️ <strong className="text-zinc-300">Note:</strong> After signup, contact your system administrator to grant admin privileges.
+      <div className="mt-6 p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+        <p className="text-xs text-gray-600 text-center leading-relaxed">
+          ⚠️ <strong className="text-gray-900">Note:</strong> After signup, contact your system administrator to grant admin privileges.
         </p>
       </div>
     </div>
