@@ -47,21 +47,21 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ setScreen }) => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6">
             <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
-              <QuizIcon className="w-8 h-8 sm:w-10 sm:h-10 text-gray-900" />
+              <span className="text-3xl sm:text-4xl animate-pulse">✨</span>
             </div>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6">
-            Interactive Quiz Platform<br/>for Modern Teams
+            Interactive Quiz Platform<br/>for Modern Teams ⚡
           </h1>
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto mb-8 lg:mb-12 px-4">
-            Create engaging quizzes with AI-powered questions, host live sessions with real-time leaderboards, and track detailed analytics—all in one powerful platform.
+            Create engaging quizzes with AI-powered questions 🤖, host live sessions with real-time leaderboards 🏆, and track detailed analytics 📊—all in one powerful platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
             <Button onClick={() => setScreen('home')} variant="secondary" size="lg">
-              Get Started →
+              Get Started 🚀
             </Button>
-            <Button onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })} variant="outline" size="lg">
-              See Demo
+            <Button onClick={() => setScreen('pricing' as Screen)} variant="outline" size="lg">
+              View Pricing �
             </Button>
           </div>
         </div>
@@ -71,8 +71,8 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ setScreen }) => {
       <section id="features" className="py-16 sm:py-20 lg:py-28 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Why Choose ArenaQuest?</h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to create interactive learning experiences and engaging events.</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">✨ Why Choose ArenaQuest?</h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to create interactive learning experiences and engaging events. 🎯</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             <FeatureCard

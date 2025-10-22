@@ -239,7 +239,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                     </svg>
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-bold text-sm">Dashboard</p>
+                    <p className="font-bold text-sm">📊 Dashboard</p>
                     <p className={`text-xs ${activeNav === 'admin_dashboard' ? 'text-white/80' : 'text-gray-500'}`}>Create & manage</p>
                   </div>
                   {activeNav === 'admin_dashboard' && (
@@ -267,7 +267,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                     </svg>
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-bold text-sm">Live Quiz</p>
+                    <p className="font-bold text-sm">🎯 Live Quiz</p>
                     <p className={`text-xs ${activeNav === 'quiz' ? 'text-white/80' : 'text-gray-500'}`}>Active session</p>
                   </div>
                   {activeNav === 'quiz' && (
@@ -295,7 +295,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                     </svg>
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-bold text-sm">Results</p>
+                    <p className="font-bold text-sm">🏆 Results</p>
                     <p className={`text-xs ${activeNav === 'results' ? 'text-white/80' : 'text-gray-500'}`}>View scores</p>
                   </div>
                   {activeNav === 'results' && (
@@ -319,7 +319,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                     </svg>
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-bold text-sm">Home</p>
+                    <p className="font-bold text-sm">🏠 Home</p>
                     <p className="text-xs text-gray-500">Back to main</p>
                   </div>
                 </button>
@@ -337,9 +337,9 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
               <span className="text-3xl">✨</span>
             </div>
             <h2 className="text-5xl font-black mb-2 text-gray-900">
-              Create Quiz
+              ✨ Create Quiz
             </h2>
-            <p className="text-gray-600 text-lg font-medium">Design your interactive quiz experience</p>
+            <p className="text-gray-600 text-lg font-medium">Design your interactive quiz experience 🎨</p>
           </div>
 
           {/* Mode Selection */}

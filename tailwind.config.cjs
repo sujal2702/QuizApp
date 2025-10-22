@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Poppins', 'sans-serif'],
+        handwritten: ['Comic Sans MS', 'cursive', 'sans-serif'],
       },
       colors: {
         border: "hsl(240 3.7% 15.9%)",

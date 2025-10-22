@@ -11,6 +11,7 @@ import StudentJoinScreen from './screens/StudentJoinScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import QuizScreen from './screens/QuizScreen';
 import ResultsScreen from './screens/ResultsScreen';
+import PricingScreen from './screens/PricingScreen';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
@@ -28,6 +29,8 @@ function AppContent() {
         return <LandingScreen setScreen={setScreen} />;
       case 'home':
         return <HomeScreen setScreen={setScreen} setUserRole={setUserRole} />;
+      case 'pricing':
+        return <PricingScreen setScreen={setScreen} />;
       case 'admin_login':
         return <AdminLoginScreen setScreen={setScreen} />;
       case 'admin_signup':
