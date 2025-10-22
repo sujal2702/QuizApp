@@ -472,7 +472,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     );
   }
 
-  // Student View - Only show 4 colored option buttons with symbols
+  // Student View - Show different layouts based on mode
   const optionConfig = [
     { label: 'A', color: 'red', bg: 'bg-red-500', hoverBg: 'hover:bg-red-600', border: 'border-red-500', shadow: 'shadow-lg', symbol: '●' },
     { label: 'B', color: 'yellow', bg: 'bg-yellow-400', hoverBg: 'hover:bg-yellow-500', border: 'border-yellow-400', shadow: 'shadow-lg', symbol: '■' },
@@ -480,9 +480,11 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     { label: 'D', color: 'blue', bg: 'bg-blue-500', hoverBg: 'hover:bg-blue-600', border: 'border-blue-500', shadow: 'shadow-lg', symbol: '★' },
   ];
 
+  const isManualMode = quizRoom.mode === 'full-manual';
+
   const getOptionClasses = (index: number) => {
     const config = optionConfig[index];
-    let baseClasses = `w-full aspect-square flex items-center justify-center rounded-2xl border-4 transition-all transform text-white font-black ${config.shadow}`;
+    let baseClasses = `w-full ${isManualMode ? 'min-h-[100px]' : 'aspect-square'} flex items-center justify-center rounded-2xl border-4 transition-all transform text-white font-black ${config.shadow}`;
     
     if (!isAnswered && quizRoom.acceptingAnswers) {
       return `${baseClasses} ${config.bg} ${config.border} ${config.hoverBg} hover:scale-[1.02] active:scale-95 cursor-pointer`;
@@ -551,7 +553,21 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
       {/* Options Container */}
       <div className="flex-1 bg-gray-600 border-2 border-gray-500 rounded-2xl p-6 lg:p-10 shadow-lg animate-fade-in-up">
-        <div className="h-full grid grid-cols-2 gap-5 lg:gap-8">
+        {/* Show question text in Manual Mode */}
+        {isManualMode && (
+          <div className="mb-6 pb-6 border-b-2 border-white/20">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 lg:p-6">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-2 drop-shadow-lg">
+                {currentQuestion.text}
+              </h2>
+              <p className="text-sm sm:text-base text-white/80 font-semibold">
+                ✍️ Manual Mode - Choose your answer below
+              </p>
+            </div>
+          </div>
+        )}
+        
+        <div className={`h-full grid grid-cols-${isManualMode ? '1' : '2'} gap-5 lg:gap-8`}>
           {optionConfig.map((config, index) => (
             <button
               key={index}
@@ -559,10 +575,24 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
               disabled={isAnswered || !quizRoom.acceptingAnswers}
               className={getOptionClasses(index)}
             >
-              <div className="flex flex-col items-center justify-center gap-1 lg:gap-3">
-                <div className="text-5xl sm:text-6xl lg:text-7xl drop-shadow-lg">{config.symbol}</div>
-                <div className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-wide">{config.label}</div>
-              </div>
+              {isManualMode ? (
+                // Manual Mode: Show full option text with symbol
+                <div className="flex items-center gap-4 lg:gap-6 w-full px-4 lg:px-6">
+                  <div className="flex flex-col items-center flex-shrink-0">
+                    <div className="text-4xl sm:text-5xl lg:text-6xl drop-shadow-lg">{config.symbol}</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-black tracking-wide mt-1">{config.label}</div>
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-base sm:text-lg lg:text-2xl font-bold break-words">{currentQuestion.options[index]}</p>
+                  </div>
+                </div>
+              ) : (
+                // Option-Only Mode: Show only symbol and letter
+                <div className="flex flex-col items-center justify-center gap-1 lg:gap-3">
+                  <div className="text-5xl sm:text-6xl lg:text-7xl drop-shadow-lg">{config.symbol}</div>
+                  <div className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-wide">{config.label}</div>
+                </div>
+              )}
             </button>
           ))}
         </div>
