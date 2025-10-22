@@ -280,10 +280,10 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
   const getOptionClasses = (index: number) => {
     const config = optionConfig[index];
-    let baseClasses = `w-full text-center p-10 rounded-2xl border-4 transition-all transform text-white font-black shadow-2xl ${config.shadow}`;
+    let baseClasses = `w-full aspect-square flex items-center justify-center rounded-3xl border-[6px] transition-all transform text-white font-black shadow-2xl ${config.shadow}`;
     
     if (!isAnswered && quizRoom.acceptingAnswers) {
-      return `${baseClasses} ${config.bg} ${config.border} ${config.hoverBg} hover:scale-110 active:scale-95 cursor-pointer animate-pulse`;
+      return `${baseClasses} ${config.bg} ${config.border} ${config.hoverBg} hover:scale-105 active:scale-95 cursor-pointer animate-pulse`;
     }
     
     if (isAnswered) {
@@ -293,64 +293,79 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     }
     
     // Disabled state
-    return `${baseClasses} bg-gray-300 border-gray-400 opacity-50 cursor-not-allowed`;
+    return `${baseClasses} bg-gray-600 border-gray-500 opacity-40 cursor-not-allowed`;
   };
 
   return (
-    <div className="w-full max-w-4xl p-8 bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 backdrop-blur-sm border-4 border-white/30 rounded-3xl shadow-2xl animate-fade-in-up">
-      <div className="w-full bg-white/20 rounded-full h-4 mb-8 overflow-hidden">
-        <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-4 rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }}></div>
-      </div>
-      
-      <div className="flex justify-between items-center mb-10">
-        <div className="bg-white/90 px-6 py-3 rounded-2xl shadow-lg">
-          <span className="text-3xl font-black text-gray-800">Question {quizRoom.currentQuestionIndex + 1}/{quizRoom.questions.length}</span>
+    <>
+      <div className="w-full min-h-screen flex flex-col lg:flex-row gap-4 lg:gap-6 p-4 lg:p-6 pb-4">
+        {/* Question Details Container */}
+        <div className="w-full lg:w-1/3 flex flex-col gap-4 lg:gap-6">
+        {/* Progress Bar */}
+        <div className="bg-gradient-to-br from-purple-900/90 via-indigo-900/90 to-blue-900/90 backdrop-blur-sm border-4 border-white/30 rounded-3xl p-4 lg:p-6 shadow-2xl animate-fade-in">
+          <div className="w-full bg-white/20 rounded-full h-3 lg:h-4 mb-3 overflow-hidden">
+            <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-full rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }}></div>
+          </div>
+          <div className="text-center">
+            <span className="text-xl lg:text-2xl font-black text-white drop-shadow-lg">
+              Question {quizRoom.currentQuestionIndex + 1} / {quizRoom.questions.length}
+            </span>
+          </div>
         </div>
-        <Timer
-          key={currentQuestion.id}
-          duration={quizRoom.questionTimer ?? currentQuestion.timeLimit}
-          onTimeUp={handleTimeUp}
-          isPaused={isAnswered || !quizRoom.acceptingAnswers}
-          startedAt={quizRoom.questionStartTime ?? null}
-        />
+
+        {/* Timer */}
+        <div className="bg-gradient-to-br from-purple-900/90 via-indigo-900/90 to-blue-900/90 backdrop-blur-sm border-4 border-white/30 rounded-3xl p-4 lg:p-6 shadow-2xl flex items-center justify-center">
+          <Timer
+            key={currentQuestion.id}
+            duration={quizRoom.questionTimer ?? currentQuestion.timeLimit}
+            onTimeUp={handleTimeUp}
+            isPaused={isAnswered || !quizRoom.acceptingAnswers}
+            startedAt={quizRoom.questionStartTime ?? null}
+          />
+        </div>
+
+        {/* Status Messages */}
+        {!quizRoom.acceptingAnswers && !isAnswered && (
+          <div className="bg-yellow-400 border-4 border-yellow-600 rounded-3xl p-4 lg:p-6 shadow-2xl animate-bounce">
+            <p className="text-lg lg:text-2xl font-black text-yellow-900 text-center">⏳ Waiting...</p>
+          </div>
+        )}
+
+        {quizRoom.acceptingAnswers && !isAnswered && (
+          <div className="bg-gradient-to-br from-purple-500 via-violet-500 to-purple-600 border-4 border-purple-300 rounded-3xl p-4 lg:p-6 shadow-2xl animate-pulse">
+            <p className="text-lg lg:text-2xl font-black text-white text-center drop-shadow-lg">
+              👀 Choose Now!
+            </p>
+          </div>
+        )}
+        
+        {isAnswered && !showRevealAnimation && (
+          <div className="bg-green-500 border-4 border-green-700 rounded-3xl p-4 lg:p-6 shadow-2xl animate-pulse">
+            <p className="text-lg lg:text-2xl font-black text-white text-center">✓ Submitted!</p>
+            <p className="text-sm lg:text-base font-semibold text-green-100 mt-2 text-center">Waiting...</p>
+          </div>
+        )}
       </div>
 
-      {!quizRoom.acceptingAnswers && !isAnswered && (
-        <div className="text-center mb-10 p-6 bg-yellow-400 border-4 border-yellow-600 rounded-2xl shadow-2xl animate-bounce">
-          <p className="text-2xl font-black text-yellow-900">⏳ Waiting for question to open...</p>
+      {/* Options Container */}
+      <div className="flex-1 bg-gradient-to-br from-purple-900/90 via-indigo-900/90 to-blue-900/90 backdrop-blur-sm border-4 border-white/30 rounded-3xl p-4 lg:p-8 shadow-2xl animate-fade-in-up">
+        <div className="h-full grid grid-cols-2 gap-4 lg:gap-8">
+          {optionConfig.map((config, index) => (
+            <button
+              key={index}
+              onClick={() => handleOptionClick(index)}
+              disabled={isAnswered || !quizRoom.acceptingAnswers}
+              className={getOptionClasses(index)}
+            >
+              <div className="flex flex-col items-center justify-center gap-2 lg:gap-4">
+                <div className="text-5xl sm:text-6xl lg:text-8xl">{config.symbol}</div>
+                <div className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-wider">{config.label}</div>
+              </div>
+            </button>
+          ))}
         </div>
-      )}
-
-      {quizRoom.acceptingAnswers && !isAnswered && (
-        <div className="text-center mb-6">
-          <p className="text-3xl font-black text-white drop-shadow-lg animate-pulse">
-            👀 Choose Your Answer!
-          </p>
-        </div>
-      )}
-      
-      <div className="grid grid-cols-2 gap-8">
-        {optionConfig.map((config, index) => (
-          <button
-            key={index}
-            onClick={() => handleOptionClick(index)}
-            disabled={isAnswered || !quizRoom.acceptingAnswers}
-            className={getOptionClasses(index)}
-          >
-            <div className="flex flex-col items-center justify-center gap-3">
-              <div className="text-7xl">{config.symbol}</div>
-              <div className="text-6xl font-black tracking-wider">{config.label}</div>
-            </div>
-          </button>
-        ))}
       </div>
-      
-      {isAnswered && !showRevealAnimation && (
-        <div className="text-center mt-10 p-6 bg-green-500 border-4 border-green-700 rounded-2xl shadow-2xl animate-pulse">
-          <p className="text-3xl font-black text-white">✓ Answer Submitted!</p>
-          <p className="text-lg font-semibold text-green-100 mt-2">Waiting for next question...</p>
-        </div>
-      )}
+    </div>
 
       {/* Answer Reveal Modal - Student View */}
       {showRevealAnimation && selectedOption !== null && (
@@ -445,7 +460,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
           }}
         />
       )}
-    </div>
+    </>
   );
 };
 

@@ -46,6 +46,7 @@ function AppContent() {
   };
   
   const isLandingPage = screen === 'landing';
+  const isStudentQuiz = screen === 'quiz' && userRole === 'student';
 
   return (
     <div className="text-zinc-100 bg-black min-h-screen flex flex-col font-sans relative z-0">
@@ -54,7 +55,7 @@ function AppContent() {
       <main className={`flex-grow ${!isLandingPage ? 'container mx-auto p-4 flex flex-col items-center justify-center' : ''}`}>
         {renderScreen()}
       </main>
-      <Footer />
+      {!isStudentQuiz && <Footer />}
       <SoundToggle />
     </div>
   );
