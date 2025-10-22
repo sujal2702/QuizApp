@@ -18,7 +18,21 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const path = `/rooms/${quizRoom.id}`;
     const unsubscribe = dbOnValue(path, (val) => {
       if (!val) return;
-      setQuizRoom(val as QuizRoom);
+      // Normalize responses: Firebase may return it as object, convert to array
+      const normalized = {
+        ...val,
+        responses: Array.isArray(val.responses) 
+          ? val.responses 
+          : val.responses 
+            ? Object.values(val.responses) 
+            : [],
+        students: Array.isArray(val.students) 
+          ? val.students 
+          : val.students 
+            ? Object.values(val.students) 
+            : [],
+      };
+      setQuizRoom(normalized as QuizRoom);
     });
     return () => unsubscribe();
   }, [quizRoom?.id]); // Only re-subscribe when room ID changes, not on every quizRoom update
@@ -67,7 +81,21 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           const room = rooms[roomId];
           if (room.code === code) {
             console.log('Found room:', room);
-            return room as QuizRoom;
+            // Normalize responses and students arrays from Firebase object format
+            const normalized = {
+              ...room,
+              responses: Array.isArray(room.responses) 
+                ? room.responses 
+                : room.responses 
+                  ? Object.values(room.responses) 
+                  : [],
+              students: Array.isArray(room.students) 
+                ? room.students 
+                : room.students 
+                  ? Object.values(room.students) 
+                  : [],
+            };
+            return normalized as QuizRoom;
           }
         }
       }
@@ -164,7 +192,7 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         timeTaken,
         isCorrect: question.correctOption === selectedOption,
       };
-      const updated = { ...prev, responses: [...prev.responses, newResponse] };
+      const updated = { ...prev, responses: [...(prev.responses || []), newResponse] };
       // Push the new response to the DB under /rooms/{id}/responses
       dbPush(`/rooms/${updated.id}/responses`, newResponse).catch(console.error);
       // Also update local snapshot of responses for quick UI feedback
