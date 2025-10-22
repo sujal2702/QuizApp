@@ -16,6 +16,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [student, setStudent] = useState<Student | null>(null);
+  const [showRevealAnimation, setShowRevealAnimation] = useState(false);
 
   const currentQuestion = quizRoom?.questions[quizRoom.currentQuestionIndex];
 
@@ -37,7 +38,18 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     setSelectedOption(null);
     setIsAnswered(false);
     setStartTime(Date.now());
+    setShowRevealAnimation(false);
   }, [quizRoom?.currentQuestionIndex, quizRoom?.status, setScreen]);
+
+  // Show reveal animation when answers are revealed
+  useEffect(() => {
+    if (quizRoom?.answersRevealed && userRole === 'student' && isAnswered) {
+      setShowRevealAnimation(true);
+      // Auto-hide after 5 seconds
+      const timer = setTimeout(() => setShowRevealAnimation(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [quizRoom?.answersRevealed, userRole, isAnswered]);
 
   const handleOptionClick = (index: number) => {
     if (isAnswered || userRole !== 'student') return;
@@ -286,10 +298,80 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         ))}
       </div>
       
-      {isAnswered && (
+      {isAnswered && !showRevealAnimation && (
         <div className="text-center mt-10 p-6 bg-green-500 border-4 border-green-700 rounded-2xl shadow-2xl animate-pulse">
           <p className="text-3xl font-black text-white">✓ Answer Submitted!</p>
           <p className="text-lg font-semibold text-green-100 mt-2">Waiting for next question...</p>
+        </div>
+      )}
+
+      {/* Answer Reveal Modal - Student View */}
+      {showRevealAnimation && selectedOption !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className={`relative max-w-2xl w-full mx-4 p-12 rounded-3xl shadow-2xl transform transition-all duration-500 ${
+            selectedOption === currentQuestion.correctOption 
+              ? 'bg-gradient-to-br from-green-400 via-green-500 to-green-600 animate-bounce-in scale-110' 
+              : 'bg-gradient-to-br from-red-400 via-red-500 to-red-600 animate-shake'
+          }`}>
+            {/* Confetti effect for correct answer */}
+            {selectedOption === currentQuestion.correctOption && (
+              <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+                {[...Array(30)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute w-3 h-3 rounded-full animate-confetti"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: '-20px',
+                      backgroundColor: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A'][Math.floor(Math.random() * 5)],
+                      animationDelay: `${Math.random() * 0.5}s`,
+                      animationDuration: `${2 + Math.random() * 2}s`
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Icon */}
+            <div className="text-center mb-8">
+              {selectedOption === currentQuestion.correctOption ? (
+                <div className="inline-block text-white animate-scale-up">
+                  <svg className="w-32 h-32 mx-auto drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              ) : (
+                <div className="inline-block text-white animate-scale-up">
+                  <svg className="w-32 h-32 mx-auto drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              )}
+            </div>
+
+            {/* Message */}
+            <div className="text-center space-y-4">
+              <h2 className="text-5xl font-black text-white drop-shadow-lg">
+                {selectedOption === currentQuestion.correctOption ? '🎉 CORRECT! 🎉' : '❌ WRONG!'}
+              </h2>
+              <p className="text-2xl font-bold text-white/90">
+                Correct Answer: <span className="font-black text-white drop-shadow-md">{optionConfig[currentQuestion.correctOption].label}</span>
+              </p>
+              {selectedOption !== currentQuestion.correctOption && (
+                <p className="text-xl font-semibold text-white/80">
+                  Your Answer: <span className="line-through">{optionConfig[selectedOption].label}</span>
+                </p>
+              )}
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={() => setShowRevealAnimation(false)}
+              className="absolute top-4 right-4 text-white/80 hover:text-white text-3xl font-bold w-12 h-12 rounded-full bg-black/20 hover:bg-black/40 transition-all"
+            >
+              ×
+            </button>
+          </div>
         </div>
       )}
     </div>
