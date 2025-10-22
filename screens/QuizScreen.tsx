@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { Screen, UserRole } from '../hooks/useQuiz';
 import { useToast } from '../hooks/useToast';
+import { playSound } from '../utils/sounds';
 import Timer from '../components/Timer';
 import LiveLeaderboardModal from '../components/LiveLeaderboardModal';
 import { Student } from '../types';
@@ -59,6 +60,12 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     const currentQIndex = quizRoom?.currentQuestionIndex ?? -1;
     if (quizRoom?.answersRevealed && userRole === 'student' && isAnswered && leaderboardShownForQuestion !== currentQIndex) {
       setShowRevealAnimation(true);
+      // Play sound based on correctness
+      if (selectedOption === currentQuestion?.correctOption) {
+        playSound('correct');
+      } else {
+        playSound('wrong');
+      }
       // Auto-hide after 5 seconds, then show leaderboard
       const timer = setTimeout(() => {
         setShowRevealAnimation(false);
@@ -66,11 +73,12 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         setTimeout(() => {
           setShowLiveLeaderboard(true);
           setLeaderboardShownForQuestion(currentQIndex);
+          playSound('whoosh'); // Leaderboard entrance sound
         }, 300);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [quizRoom?.answersRevealed, quizRoom?.currentQuestionIndex, userRole, isAnswered, leaderboardShownForQuestion]);
+  }, [quizRoom?.answersRevealed, quizRoom?.currentQuestionIndex, userRole, isAnswered, leaderboardShownForQuestion, selectedOption, currentQuestion]);
 
   // Show leaderboard for admin immediately after reveal
   useEffect(() => {
@@ -95,6 +103,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     if (student && currentQuestion) {
       submitAnswer(student.id, currentQuestion.id, index, timeTaken);
       showToast('Answer submitted!', 'success');
+      playSound('success'); // Play success sound
     }
   };
   

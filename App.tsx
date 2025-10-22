@@ -14,6 +14,7 @@ import ResultsScreen from './screens/ResultsScreen';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ShaderBackground from './components/ShaderBackground';
+import SoundToggle from './components/SoundToggle';
 
 function AppContent() {
   const [screen, setScreen] = useState<Screen>('landing');
@@ -54,6 +55,7 @@ function AppContent() {
         {renderScreen()}
       </main>
       <Footer />
+      <SoundToggle />
     </div>
   );
 }
