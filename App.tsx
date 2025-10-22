@@ -13,12 +13,14 @@ import QuizScreen from './screens/QuizScreen';
 import ResultsScreen from './screens/ResultsScreen';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Sidebar from './components/Sidebar';
 import ShaderBackground from './components/ShaderBackground';
 import SoundToggle from './components/SoundToggle';
 
 function AppContent() {
   const [screen, setScreen] = useState<Screen>('landing');
   const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const renderScreen = () => {
     switch (screen) {
@@ -47,15 +49,38 @@ function AppContent() {
   
   const isLandingPage = screen === 'landing';
   const isStudentQuiz = screen === 'quiz' && userRole === 'student';
+  const isAuthScreen = screen === 'home' || screen === 'admin_login' || screen === 'admin_signup' || screen === 'student_join';
+  const showSidebar = userRole !== null && !isLandingPage && !isAuthScreen;
 
   return (
-    <div className="text-zinc-100 bg-black min-h-screen flex flex-col font-sans relative z-0">
+    <div className="text-zinc-100 bg-gradient-to-br from-black via-zinc-950 to-zinc-900 min-h-screen flex font-sans relative z-0">
       {screen !== 'landing' && <ShaderBackground />}
-      <Header screen={screen} setScreen={setScreen} />
-      <main className={`flex-grow ${!isLandingPage ? 'container mx-auto p-4 flex flex-col items-center justify-center' : ''}`}>
-        {renderScreen()}
-      </main>
-      {!isStudentQuiz && <Footer />}
+      
+      {/* Sidebar */}
+      {showSidebar && (
+        <Sidebar 
+          screen={screen} 
+          userRole={userRole} 
+          setScreen={setScreen}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main Content */}
+      <div className={`flex-1 flex flex-col ${showSidebar ? 'lg:ml-72' : ''}`}>
+        <Header 
+          screen={screen} 
+          setScreen={setScreen}
+          onMenuClick={() => setSidebarOpen(true)}
+          showMenuButton={showSidebar}
+        />
+        <main className={`flex-grow ${!isLandingPage ? 'container mx-auto p-4 lg:p-6 flex flex-col items-center justify-center' : ''}`}>
+          {renderScreen()}
+        </main>
+        {!isStudentQuiz && <Footer />}
+      </div>
+      
       <SoundToggle />
     </div>
   );

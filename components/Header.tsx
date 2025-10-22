@@ -7,9 +7,11 @@ import Button from './Button';
 interface HeaderProps {
   screen: Screen;
   setScreen: (screen: Screen) => void;
+  onMenuClick?: () => void;
+  showMenuButton?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ screen, setScreen }) => {
+const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMenuButton = false }) => {
   const { user, isAdmin, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const isLandingPage = screen === 'landing';
@@ -34,19 +36,33 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen }) => {
   };
   
   return (
-    <header className="flex-shrink-0 w-full bg-black/95 backdrop-blur-md py-4 border-b border-zinc-800 shadow-lg sticky top-0 z-50">
+    <header className="flex-shrink-0 w-full bg-gradient-to-r from-zinc-900/95 via-zinc-900/98 to-zinc-900/95 backdrop-blur-md py-4 border-b border-zinc-800/50 shadow-2xl sticky top-0 z-40">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <div 
-          className="flex items-center space-x-3 cursor-pointer group"
-          onClick={() => setScreen('landing')}
-        >
-          <div className="relative">
-            <QuizIcon className="w-10 h-10 text-violet-500 group-hover:text-violet-400 transition-colors" />
-            <div className="absolute inset-0 bg-violet-500/20 blur-xl group-hover:bg-violet-400/30 transition-all"></div>
+        <div className="flex items-center gap-4">
+          {/* Menu Button for Mobile/Tablet */}
+          {showMenuButton && (
+            <button
+              onClick={onMenuClick}
+              className="lg:hidden w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 flex items-center justify-center transition-all shadow-lg hover:shadow-violet-500/30"
+            >
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          )}
+          
+          <div 
+            className="flex items-center space-x-3 cursor-pointer group"
+            onClick={() => setScreen('landing')}
+          >
+            <div className="relative">
+              <QuizIcon className="w-10 h-10 text-violet-500 group-hover:text-violet-400 transition-colors drop-shadow-glow" />
+              <div className="absolute inset-0 bg-violet-500/30 blur-xl group-hover:bg-violet-400/40 transition-all"></div>
+            </div>
+            <h1 className="text-2xl font-black bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent tracking-tight">
+              QuizPro
+            </h1>
           </div>
-          <h1 className="text-2xl font-black bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent tracking-tight">
-            Live Quiz Pro
-          </h1>
         </div>
         
         {isLandingPage ? (
