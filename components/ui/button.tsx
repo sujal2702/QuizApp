@@ -2,12 +2,12 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 const variantStyles = {
-  default: "bg-violet-600 text-white hover:bg-violet-700",
+  default: "bg-yellow-400 text-white hover:bg-yellow-500",
   destructive: "bg-red-600 text-white hover:bg-red-700",
-  outline: "border border-zinc-700 bg-transparent hover:bg-zinc-800 text-zinc-100",
-  secondary: "bg-zinc-800 text-white hover:bg-zinc-700",
-  ghost: "hover:bg-zinc-800 text-zinc-100",
-  link: "text-violet-400 underline-offset-4 hover:underline",
+  outline: "border border-gray-300 bg-transparent hover:bg-gray-100 text-gray-900",
+  secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300",
+  ghost: "hover:bg-gray-100 text-gray-900",
+  link: "text-yellow-600 underline-offset-4 hover:underline",
 }
 
 const sizeStyles = {
@@ -27,7 +27,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 disabled:pointer-events-none disabled:opacity-50",
           variantStyles[variant],
           sizeStyles[size],
           className

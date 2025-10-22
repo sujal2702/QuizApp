@@ -82,14 +82,14 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in p-4">
-      <div className="relative max-w-lg sm:max-w-2xl w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-3xl border-2 border-violet-500/30 shadow-2xl overflow-hidden">
+      <div className="relative max-w-lg sm:max-w-2xl w-full bg-white rounded-3xl border-2 border-yellow-400/30 shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 to-purple-600 p-4 sm:p-6 text-center relative overflow-hidden">
+        <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 p-4 sm:p-6 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
           <h2 className="text-2xl sm:text-4xl font-black text-white drop-shadow-lg relative z-10">
             📊 Live Leaderboard
           </h2>
-          <p className="text-sm sm:text-base text-violet-200 mt-2 font-semibold relative z-10">
+          <p className="text-sm sm:text-base text-yellow-100 mt-2 font-semibold relative z-10">
             After Question {questionNumber} of {totalQuestions}
           </p>
         </div>
@@ -112,10 +112,10 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
                         ? 'bg-gradient-to-r from-gray-400/10 to-gray-500/10 border-gray-400/30'
                         : index === 2
                         ? 'bg-gradient-to-r from-amber-600/10 to-orange-600/10 border-amber-600/30'
-                        : 'bg-zinc-800/50 border-zinc-700/50'
+                        : 'bg-gray-50 border-gray-200'
                     } ${
                       isCurrentUser
-                        ? 'ring-4 ring-violet-500 ring-opacity-60'
+                        ? 'ring-4 ring-yellow-500 ring-opacity-60'
                         : ''
                     } ${
                       isHighlighted
@@ -135,16 +135,16 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
                     {/* Student Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-bold text-lg sm:text-xl text-white truncate">
+                        <p className="font-bold text-lg sm:text-xl text-gray-900 truncate">
                           {student.name}
                         </p>
                         {isCurrentUser && (
-                          <span className="text-violet-400 text-xs sm:text-sm font-semibold px-2 py-1 bg-violet-500/20 rounded-full">
+                          <span className="text-yellow-600 text-xs sm:text-sm font-semibold px-2 py-1 bg-yellow-400/20 rounded-full">
                             YOU
                           </span>
                         )}
                       </div>
-                      <p className="text-xs sm:text-sm text-zinc-400">
+                      <p className="text-xs sm:text-sm text-gray-600">
                         Total Time: {student.totalTime.toFixed(1)}s
                       </p>
                     </div>

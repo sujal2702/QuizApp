@@ -11,13 +11,13 @@ export const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, on
   return (
     <div
       onClick={onClick}
-      className="group bg-zinc-800/50 p-8 rounded-2xl border-2 border-zinc-700 hover:border-violet-500 hover:bg-zinc-800 transition-all duration-300 cursor-pointer flex flex-col items-center space-y-4 text-center transform hover:-translate-y-2"
+      className="group bg-white p-8 rounded-2xl border-2 border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all duration-300 cursor-pointer flex flex-col items-center space-y-4 text-center transform hover:-translate-y-2 shadow-lg hover:shadow-xl"
     >
-      <div className="text-violet-500 group-hover:text-violet-400 transition-colors duration-300">
+      <div className="text-yellow-500 group-hover:text-yellow-600 transition-colors duration-300">
         {icon}
       </div>
-      <h3 className="text-2xl font-bold text-white">{title}</h3>
-      <p className="text-zinc-400">{description}</p>
+      <h3 className="text-2xl font-bold text-gray-900">{title}</h3>
+      <p className="text-gray-600">{description}</p>
     </div>
   );
 };

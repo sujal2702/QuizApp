@@ -24,7 +24,7 @@ const Toast: React.FC<ToastProps> = ({ message, type = 'info', duration = 3000, 
       case 'warning':
         return 'bg-gradient-to-r from-yellow-500 to-yellow-600 border-yellow-400';
       default:
-        return 'bg-gradient-to-r from-violet-500 to-purple-600 border-violet-400';
+        return 'bg-gradient-to-r from-yellow-400 to-yellow-500 border-yellow-400';
     }
   };
 

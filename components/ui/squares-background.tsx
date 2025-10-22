@@ -34,8 +34,8 @@ export function Squares({
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    // Set canvas background
-    canvas.style.background = "#060606"
+    // Set canvas background - light brand color
+    canvas.style.background = "#fefce8" // very light yellow tint
 
     const resizeCanvas = () => {
       canvas.width = canvas.offsetWidth
@@ -82,8 +82,8 @@ export function Squares({
         canvas.height / 2,
         Math.sqrt(Math.pow(canvas.width, 2) + Math.pow(canvas.height, 2)) / 2,
       )
-      gradient.addColorStop(0, "rgba(6, 6, 6, 0)")
-      gradient.addColorStop(1, "#060606")
+      gradient.addColorStop(0, "rgba(254, 252, 232, 0)") // light yellow transparent
+      gradient.addColorStop(1, "#fefce8") // light yellow
 
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, canvas.width, canvas.height)
