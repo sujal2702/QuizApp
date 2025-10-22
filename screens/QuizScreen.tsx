@@ -22,6 +22,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
   const [showRevealAnimation, setShowRevealAnimation] = useState(false);
   const [showLiveLeaderboard, setShowLiveLeaderboard] = useState(false);
   const [previousScores, setPreviousScores] = useState<any[]>([]);
+  const [leaderboardShownForQuestion, setLeaderboardShownForQuestion] = useState<number>(-1);
 
   const currentQuestion = quizRoom?.questions[quizRoom.currentQuestionIndex];
 
@@ -45,6 +46,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     setStartTime(Date.now());
     setShowRevealAnimation(false);
     setShowLiveLeaderboard(false);
+    setLeaderboardShownForQuestion(-1);
     
     // Save previous scores for rank comparison
     if (quizRoom) {
@@ -54,25 +56,33 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
   // Show reveal animation when answers are revealed
   useEffect(() => {
-    if (quizRoom?.answersRevealed && userRole === 'student' && isAnswered) {
+    const currentQIndex = quizRoom?.currentQuestionIndex ?? -1;
+    if (quizRoom?.answersRevealed && userRole === 'student' && isAnswered && leaderboardShownForQuestion !== currentQIndex) {
       setShowRevealAnimation(true);
       // Auto-hide after 5 seconds, then show leaderboard
       const timer = setTimeout(() => {
         setShowRevealAnimation(false);
         // Show leaderboard after answer reveal
-        setTimeout(() => setShowLiveLeaderboard(true), 300);
+        setTimeout(() => {
+          setShowLiveLeaderboard(true);
+          setLeaderboardShownForQuestion(currentQIndex);
+        }, 300);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [quizRoom?.answersRevealed, userRole, isAnswered]);
+  }, [quizRoom?.answersRevealed, quizRoom?.currentQuestionIndex, userRole, isAnswered, leaderboardShownForQuestion]);
 
   // Show leaderboard for admin immediately after reveal
   useEffect(() => {
-    if (quizRoom?.answersRevealed && userRole === 'admin') {
-      const timer = setTimeout(() => setShowLiveLeaderboard(true), 500);
+    const currentQIndex = quizRoom?.currentQuestionIndex ?? -1;
+    if (quizRoom?.answersRevealed && userRole === 'admin' && leaderboardShownForQuestion !== currentQIndex) {
+      const timer = setTimeout(() => {
+        setShowLiveLeaderboard(true);
+        setLeaderboardShownForQuestion(currentQIndex);
+      }, 500);
       return () => clearTimeout(timer);
     }
-  }, [quizRoom?.answersRevealed, userRole]);
+  }, [quizRoom?.answersRevealed, quizRoom?.currentQuestionIndex, userRole, leaderboardShownForQuestion]);
 
   const handleOptionClick = (index: number) => {
     if (isAnswered || userRole !== 'student') return;
