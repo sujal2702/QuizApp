@@ -10,7 +10,7 @@ const Symbol: React.FC<{
   style: React.CSSProperties;
 }> = ({ children, className, style }) => (
   <div
-    className={`absolute text-brand-peach/20 motion-safe:animate-float ${className}`}
+    className={`absolute text-violet-500/20 motion-safe:animate-float ${className}`}
     style={style}
   >
     {children}
@@ -18,54 +18,12 @@ const Symbol: React.FC<{
 );
 
 export const FloatingSymbols = () => {
+  // Keep the component but render subtle dark blurred shapes for background depth
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
-      <style>{`
-        @keyframes float {
-          0% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(10deg); }
-          100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
-      <Symbol
-        className="top-[10%] left-[5%]"
-        style={{ animationDelay: '0s', animationDuration: '8s' }}
-      >
-        <BrainIcon className="w-16 h-16" />
-      </Symbol>
-      <Symbol
-        className="top-[20%] right-[10%]"
-        style={{ animationDelay: '1s', animationDuration: '10s' }}
-      >
-        <LightbulbIcon className="w-12 h-12" />
-      </Symbol>
-      <Symbol
-        className="bottom-[25%] left-[15%]"
-        style={{ animationDelay: '2s', animationDuration: '7s' }}
-      >
-        <AtomIcon className="w-20 h-20" />
-      </Symbol>
-      <Symbol
-        className="bottom-[10%] right-[5%]"
-        style={{ animationDelay: '3s', animationDuration: '9s' }}
-      >
-        <GraduationCapIcon className="w-14 h-14" />
-      </Symbol>
-       <Symbol
-        className="top-[50%] left-[40%]"
-        style={{ animationDelay: '1.5s', animationDuration: '11s' }}
-      >
-        <BrainIcon className="w-10 h-10" />
-      </Symbol>
-       <Symbol
-        className="top-[60%] right-[30%]"
-        style={{ animationDelay: '2.5s', animationDuration: '6s' }}
-      >
-        <LightbulbIcon className="w-16 h-16" />
-      </Symbol>
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+      <div className="absolute -top-20 -left-16 w-80 h-80 bg-gradient-to-br from-violet-900/20 to-transparent rounded-full blur-3xl opacity-40" />
+      <div className="absolute top-24 right-[-8rem] w-64 h-64 bg-gradient-to-br from-purple-900/15 to-transparent rounded-full blur-2xl opacity-30" />
+      <div className="absolute bottom-10 left-10 w-72 h-72 bg-gradient-to-br from-black/10 to-transparent rounded-full blur-3xl opacity-25" />
     </div>
   );
 };

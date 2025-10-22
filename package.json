@@ -10,20 +10,23 @@
     "firebase:login": "firebase login",
     "firebase:emulator": "firebase emulators:start --only database,ui",
     "firebase:deploy": "firebase deploy --only database",
-    "set-admin": "ts-node ./scripts/set-admin-claim.ts"
+    "set-admin": "ts-node ./scripts/set-admin-claim.ts",
+    "set-admin:js": "node ./scripts/set-admin-claim.cjs"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "@google/genai": "^1.25.0",
-    "firebase": "^10.11.0"
+    "firebase": "^12.4.0",
+    "minimist": "^1.2.8",
+    "motion": "^12.23.24",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0",
     "firebase-admin": "^12.0.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
   }
 }

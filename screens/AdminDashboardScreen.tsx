@@ -3,6 +3,7 @@ import { useQuiz } from '../hooks/useQuiz';
 import { Screen } from '../hooks/useQuiz';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import AdminSidebar from '../components/AdminSidebar';
 import { Question } from '../types';
 import { GoogleGenAI, Type } from "@google/genai";
 
@@ -13,6 +14,8 @@ interface AdminDashboardScreenProps {
 type QuizMode = 'option-only' | 'full-manual';
 
 const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }) => {
+  // Sidebar navigation state
+  const [activeNav, setActiveNav] = useState('admin_dashboard');
   const { createRoom } = useQuiz();
   const [quizName, setQuizName] = useState('');
   const [mode, setMode] = useState<QuizMode>('option-only');
@@ -184,281 +187,298 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
   ];
 
   return (
-    <div className="w-full max-w-6xl p-10 bg-gradient-to-br from-slate-50 via-white to-slate-50 border border-slate-200 rounded-3xl shadow-2xl animate-fade-in-up">
-      <div className="text-center mb-10">
-        <h2 className="text-6xl font-black mb-3 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
-          Create Quiz
-        </h2>
-        <p className="text-slate-600 text-xl font-medium">Design your interactive quiz experience</p>
-      </div>
-
-      {/* Mode Selection */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        <button
-          onClick={() => setMode('option-only')}
-          className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-105 ${
-            mode === 'option-only'
-              ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500 border-violet-600 text-white shadow-xl scale-105'
-              : 'bg-white border-slate-300 text-slate-700 hover:border-violet-400'
-          }`}
-        >
-          <div className="text-4xl mb-2">🎯</div>
-          <div className="font-bold text-lg mb-1">Option Mode</div>
-          <div className={`text-sm ${mode === 'option-only' ? 'text-white/90' : 'text-slate-500'}`}>
-            Questions on projector, answers only
+    <div className="flex min-h-screen bg-slate-100">
+      {/* Sidebar */}
+      <AdminSidebar
+        onNavigate={(key) => {
+          setActiveNav(key);
+          // Map sidebar keys to screens
+          if (key === 'admin_dashboard') setScreen('admin_dashboard');
+          else if (key === 'quiz') setScreen('quiz');
+          else if (key === 'results') setScreen('results');
+          else if (key === 'home') setScreen('home');
+        }}
+        active={activeNav}
+      />
+      {/* Main dashboard content */}
+      <main className="flex-1 flex flex-col items-center justify-start py-12 px-6">
+        <div className="w-full max-w-5xl p-10 bg-zinc-900 border border-zinc-800 rounded-3xl shadow-2xl animate-fade-in-up">
+          <div className="text-center mb-10">
+            <h2 className="text-6xl font-black mb-3 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-sm">
+              Create Quiz
+            </h2>
+            <p className="text-zinc-400 text-xl font-medium">Design your interactive quiz experience</p>
           </div>
-        </button>
 
-        <button
-          onClick={() => setMode('full-manual')}
-          className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-105 ${
-            mode === 'full-manual'
-              ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500 border-violet-600 text-white shadow-xl scale-105'
-              : 'bg-white border-slate-300 text-slate-700 hover:border-violet-400'
-          }`}
-        >
-          <div className="text-4xl mb-2">✍️</div>
-          <div className="font-bold text-lg mb-1">Full Manual + AI</div>
-          <div className={`text-sm ${mode === 'full-manual' ? 'text-white/90' : 'text-slate-500'}`}>
-            Complete questions with AI assist
+          {/* Mode Selection */}
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <button
+              onClick={() => setMode('option-only')}
+              className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-105 ${
+                mode === 'option-only'
+                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-500 text-white shadow-xl scale-105'
+                  : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-violet-500'
+              }`}
+            >
+              <div className="text-4xl mb-2">🎯</div>
+              <div className="font-bold text-lg mb-1">Option Mode</div>
+              <div className={`text-sm ${mode === 'option-only' ? 'text-white/90' : 'text-zinc-400'}`}>
+                Questions on projector, answers only
+              </div>
+            </button>
+
+            <button
+              onClick={() => setMode('full-manual')}
+              className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-105 ${
+                mode === 'full-manual'
+                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-500 text-white shadow-xl scale-105'
+                  : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-violet-500'
+              }`}
+            >
+              <div className="text-4xl mb-2">✍️</div>
+              <div className="font-bold text-lg mb-1">Full Manual + AI</div>
+              <div className={`text-sm ${mode === 'full-manual' ? 'text-white/90' : 'text-zinc-400'}`}>
+                Complete questions with AI assist
+              </div>
+            </button>
           </div>
-        </button>
-      </div>
 
-      <div className="space-y-6">
-        <Input
-          id="quiz-name"
-          label="Quiz Name *"
-          value={quizName}
-          onChange={(e) => setQuizName(e.target.value)}
-          placeholder="e.g., Science Quiz - Chapter 5"
-        />
+          <div className="space-y-6">
+            <Input
+              id="quiz-name"
+              label="Quiz Name *"
+              value={quizName}
+              onChange={(e) => setQuizName(e.target.value)}
+              placeholder="e.g., Science Quiz - Chapter 5"
+            />
 
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <label className="text-sm font-bold text-slate-700">
-              Number of Questions
-            </label>
-            <div className="flex items-center gap-4">
+            <div className="bg-zinc-800 p-6 rounded-2xl border border-zinc-700 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <label className="text-sm font-bold text-zinc-300">
+                  Number of Questions
+                </label>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="number"
+                    min="1"
+                    max="100"
+                    value={numQuestions}
+                    onChange={(e) => setNumQuestions(Math.min(100, Math.max(1, Number(e.target.value))))}
+                    className="w-20 px-3 py-2 text-center text-xl font-black text-violet-400 bg-zinc-900 border-2 border-zinc-700 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50"
+                  />
+                  <span className="text-sm text-zinc-400">/ 100 max</span>
+                </div>
+              </div>
               <input
-                type="number"
+                id="num-questions"
+                type="range"
                 min="1"
                 max="100"
                 value={numQuestions}
-                onChange={(e) => setNumQuestions(Math.min(100, Math.max(1, Number(e.target.value))))}
-                className="w-20 px-3 py-2 text-center text-xl font-black text-violet-600 border-2 border-slate-300 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
+                onChange={(e) => setNumQuestions(Number(e.target.value))}
+                className="w-full h-3 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-violet-600"
+                style={{
+                  background: `linear-gradient(to right, 
+                    rgb(139 92 246) 0%, 
+                    rgb(139 92 246) ${numQuestions}%, 
+                    rgb(63 63 70) ${numQuestions}%, 
+                    rgb(63 63 70) 100%)`
+                }}
               />
-              <span className="text-sm text-slate-500">/ 100 max</span>
+              <div className="flex justify-between text-xs text-zinc-500 mt-2">
+                <span>1</span>
+                <span>25</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100</span>
+              </div>
             </div>
-          </div>
-          <input
-            id="num-questions"
-            type="range"
-            min="1"
-            max="100"
-            value={numQuestions}
-            onChange={(e) => setNumQuestions(Number(e.target.value))}
-            className="w-full h-3 bg-gradient-to-r from-violet-200 via-fuchsia-200 to-pink-200 rounded-lg appearance-none cursor-pointer accent-violet-600"
-            style={{
-              background: `linear-gradient(to right, 
-                rgb(139 92 246) 0%, 
-                rgb(139 92 246) ${numQuestions}%, 
-                rgb(226 232 240) ${numQuestions}%, 
-                rgb(226 232 240) 100%)`
-            }}
-          />
-          <div className="flex justify-between text-xs text-slate-400 mt-2">
-            <span>1</span>
-            <span>25</span>
-            <span>50</span>
-            <span>75</span>
-            <span>100</span>
-          </div>
-        </div>
 
-        {mode === 'full-manual' && (
-          <div className="bg-gradient-to-br from-violet-50 to-fuchsia-50 p-6 rounded-2xl border-2 border-violet-200">
-            <h3 className="font-bold text-lg text-slate-800 mb-3 flex items-center gap-2">
-              <span className="text-2xl">🤖</span>
-              AI Question Generator
-            </h3>
-            <div className="flex gap-3">
-              <Input
-                id="ai-topic"
-                label=""
-                value={aiTopic}
-                onChange={(e) => setAiTopic(e.target.value)}
-                placeholder="e.g., World War II, Photosynthesis, JavaScript..."
-                className="flex-1"
-              />
-              <Button
-                onClick={generateWithAI}
-                disabled={loading || !aiTopic.trim()}
-                variant="secondary"
-                className="!px-6"
-              >
-                {loading ? '⏳ Generating...' : '✨ Generate'}
-              </Button>
-            </div>
-            <p className="text-xs text-slate-600 mt-2">
-              AI will create {numQuestions} questions about your topic. You can edit them after generation.
-            </p>
-          </div>
-        )}
-
-        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <span className="text-2xl">⚙️</span>
-            {mode === 'option-only' ? 'Answer Key Configuration' : 'Question Editor'}
-          </h3>
-          
-          <div className="max-h-[500px] overflow-y-auto space-y-4 pr-2">
-            {mode === 'option-only' ? (
-              // Option Mode: Only correct answers
-              questionSettings.map((setting, index) => (
-                <div key={index} className="bg-white p-6 rounded-xl border border-slate-300 hover:border-violet-400 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                      <span className="w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white rounded-full flex items-center justify-center text-sm font-black">
-                        {index + 1}
-                      </span>
-                      Question {index + 1}
-                    </h4>
-                    <span className="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-medium">
-                      📽️ On Projector
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-3">
-                        Correct Answer *
-                      </label>
-                      <div className="grid grid-cols-4 gap-2">
-                        {optionColors.map((option, optIdx) => (
-                          <button
-                            key={optIdx}
-                            onClick={() => updateQuestionSetting(index, 'correctAnswer', optIdx)}
-                            className={`p-4 rounded-xl border-2 transition-all transform ${
-                              setting.correctAnswer === optIdx
-                                ? `${option.bg} ${option.border} scale-110 shadow-lg text-white ring-4 ring-violet-200`
-                                : 'bg-slate-50 border-slate-300 hover:scale-105 hover:border-violet-300'
-                            }`}
-                          >
-                            <div className="text-center">
-                              <div className="text-3xl mb-1">{option.symbol}</div>
-                              <div className="text-sm font-black">{option.label}</div>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-3">
-                        Time Limit (seconds)
-                      </label>
-                      <input
-                        type="number"
-                        min="5"
-                        max="600"
-                        value={setting.timeLimit}
-                        onChange={(e) => updateQuestionSetting(index, 'timeLimit', Number(e.target.value))}
-                        className="w-full p-4 text-3xl font-black text-center text-violet-600 rounded-xl border-2 border-slate-300 focus:border-violet-500 focus:ring-4 focus:ring-violet-200 bg-white"
-                      />
-                    </div>
-                  </div>
+            {mode === 'full-manual' && (
+              <div className="bg-violet-500/10 p-6 rounded-2xl border-2 border-violet-500/30">
+                <h3 className="font-bold text-lg text-white mb-3 flex items-center gap-2">
+                  <span className="text-2xl">🤖</span>
+                  AI Question Generator
+                </h3>
+                <div className="flex gap-3">
+                  <Input
+                    id="ai-topic"
+                    label=""
+                    value={aiTopic}
+                    onChange={(e) => setAiTopic(e.target.value)}
+                    placeholder="e.g., World War II, Photosynthesis, JavaScript..."
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={generateWithAI}
+                    disabled={loading || !aiTopic.trim()}
+                    variant="secondary"
+                    className="!px-6"
+                  >
+                    {loading ? '⏳ Generating...' : '✨ Generate'}
+                  </Button>
                 </div>
-              ))
-            ) : (
-              // Full Manual Mode: Complete questions
-              manualQuestions.map((q, index) => (
-                <div key={index} className="bg-white p-6 rounded-xl border border-slate-300 hover:border-violet-400 hover:shadow-md transition-all">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                      <span className="w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white rounded-full flex items-center justify-center text-sm font-black">
-                        {index + 1}
-                      </span>
-                      Question {index + 1}
-                    </h4>
-                  </div>
+                <p className="text-xs text-zinc-400 mt-2">
+                  AI will create {numQuestions} questions about your topic. You can edit them after generation.
+                </p>
+              </div>
+            )}
 
-                  <div className="space-y-4">
-                    <Input
-                      id={`q-${index}-text`}
-                      label="Question Text *"
-                      value={q.text}
-                      onChange={(e) => updateManualQuestion(index, 'text', e.target.value)}
-                      placeholder="Enter your question..."
-                    />
+            <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <span className="text-2xl">⚙️</span>
+                {mode === 'option-only' ? 'Answer Key Configuration' : 'Question Editor'}
+              </h3>
+              
+              <div className="max-h-[500px] overflow-y-auto space-y-4 pr-2">
+                {mode === 'option-only' ? (
+                  // Option Mode: Only correct answers
+                  questionSettings.map((setting, index) => (
+                    <div key={index} className="bg-zinc-800 p-6 rounded-xl border border-zinc-700 hover:border-violet-500 hover:shadow-md transition-all">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                          <span className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-black">
+                            {index + 1}
+                          </span>
+                          Question {index + 1}
+                        </h4>
+                        <span className="text-xs text-zinc-400 bg-zinc-900 px-3 py-1 rounded-full font-medium">
+                          📽️ On Projector
+                        </span>
+                      </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                      {['A', 'B', 'C', 'D'].map((label, optIdx) => (
-                        <Input
-                          key={optIdx}
-                          id={`q-${index}-opt-${optIdx}`}
-                          label={`Option ${label} *`}
-                          value={q.options[optIdx]}
-                          onChange={(e) => updateManualQuestion(index, `option${optIdx}`, e.target.value)}
-                          placeholder={`Option ${label}`}
-                        />
-                      ))}
-                    </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-bold text-zinc-300 mb-3">
+                            Correct Answer *
+                          </label>
+                          <div className="grid grid-cols-4 gap-2">
+                            {optionColors.map((option, optIdx) => (
+                              <button
+                                key={optIdx}
+                                onClick={() => updateQuestionSetting(index, 'correctAnswer', optIdx)}
+                                className={`p-4 rounded-xl border-2 transition-all transform ${
+                                  setting.correctAnswer === optIdx
+                                    ? `${option.bg} ${option.border} scale-110 shadow-lg text-white ring-4 ring-violet-500/50`
+                                    : 'bg-zinc-900 border-zinc-700 hover:scale-105 hover:border-violet-500'
+                                }`}
+                              >
+                                <div className="text-center">
+                                  <div className="text-3xl mb-1">{option.symbol}</div>
+                                  <div className="text-sm font-black">{option.label}</div>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Correct Answer *</label>
-                        <div className="grid grid-cols-4 gap-2">
-                          {optionColors.map((option, optIdx) => (
-                            <button
-                              key={optIdx}
-                              onClick={() => updateManualQuestion(index, 'correctAnswer', optIdx)}
-                              className={`p-3 rounded-lg border-2 transition-all ${
-                                q.correctAnswer === optIdx
-                                  ? `${option.bg} ${option.border} scale-105 shadow text-white`
-                                  : 'bg-slate-50 border-slate-300 hover:scale-105'
-                              }`}
-                            >
-                              <div className="text-center">
-                                <div className="text-xl">{option.symbol}</div>
-                                <div className="text-xs font-black">{option.label}</div>
-                              </div>
-                            </button>
-                          ))}
+                        <div>
+                          <label className="block text-sm font-bold text-zinc-300 mb-3">
+                            Time Limit (seconds)
+                          </label>
+                          <input
+                            type="number"
+                            min="5"
+                            max="600"
+                            value={setting.timeLimit}
+                            onChange={(e) => updateQuestionSetting(index, 'timeLimit', Number(e.target.value))}
+                            className="w-full p-4 text-3xl font-black text-center text-violet-400 rounded-xl border-2 border-zinc-700 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/50 bg-zinc-900"
+                          />
                         </div>
                       </div>
+                    </div>
+                  ))
+                ) : (
+                  // Full Manual Mode: Complete questions
+                  manualQuestions.map((q, index) => (
+                    <div key={index} className="bg-zinc-800 p-6 rounded-xl border border-zinc-700 hover:border-violet-500 hover:shadow-md transition-all">
+                      <div className="flex items-center justify-between mb-4">
+                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                          <span className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-black">
+                            {index + 1}
+                          </span>
+                          Question {index + 1}
+                        </h4>
+                      </div>
 
-                      <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Time Limit (sec)</label>
-                        <input
-                          type="number"
-                          min="5"
-                          max="600"
-                          value={q.timeLimit}
-                          onChange={(e) => updateManualQuestion(index, 'timeLimit', Number(e.target.value))}
-                          className="w-full p-3 text-xl font-bold text-center text-violet-600 rounded-lg border-2 border-slate-300 focus:border-violet-500 focus:ring-2 focus:ring-violet-200"
+                      <div className="space-y-4">
+                        <Input
+                          id={`q-${index}-text`}
+                          label="Question Text *"
+                          value={q.text}
+                          onChange={(e) => updateManualQuestion(index, 'text', e.target.value)}
+                          placeholder="Enter your question..."
                         />
+
+                        <div className="grid grid-cols-2 gap-3">
+                          {['A', 'B', 'C', 'D'].map((label, optIdx) => (
+                            <Input
+                              key={optIdx}
+                              id={`q-${index}-opt-${optIdx}`}
+                              label={`Option ${label} *`}
+                              value={q.options[optIdx]}
+                              onChange={(e) => updateManualQuestion(index, `option${optIdx}`, e.target.value)}
+                              placeholder={`Option ${label}`}
+                            />
+                          ))}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-bold text-zinc-300 mb-2">Correct Answer *</label>
+                            <div className="grid grid-cols-4 gap-2">
+                              {optionColors.map((option, optIdx) => (
+                                <button
+                                  key={optIdx}
+                                  onClick={() => updateManualQuestion(index, 'correctAnswer', optIdx)}
+                                  className={`p-3 rounded-lg border-2 transition-all ${
+                                    q.correctAnswer === optIdx
+                                      ? `${option.bg} ${option.border} scale-105 shadow text-white`
+                                      : 'bg-zinc-900 border-zinc-700 hover:scale-105'
+                                  }`}
+                                >
+                                  <div className="text-center">
+                                    <div className="text-xl">{option.symbol}</div>
+                                    <div className="text-xs font-black">{option.label}</div>
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-bold text-zinc-300 mb-2">Time Limit (sec)</label>
+                            <input
+                              type="number"
+                              min="5"
+                              max="600"
+                              value={q.timeLimit}
+                              onChange={(e) => updateManualQuestion(index, 'timeLimit', Number(e.target.value))}
+                              className="w-full p-3 text-xl font-bold text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 bg-zinc-900"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))
+                  ))
+                )}
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <Button onClick={handleCreateRoom} className="!w-full !py-5 !text-2xl !font-black !bg-gradient-to-r !from-violet-600 !to-fuchsia-600 hover:!from-violet-700 hover:!to-fuchsia-700 !shadow-xl">
+                🚀 Create Room - {numQuestions} Question{numQuestions > 1 ? 's' : ''}
+              </Button>
+            </div>
+            
+            {error && (
+              <div className="p-4 bg-red-500/10 border-2 border-red-500/30 rounded-xl animate-pulse">
+                <p className="text-red-400 font-bold text-center">{error}</p>
+              </div>
             )}
           </div>
         </div>
-
-        <div className="pt-6">
-          <Button onClick={handleCreateRoom} className="!w-full !py-5 !text-2xl !font-black !bg-gradient-to-r !from-violet-600 !to-fuchsia-600 hover:!from-violet-700 hover:!to-fuchsia-700 !shadow-xl">
-            🚀 Create Room - {numQuestions} Question{numQuestions > 1 ? 's' : ''}
-          </Button>
-        </div>
-        
-        {error && (
-          <div className="p-4 bg-red-50 border-2 border-red-300 rounded-xl animate-pulse">
-            <p className="text-red-700 font-bold text-center">{error}</p>
-          </div>
-        )}
-      </div>
+      </main>
     </div>
   );
 };

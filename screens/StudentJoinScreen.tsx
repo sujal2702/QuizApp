@@ -36,8 +36,8 @@ const StudentJoinScreen: React.FC<StudentJoinScreenProps> = ({ setScreen }) => {
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-card-bg/80 backdrop-blur-sm border border-border-color rounded-2xl shadow-2xl animate-fade-in-up">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gradient">Join Quiz</h2>
+    <div className="w-full max-w-md p-8 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+      <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">Join Quiz</h2>
       <form onSubmit={handleJoin} className="space-y-6">
         <Input
           id="name"
@@ -56,7 +56,7 @@ const StudentJoinScreen: React.FC<StudentJoinScreenProps> = ({ setScreen }) => {
           maxLength={6}
           style={{ textTransform: 'uppercase' }}
         />
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
         <Button type="submit">Join Room</Button>
         <Button type="button" variant="secondary" onClick={() => setScreen('home')}>
           Back

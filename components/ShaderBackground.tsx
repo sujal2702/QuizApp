@@ -95,12 +95,13 @@ const ShaderBackground: React.FC = () => {
 
           float n = noise(pos + u_time * 0.1);
           
-          vec3 peach = vec3(1.0, 0.796, 0.643); // #FFCBA4
-          vec3 cream = vec3(1.0, 0.961, 0.933); // #FFF5EE
-          vec3 light_bg = vec3(0.98, 0.976, 0.965); // #FAF9F6
+          // Dark/violet theme
+          vec3 deep = vec3(0.03, 0.03, 0.03); // near black
+          vec3 mid = vec3(0.09, 0.07, 0.12); // dark violet-grey
+          vec3 accent = vec3(0.58, 0.31, 0.94); // violet accent (~#9450F0)
 
-          color = mix(light_bg, cream, smoothstep(0.4, 0.6, n));
-          color = mix(color, peach, smoothstep(0.65, 0.7, noise(pos * 2.0 + u_time * 0.15)));
+          color = mix(deep, mid, smoothstep(0.3, 0.65, n * 0.9));
+          color = mix(color, accent * 0.12, smoothstep(0.65, 0.85, noise(pos * 2.0 + u_time * 0.15)));
           
           gl_FragColor = vec4(color, 1.0);
       }
@@ -165,7 +166,7 @@ const ShaderBackground: React.FC = () => {
         width: '100vw',
         height: '100vh',
         zIndex: -1,
-        background: '#FAF9F6' // Fallback for browsers without WebGL
+        background: '#080808' // dark fallback for browsers without WebGL
       }}
     />
   );

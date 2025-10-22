@@ -98,23 +98,28 @@ View original AI Studio app: https://ai.studio/apps/drive/1H4jFSBJipACWZerbGv7Az
 4. ⚠️ **Never commit this file to git** (already in `.gitignore`)
 
 **Step 4: Grant Admin Privileges**
-Run the helper script with the User UID from Step 2:
+
+You can use the bundled Node helper to add the `admin` custom claim for a user. Two flavors are included:
+
+- JS script (no TypeScript/runtime required):
+
 ```powershell
-npm run set-admin <USER_UID>
+# Set admin claim true for an email
+npm run set-admin:js -- --email adityaissc7@gmail.com --admin true
+
+# Remove admin claim
+npm run set-admin:js -- --email adityaissc7@gmail.com --admin false
 ```
 
-Example:
-```powershell
-npm run set-admin kX9mP2nQ3rT4sU5vW6xY7z
-```
-
-You should see: `Successfully set admin claim for UID: kX9mP2nQ3rT4sU5vW6xY7z`
+Notes:
+- The script requires a Firebase service account JSON available at the project root as `serviceAccountKey.json`, or pass `--key <path>`.
+- After setting/removing a custom claim the client will see the updated claims after the user signs out and signs back in (or after the ID token is refreshed).
 
 **Step 5: Test Admin Login**
 1. Run the app: `npm run dev`
 2. Click **Admin Login**
 3. Enter the email and password from Step 2
-4. You should be logged in and redirected to the dashboard! 🎉
+4. If the account has the `admin` claim, you should be redirected to the dashboard immediately after login. If not, you'll see a message explaining that the account lacks admin privileges.
 
 ### Local Development with Emulators
 

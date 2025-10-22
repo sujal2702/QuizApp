@@ -46,7 +46,7 @@ function AppContent() {
   const isLandingPage = screen === 'landing';
 
   return (
-    <div className="text-dark-text min-h-screen flex flex-col font-sans relative z-0">
+    <div className="text-zinc-100 bg-black min-h-screen flex flex-col font-sans relative z-0">
       {screen !== 'landing' && <ShaderBackground />}
       <Header screen={screen} setScreen={setScreen} />
       <main className={`flex-grow ${!isLandingPage ? 'container mx-auto p-4 flex flex-col items-center justify-center' : ''}`}>

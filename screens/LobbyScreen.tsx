@@ -35,11 +35,11 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl p-8 bg-card-bg/80 backdrop-blur-sm border border-border-color rounded-2xl shadow-2xl animate-fade-in-up">
+  <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2 text-gradient">🎮 Quiz Lobby</h2>
-        <p className="text-2xl text-brand-peach font-bold mb-4">{quizRoom.name}</p>
-        <div className="bg-gradient-to-r from-orange-100 to-amber-100 p-6 rounded-xl mb-4 border-2 border-brand-peach">
+  <p className="text-2xl text-violet-400 font-bold mb-4">{quizRoom.name}</p>
+  <div className="bg-gradient-to-r from-violet-900/10 to-transparent p-6 rounded-xl mb-4 border-2 border-zinc-700">
           <p className="text-subtle-text text-sm font-semibold mb-1">ROOM CODE</p>
           <p className="text-5xl font-mono font-black tracking-widest text-gradient animate-pulse">{quizRoom.code}</p>
           <p className="text-xs text-subtle-text mt-2">Share this code with participants</p>
@@ -52,11 +52,11 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
             <span className="text-2xl">👥</span>
             Participants
           </h3>
-          <span className="bg-brand-peach text-white px-3 py-1 rounded-full font-bold text-sm">
+          <span className="bg-violet-600 text-white px-3 py-1 rounded-full font-bold text-sm">
             {quizRoom.students.length}
           </span>
         </div>
-        <div className="bg-gradient-to-br from-brand-cream to-light-bg p-4 rounded-xl h-56 overflow-y-auto border border-border-color">
+  <div className="bg-zinc-800 p-4 rounded-xl h-56 overflow-y-auto border border-zinc-700">
           {quizRoom.students.length > 0 ? (
             <ul className="space-y-2">
               {quizRoom.students.map((student, idx) => (
@@ -66,7 +66,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-brand-peach rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
                       {student.name.charAt(0).toUpperCase()}
                     </div>
                     <span className="font-semibold">{student.name}</span>

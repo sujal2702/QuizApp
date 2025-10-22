@@ -11,20 +11,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
               sans: ['Poppins', 'sans-serif'],
             },
             colors: {
-              'brand-peach': '#FFCBA4',
-              'brand-cream': '#FFF5EE',
-              'dark-text': '#5D4037',
-              'light-text': '#FAF9F6',
-              'subtle-text': '#A98C7B',
-              'light-bg': '#FAF9F6',
-              'card-bg': '#FFFBF7',
-              'border-color': '#EAE0D9',
+              dark: {
+                bg: '#0a0a0a',
+                card: '#111111',
+                border: '#1f1f1f',
+                hover: '#1a1a1a',
+              },
             },
           },
         },
@@ -36,25 +35,25 @@
       }
       body {
         font-family: 'Poppins', sans-serif;
-        background-color: #FAF9F6; /* light-bg */
-        background-image: radial-gradient(ellipse at top, #FFF5EE 0%, #FAF9F6 60%);
+        background-color: #0a0a0a;
+        color: #e5e5e5;
       }
-      /* Simple scrollbar styling for a more modern look */
+      /* Modern dark scrollbar */
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #EAE0D9;
+        background: #0a0a0a;
       }
       ::-webkit-scrollbar-thumb {
-        background: #FFCBA4;
-        border-radius: 3px;
+        background: #333;
+        border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #E5B794;
+        background: #444;
       }
       .text-gradient {
-        @apply bg-gradient-to-r from-orange-400 to-amber-600 bg-clip-text text-transparent;
+        @apply bg-gradient-to-r from-violet-400 to-purple-600 bg-clip-text text-transparent;
       }
     </style>
   <script type="importmap">
