@@ -156,9 +156,9 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
   if (!quizRoom || !currentQuestion) {
     return (
-      <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+      <div className="w-full max-w-2xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
         <div className="text-center">
-          <p className="text-xl text-white">Loading quiz...</p>
+          <p className="text-xl text-gray-900 font-semibold">Loading quiz...</p>
         </div>
       </div>
     );
@@ -175,32 +175,32 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     ];
 
      return (
-      <div className="w-full max-w-5xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
-          <div className="w-full bg-zinc-800 rounded-full h-3 mb-6">
-            <div className="bg-gradient-to-r from-violet-500 to-purple-600 h-3 rounded-full transition-all" style={{ width: `${progressPercentage}%` }}></div>
+      <div className="w-full max-w-5xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
+          <div className="w-full bg-gray-200 rounded-full h-3 mb-6">
+            <div className="bg-yellow-400 h-3 rounded-full transition-all" style={{ width: `${progressPercentage}%` }}></div>
           </div>
         
         <div className="flex justify-between items-center mb-6">
-          <p className="text-2xl font-bold">Question {quizRoom.currentQuestionIndex + 1}/{quizRoom.questions.length}</p>
+          <p className="text-2xl font-bold text-gray-900">Question {quizRoom.currentQuestionIndex + 1}/{quizRoom.questions.length}</p>
           <div className="flex gap-2">
             {quizRoom.acceptingAnswers && (
-              <span className="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold animate-pulse flex items-center gap-2">
+              <span className="bg-green-500 text-white px-4 py-2 rounded-full font-semibold animate-pulse flex items-center gap-2">
                 <span className="w-2 h-2 bg-white rounded-full"></span>
                 ACCEPTING ANSWERS
               </span>
             )}
             {quizRoom.answersRevealed && (
-              <span className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold">
+              <span className="bg-cyan-200 text-gray-900 px-4 py-2 rounded-full font-semibold">
                 📊 ANSWERS REVEALED
               </span>
             )}
           </div>
         </div>
 
-        <div className="bg-zinc-800 p-6 rounded-xl mb-6 border-2 border-zinc-700">
-          <h2 className="text-3xl font-bold mb-6 text-white">{currentQuestion.text}</h2>
+        <div className="bg-gray-50 p-6 rounded-2xl mb-6 border-2 border-gray-200">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900">{currentQuestion.text}</h2>
           
-          <p className="text-sm font-semibold text-zinc-400 mb-3">Students will see these colored options:</p>
+          <p className="text-sm font-semibold text-gray-600 mb-3">Students will see these colored options:</p>
           
           <div className="grid grid-cols-2 gap-4">
             {currentQuestion.options.map((option, index) => {
@@ -238,16 +238,16 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         </div>
 
         {/* Response Stats */}
-        <div className="bg-zinc-800 p-4 rounded-lg mb-6 border-2 border-zinc-700">
+        <div className="bg-gray-50 p-4 rounded-2xl mb-6 border-2 border-gray-200">
           <div className="flex justify-between items-center">
             <span className="font-semibold text-gray-700">Responses Received:</span>
             <div className="flex items-center gap-3">
-              <div className="text-3xl font-black text-blue-600">
+              <div className="text-3xl font-black text-gray-900">
                 {(quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id).length} / {quizRoom.students?.length || 0}
               </div>
-              <div className="w-32 bg-zinc-800 rounded-full h-3">
+              <div className="w-32 bg-gray-200 rounded-full h-3">
                 <div 
-                  className="bg-gradient-to-r from-violet-500 to-purple-600 h-3 rounded-full transition-all"
+                  className="bg-cyan-400 h-3 rounded-full transition-all"
                   style={{ width: `${((quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id).length / ((quizRoom.students?.length || 1))) * 100}%` }}
                 ></div>
               </div>
@@ -299,49 +299,49 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
   // Student View - Only show 4 colored option buttons with symbols
   const optionConfig = [
-    { label: 'A', color: 'red', bg: 'bg-red-500', hoverBg: 'hover:bg-red-600', border: 'border-red-600', shadow: 'shadow-red-500/50', symbol: '●' },
-    { label: 'B', color: 'yellow', bg: 'bg-yellow-400', hoverBg: 'hover:bg-yellow-500', border: 'border-yellow-500', shadow: 'shadow-yellow-400/50', symbol: '■' },
-    { label: 'C', color: 'green', bg: 'bg-green-500', hoverBg: 'hover:bg-green-600', border: 'border-green-600', shadow: 'shadow-green-500/50', symbol: '▲' },
-    { label: 'D', color: 'blue', bg: 'bg-blue-500', hoverBg: 'hover:bg-blue-600', border: 'border-blue-600', shadow: 'shadow-blue-500/50', symbol: '★' },
+    { label: 'A', color: 'red', bg: 'bg-red-500', hoverBg: 'hover:bg-red-600', border: 'border-red-500', shadow: 'shadow-lg', symbol: '●' },
+    { label: 'B', color: 'yellow', bg: 'bg-yellow-400', hoverBg: 'hover:bg-yellow-500', border: 'border-yellow-400', shadow: 'shadow-lg', symbol: '■' },
+    { label: 'C', color: 'green', bg: 'bg-green-500', hoverBg: 'hover:bg-green-600', border: 'border-green-500', shadow: 'shadow-lg', symbol: '▲' },
+    { label: 'D', color: 'blue', bg: 'bg-blue-500', hoverBg: 'hover:bg-blue-600', border: 'border-blue-500', shadow: 'shadow-lg', symbol: '★' },
   ];
 
   const getOptionClasses = (index: number) => {
     const config = optionConfig[index];
-    let baseClasses = `w-full aspect-square flex items-center justify-center rounded-3xl border-[6px] transition-all transform text-white font-black shadow-2xl ${config.shadow}`;
+    let baseClasses = `w-full aspect-square flex items-center justify-center rounded-2xl border-4 transition-all transform text-white font-black ${config.shadow}`;
     
     if (!isAnswered && quizRoom.acceptingAnswers) {
-      return `${baseClasses} ${config.bg} ${config.border} ${config.hoverBg} hover:scale-105 active:scale-95 cursor-pointer animate-pulse`;
+      return `${baseClasses} ${config.bg} ${config.border} ${config.hoverBg} hover:scale-[1.02] active:scale-95 cursor-pointer`;
     }
     
     if (isAnswered) {
       if (index === selectedOption) {
-        return `${baseClasses} ${config.bg} ${config.border} scale-105 ring-8 ring-white`;
+        return `${baseClasses} ${config.bg} ${config.border} scale-[1.02] ring-4 ring-white/50`;
       }
     }
     
     // Disabled state
-    return `${baseClasses} bg-gray-600 border-gray-500 opacity-40 cursor-not-allowed`;
+    return `${baseClasses} bg-gray-700 border-gray-600 opacity-50 cursor-not-allowed`;
   };
 
   return (
     <>
-      <div className="w-full min-h-screen flex flex-col lg:flex-row gap-4 lg:gap-6 p-4 lg:p-6 pb-4">
+      <div className="w-full min-h-screen flex flex-col lg:flex-row gap-4 lg:gap-6 p-4 lg:p-6 pb-4 bg-gray-50">
         {/* Question Details Container */}
         <div className="w-full lg:w-1/3 flex flex-col gap-4 lg:gap-6">
         {/* Progress Bar */}
-        <div className="bg-gradient-to-br from-purple-900/90 via-indigo-900/90 to-blue-900/90 backdrop-blur-sm border-4 border-white/30 rounded-3xl p-4 lg:p-6 shadow-2xl animate-fade-in">
-          <div className="w-full bg-white/20 rounded-full h-3 lg:h-4 mb-3 overflow-hidden">
-            <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-full rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }}></div>
+        <div className="bg-white border-2 border-gray-200 rounded-2xl p-5 lg:p-6 shadow-md animate-fade-in">
+          <div className="w-full bg-gray-300 rounded-full h-2.5 lg:h-3 mb-3 overflow-hidden">
+            <div className="bg-yellow-400 h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${progressPercentage}%` }}></div>
           </div>
           <div className="text-center">
-            <span className="text-lg sm:text-xl lg:text-2xl font-black text-white drop-shadow-lg">
-              Question {quizRoom.currentQuestionIndex + 1} / {quizRoom.questions.length}
+            <span className="text-base sm:text-lg lg:text-xl font-bold text-gray-700">
+              Question {quizRoom.currentQuestionIndex + 1}/{quizRoom.questions.length}
             </span>
           </div>
         </div>
 
         {/* Timer */}
-        <div className="bg-gradient-to-br from-purple-900/90 via-indigo-900/90 to-blue-900/90 backdrop-blur-sm border-4 border-white/30 rounded-3xl p-4 lg:p-6 shadow-2xl flex items-center justify-center">
+        <div className="bg-white border-2 border-gray-200 rounded-2xl p-5 lg:p-6 shadow-md flex items-center justify-center">
           <Timer
             key={currentQuestion.id}
             duration={quizRoom.questionTimer ?? currentQuestion.timeLimit}
@@ -353,30 +353,30 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
         {/* Status Messages */}
         {!quizRoom.acceptingAnswers && !isAnswered && (
-          <div className="bg-yellow-400 border-4 border-yellow-600 rounded-3xl p-4 lg:p-6 shadow-2xl animate-bounce">
-            <p className="text-lg sm:text-xl lg:text-2xl font-black text-yellow-900 text-center">⏳ Waiting...</p>
+          <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-4 lg:p-5 shadow-md">
+            <p className="text-base sm:text-lg lg:text-xl font-bold text-yellow-700 text-center">⏳ Waiting...</p>
           </div>
         )}
 
         {quizRoom.acceptingAnswers && !isAnswered && (
-          <div className="bg-gradient-to-br from-purple-500 via-violet-500 to-purple-600 border-4 border-purple-300 rounded-3xl p-4 lg:p-6 shadow-2xl animate-pulse">
-            <p className="text-base sm:text-lg lg:text-2xl font-black text-white text-center drop-shadow-lg">
+          <div className="bg-cyan-100 border-2 border-cyan-300 rounded-2xl p-4 lg:p-5 shadow-md animate-pulse">
+            <p className="text-base sm:text-lg lg:text-xl font-bold text-cyan-800 text-center">
               👀 Choose Now!
             </p>
           </div>
         )}
         
         {isAnswered && !showRevealAnimation && (
-          <div className="bg-green-500 border-4 border-green-700 rounded-3xl p-4 lg:p-6 shadow-2xl animate-pulse">
-            <p className="text-base sm:text-lg lg:text-2xl font-black text-white text-center">✓ Submitted!</p>
-            <p className="text-sm sm:text-base font-semibold text-green-100 mt-2 text-center">Waiting...</p>
+          <div className="bg-green-50 border-2 border-green-400 rounded-2xl p-4 lg:p-5 shadow-md">
+            <p className="text-base sm:text-lg lg:text-xl font-bold text-green-700 text-center">✓ Submitted!</p>
+            <p className="text-sm sm:text-base font-medium text-green-600 mt-1 text-center">Waiting...</p>
           </div>
         )}
       </div>
 
       {/* Options Container */}
-      <div className="flex-1 bg-gradient-to-br from-purple-900/90 via-indigo-900/90 to-blue-900/90 backdrop-blur-sm border-4 border-white/30 rounded-3xl p-4 lg:p-8 shadow-2xl animate-fade-in-up">
-        <div className="h-full grid grid-cols-2 gap-4 lg:gap-8">
+      <div className="flex-1 bg-gray-600 border-2 border-gray-500 rounded-2xl p-6 lg:p-10 shadow-lg animate-fade-in-up">
+        <div className="h-full grid grid-cols-2 gap-5 lg:gap-8">
           {optionConfig.map((config, index) => (
             <button
               key={index}
@@ -384,9 +384,9 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
               disabled={isAnswered || !quizRoom.acceptingAnswers}
               className={getOptionClasses(index)}
             >
-              <div className="flex flex-col items-center justify-center gap-2 lg:gap-4">
-                <div className="text-6xl sm:text-7xl lg:text-8xl">{config.symbol}</div>
-                <div className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-wider">{config.label}</div>
+              <div className="flex flex-col items-center justify-center gap-1 lg:gap-3">
+                <div className="text-5xl sm:text-6xl lg:text-7xl drop-shadow-lg">{config.symbol}</div>
+                <div className="text-3xl sm:text-4xl lg:text-6xl font-black tracking-wide">{config.label}</div>
               </div>
             </button>
           ))}
@@ -399,8 +399,8 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in p-4">
           <div className={`relative max-w-lg sm:max-w-2xl w-full mx-4 p-6 sm:p-12 rounded-3xl shadow-2xl transform transition-all duration-500 ${
             selectedOption === currentQuestion.correctOption 
-              ? 'bg-gradient-to-br from-green-400 via-green-500 to-green-600 animate-bounce-in scale-110' 
-              : 'bg-gradient-to-br from-red-400 via-red-500 to-red-600 animate-shake'
+              ? 'bg-green-500 animate-bounce-in scale-110' 
+              : 'bg-red-500 animate-shake'
           }`}>
             {/* Confetti effect for correct answer */}
             {selectedOption === currentQuestion.correctOption && (

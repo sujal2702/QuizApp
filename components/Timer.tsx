@@ -66,14 +66,14 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, startedAt }
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (timeLeft / duration) * circumference;
 
-  const timeColor = timeLeft <= 5 ? 'text-red-500' : 'text-violet-400';
+  const timeColor = timeLeft <= 5 ? 'text-red-500' : 'text-gray-900';
 
   return (
-    <div className="relative w-28 h-28">
+    <div className="relative w-32 h-32">
       <svg className="w-full h-full" viewBox="0 0 100 100">
         <circle
-          className="text-zinc-700"
-          strokeWidth="10"
+          className="text-gray-200"
+          strokeWidth="8"
           stroke="currentColor"
           fill="transparent"
           r={radius}
@@ -81,8 +81,8 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, startedAt }
           cy="50"
         />
         <circle
-          className={timeLeft <= 5 ? 'text-red-500' : 'text-brand-peach'}
-          strokeWidth="10"
+          className={timeLeft <= 5 ? 'text-red-500' : 'text-yellow-400'}
+          strokeWidth="8"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
@@ -94,7 +94,7 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, startedAt }
           style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%', transition: 'stroke-dashoffset 1s linear' }}
         />
       </svg>
-      <div className={`absolute inset-0 flex items-center justify-center text-3xl font-bold ${timeColor}`}>
+      <div className={`absolute inset-0 flex items-center justify-center text-4xl font-black ${timeColor}`}>
         {timeLeft}
       </div>
     </div>

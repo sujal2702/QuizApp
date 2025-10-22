@@ -3,7 +3,8 @@ import React, { ReactNode } from 'react';
 interface CardProps {
   children: ReactNode;
   className?: string;
-  variant?: 'default' | 'gradient' | 'glass' | 'bordered';
+  variant?: 'default' | 'elevated' | 'outlined' | 'flat';
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
   onClick?: () => void;
 }
@@ -12,27 +13,36 @@ const Card: React.FC<CardProps> = ({
   children, 
   className = '', 
   variant = 'default',
+  padding = 'md',
   hover = false,
   onClick 
 }) => {
-  const baseClasses = 'rounded-2xl p-6 transition-all duration-300';
+  const baseClasses = 'rounded-2xl transition-all duration-200';
   
   const variantClasses = {
-    default: 'bg-zinc-900/90 border border-zinc-800/50 shadow-xl',
-    gradient: 'bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-800/50 shadow-2xl',
-    glass: 'bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl',
-    bordered: 'bg-zinc-900 border-2 border-zinc-800 shadow-lg',
+    default: 'bg-white border border-gray-200 shadow-md',
+    elevated: 'bg-white border border-gray-200 shadow-xl',
+    outlined: 'bg-transparent border-2 border-gray-300',
+    flat: 'bg-gray-50',
+  };
+
+  const paddingClasses = {
+    none: 'p-0',
+    sm: 'p-4',
+    md: 'p-6',
+    lg: 'p-8',
+    xl: 'p-12',
   };
 
   const hoverClasses = hover 
-    ? 'hover:scale-102 hover:shadow-2xl hover:border-violet-500/50 cursor-pointer' 
+    ? 'hover:border-yellow-400 hover:shadow-xl hover:shadow-yellow-400/20 cursor-pointer hover:-translate-y-1 transition-transform' 
     : '';
 
   const clickableClasses = onClick ? 'cursor-pointer' : '';
 
   return (
     <div 
-      className={`${baseClasses} ${variantClasses[variant]} ${hoverClasses} ${clickableClasses} ${className}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${paddingClasses[padding]} ${hoverClasses} ${clickableClasses} ${className}`}
       onClick={onClick}
     >
       {children}

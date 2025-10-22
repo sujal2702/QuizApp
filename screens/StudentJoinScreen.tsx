@@ -38,8 +38,14 @@ const StudentJoinScreen: React.FC<StudentJoinScreenProps> = ({ setScreen }) => {
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
-      <h2 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">Join Quiz</h2>
+    <div className="w-full max-w-md p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
+      <div className="flex items-center justify-center mb-4">
+        <div className="w-16 h-16 rounded-full bg-cyan-200 flex items-center justify-center shadow-lg">
+          <span className="text-3xl">🎓</span>
+        </div>
+      </div>
+      <h2 className="text-3xl font-bold mb-2 text-center text-gray-900">Join Quiz</h2>
+      <p className="text-gray-600 text-center mb-6">Enter your details to participate</p>
       <form onSubmit={handleJoin} className="space-y-6">
         <Input
           id="name"
@@ -48,6 +54,7 @@ const StudentJoinScreen: React.FC<StudentJoinScreenProps> = ({ setScreen }) => {
           onChange={(e) => setName(e.target.value)}
           required
           autoComplete="name"
+          placeholder="John Doe"
         />
         <Input
           id="code"
@@ -57,10 +64,11 @@ const StudentJoinScreen: React.FC<StudentJoinScreenProps> = ({ setScreen }) => {
           required
           maxLength={6}
           style={{ textTransform: 'uppercase' }}
+          placeholder="ABC123"
         />
-        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-        <Button type="submit">Join Room</Button>
-        <Button type="button" variant="secondary" onClick={() => setScreen('home')}>
+        {error && <p className="text-red-500 text-sm text-center font-medium">{error}</p>}
+        <Button type="submit" variant="secondary">Join Room →</Button>
+        <Button type="button" variant="outline" onClick={() => setScreen('home')}>
           Back
         </Button>
       </form>

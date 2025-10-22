@@ -189,7 +189,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
   ];
 
   return (
-    <div className="flex min-h-screen bg-zinc-900">
+    <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <AdminSidebar
         onNavigate={(key) => {
@@ -204,42 +204,45 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
       />
       {/* Main dashboard content */}
       <main className="flex-1 flex flex-col items-center justify-start py-8 px-8">
-        <div className="w-full max-w-6xl p-8 bg-zinc-800 border border-zinc-700 rounded-2xl shadow-2xl animate-fade-in-up">
+        <div className="w-full max-w-6xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
           <div className="text-center mb-8">
-            <h2 className="text-5xl font-black mb-2 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <span className="text-3xl">✨</span>
+            </div>
+            <h2 className="text-5xl font-black mb-2 text-gray-900">
               Create Quiz
             </h2>
-            <p className="text-zinc-400 text-lg font-medium">Design your interactive quiz experience</p>
+            <p className="text-gray-600 text-lg font-medium">Design your interactive quiz experience</p>
           </div>
 
           {/* Mode Selection */}
           <div className="grid grid-cols-2 gap-4 mb-6">
             <button
               onClick={() => setMode('option-only')}
-              className={`p-6 rounded-xl border-2 transition-all transform hover:scale-[1.02] ${
+              className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-[1.02] ${
                 mode === 'option-only'
-                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-400 text-white shadow-xl scale-[1.02]'
-                  : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:border-violet-500'
+                  ? 'bg-yellow-400 border-yellow-500 text-gray-900 shadow-xl scale-[1.02]'
+                  : 'bg-white border-gray-300 text-gray-700 hover:border-yellow-400'
               }`}
             >
               <div className="text-4xl mb-2">🎯</div>
               <div className="font-bold text-lg mb-1">Option Mode</div>
-              <div className={`text-sm ${mode === 'option-only' ? 'text-white/90' : 'text-zinc-400'}`}>
+              <div className={`text-sm ${mode === 'option-only' ? 'text-gray-900' : 'text-gray-600'}`}>
                 Questions on projector, answers only
               </div>
             </button>
 
             <button
               onClick={() => setMode('full-manual')}
-              className={`p-6 rounded-xl border-2 transition-all transform hover:scale-[1.02] ${
+              className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-[1.02] ${
                 mode === 'full-manual'
-                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-400 text-white shadow-xl scale-[1.02]'
-                  : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:border-violet-500'
+                  ? 'bg-cyan-200 border-cyan-400 text-gray-900 shadow-xl scale-[1.02]'
+                  : 'bg-white border-gray-300 text-gray-700 hover:border-cyan-400'
               }`}
             >
               <div className="text-4xl mb-2">✍️</div>
               <div className="font-bold text-lg mb-1">Full Manual + AI</div>
-              <div className={`text-sm ${mode === 'full-manual' ? 'text-white/90' : 'text-zinc-400'}`}>
+              <div className={`text-sm ${mode === 'full-manual' ? 'text-gray-900' : 'text-gray-600'}`}>
                 Complete questions with AI assist
               </div>
             </button>
@@ -254,9 +257,9 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
               placeholder="e.g., Science Quiz - Chapter 5"
             />
 
-            <div className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700 shadow-sm">
+            <div className="bg-gray-50 p-6 rounded-2xl border-2 border-gray-200 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <label className="text-sm font-bold text-white">
+                <label className="text-sm font-bold text-gray-900">
                   Number of Questions
                 </label>
                 <div className="flex items-center gap-4">
@@ -266,7 +269,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                     max="100"
                     value={numQuestions}
                     onChange={(e) => setNumQuestions(Math.min(100, Math.max(1, Number(e.target.value))))}
-                    className="w-20 px-3 py-2 text-center text-xl font-black text-violet-400 bg-zinc-800 border-2 border-zinc-700 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50"
+                    className="w-20 px-3 py-2 text-center text-xl font-black text-gray-900 bg-white border-2 border-gray-300 rounded-xl focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20"
                   />
                   <span className="text-sm text-zinc-400">/ 100 max</span>
                 </div>
@@ -326,8 +329,8 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
               </div>
             )}
 
-            <div className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700">
-              <h3 className="text-xl font-bold text-white mb-5 flex items-center gap-2">
+            <div className="bg-gray-50 p-6 rounded-2xl border-2 border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
                 <span className="text-2xl">⚙️</span>
                 {mode === 'option-only' ? 'Answer Key Configuration' : 'Question Editor'}
               </h3>
@@ -336,22 +339,22 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                 {mode === 'option-only' ? (
                   // Option Mode: Only correct answers
                   questionSettings.map((setting, index) => (
-                    <div key={index} className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700 hover:border-violet-500 hover:shadow-lg transition-all">
+                    <div key={index} className="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-yellow-400 hover:shadow-lg transition-all">
                       <div className="flex items-center justify-between mb-5">
-                        <h4 className="text-lg font-bold text-white flex items-center gap-3">
-                          <span className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-lg font-black shadow-lg border-2 border-violet-400">
+                        <h4 className="text-lg font-bold text-gray-900 flex items-center gap-3">
+                          <span className="w-10 h-10 bg-yellow-400 text-gray-900 rounded-xl flex items-center justify-center text-lg font-black shadow-lg">
                             {index + 1}
                           </span>
                           Question {index + 1}
                         </h4>
-                        <span className="text-xs text-zinc-400 bg-zinc-800 px-3 py-1.5 rounded-lg font-medium border border-zinc-700">
+                        <span className="text-xs text-gray-700 bg-gray-100 px-3 py-1.5 rounded-lg font-medium border border-gray-300">
                           📽️ On Projector
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm sm:text-base font-bold text-white mb-3">
+                          <label className="block text-sm sm:text-base font-bold text-gray-900 mb-3">
                             Correct Answer *
                           </label>
                           <div className="grid grid-cols-4 gap-2">
@@ -359,10 +362,10 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                               <button
                                 key={optIdx}
                                 onClick={() => updateQuestionSetting(index, 'correctAnswer', optIdx)}
-                                className={`p-4 rounded-lg border-2 transition-all transform ${
+                                className={`p-4 rounded-xl border-2 transition-all transform ${
                                   setting.correctAnswer === optIdx
-                                    ? `${option.bg} ${option.border} scale-105 shadow-xl text-white ring-2 ring-violet-400`
-                                    : 'bg-zinc-800 border-zinc-700 hover:scale-105 hover:border-violet-500'
+                                    ? `${option.bg} ${option.border} scale-105 shadow-xl text-white ring-2 ring-yellow-400`
+                                    : 'bg-white border-gray-300 hover:scale-105 hover:border-yellow-400'
                                 }`}
                               >
                                 <div className="text-center">
@@ -375,7 +378,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                         </div>
 
                         <div>
-                          <label className="block text-sm sm:text-base font-bold text-white mb-3">
+                          <label className="block text-sm sm:text-base font-bold text-gray-900 mb-3">
                             Time Limit (seconds)
                           </label>
                           <input
@@ -384,7 +387,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                             max="600"
                             value={setting.timeLimit}
                             onChange={(e) => updateQuestionSetting(index, 'timeLimit', Number(e.target.value))}
-                            className="w-full p-4 text-2xl sm:text-3xl font-black text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/50 bg-zinc-800"
+                            className="w-full p-4 text-2xl sm:text-3xl font-black text-center text-gray-900 rounded-xl border-2 border-gray-300 focus:border-yellow-400 focus:ring-4 focus:ring-yellow-400/20 bg-white"
                           />
                         </div>
                       </div>
@@ -393,10 +396,10 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                 ) : (
                   // Full Manual Mode: Complete questions
                   manualQuestions.map((q, index) => (
-                    <div key={index} className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700 hover:border-violet-500 hover:shadow-lg transition-all">
+                    <div key={index} className="bg-white p-6 rounded-2xl border-2 border-gray-200 hover:border-cyan-400 hover:shadow-lg transition-all">
                       <div className="flex items-center justify-between mb-5">
-                        <h4 className="text-lg font-bold text-white flex items-center gap-3">
-                          <span className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-lg font-black shadow-lg border-2 border-violet-400">
+                        <h4 className="text-lg font-bold text-gray-900 flex items-center gap-3">
+                          <span className="w-10 h-10 bg-cyan-200 text-gray-900 rounded-xl flex items-center justify-center text-lg font-black shadow-lg">
                             {index + 1}
                           </span>
                           Question {index + 1}
@@ -427,16 +430,16 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm sm:text-base font-bold text-white mb-3">Correct Answer *</label>
+                            <label className="block text-sm sm:text-base font-bold text-gray-900 mb-3">Correct Answer *</label>
                             <div className="grid grid-cols-4 gap-2">
                               {optionColors.map((option, optIdx) => (
                                 <button
                                   key={optIdx}
                                   onClick={() => updateManualQuestion(index, 'correctAnswer', optIdx)}
-                                  className={`p-3 rounded-lg border-2 transition-all ${
+                                  className={`p-3 rounded-xl border-2 transition-all ${
                                     q.correctAnswer === optIdx
-                                      ? `${option.bg} ${option.border} scale-105 shadow-xl text-white ring-2 ring-violet-400`
-                                      : 'bg-zinc-800 border-zinc-700 hover:scale-105 hover:border-violet-500'
+                                      ? `${option.bg} ${option.border} scale-105 shadow-xl text-white ring-2 ring-cyan-400`
+                                      : 'bg-white border-gray-300 hover:scale-105 hover:border-cyan-400'
                                   }`}
                                 >
                                   <div className="text-center">
@@ -449,14 +452,14 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                           </div>
 
                           <div>
-                            <label className="block text-sm sm:text-base font-bold text-white mb-3">Time Limit (sec)</label>
+                            <label className="block text-sm sm:text-base font-bold text-gray-900 mb-3">Time Limit (sec)</label>
                             <input
                               type="number"
                               min="5"
                               max="600"
                               value={q.timeLimit}
                               onChange={(e) => updateManualQuestion(index, 'timeLimit', Number(e.target.value))}
-                              className="w-full p-3 text-lg sm:text-xl font-bold text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 bg-zinc-800"
+                              className="w-full p-3 text-lg sm:text-xl font-bold text-center text-gray-900 rounded-xl border-2 border-gray-300 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 bg-white"
                             />
                           </div>
                         </div>
@@ -468,7 +471,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
             </div>
 
             <div className="pt-4">
-              <Button onClick={handleCreateRoom} className="!w-full !py-5 !text-xl !font-black !bg-gradient-to-r !from-violet-600 !to-fuchsia-600 hover:!from-violet-700 hover:!to-fuchsia-700 !shadow-2xl !border-2 !border-violet-400">
+              <Button onClick={handleCreateRoom} variant="primary" className="!w-full !py-5 !text-xl !font-black">
                 🚀 Create Room - {numQuestions} Question{numQuestions > 1 ? 's' : ''}
               </Button>
             </div>

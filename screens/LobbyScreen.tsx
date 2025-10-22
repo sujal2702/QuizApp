@@ -35,9 +35,9 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
 
   if (!quizRoom) {
     return (
-      <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+      <div className="w-full max-w-2xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
         <div className="text-center">
-          <p className="text-xl text-white">Quiz room not found. Redirecting...</p>
+          <p className="text-xl text-gray-900">Quiz room not found. Redirecting...</p>
         </div>
       </div>
     );
@@ -89,38 +89,41 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   };
 
   return (
-  <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+  <div className="w-full max-w-2xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
       <div className="text-center mb-6">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-gradient">🎮 Quiz Lobby</h2>
-  <p className="text-lg sm:text-2xl text-violet-400 font-bold mb-4">{quizRoom.name}</p>
-  <div className="bg-gradient-to-r from-violet-900/10 to-transparent p-4 sm:p-6 rounded-xl mb-4 border-2 border-zinc-700">
-          <p className="text-sm sm:text-base text-subtle-text mb-1">ROOM CODE</p>
-          <p className="text-4xl sm:text-5xl font-mono font-black tracking-widest text-gradient animate-pulse">{quizRoom.code}</p>
-          <p className="text-xs sm:text-sm text-subtle-text mt-2">Share this code with participants</p>
+        <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <span className="text-3xl">🎮</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-gray-900">Quiz Lobby</h2>
+  <p className="text-lg sm:text-2xl text-yellow-600 font-bold mb-4">{quizRoom.name}</p>
+  <div className="bg-yellow-50 p-4 sm:p-6 rounded-2xl mb-4 border-2 border-yellow-200">
+          <p className="text-sm sm:text-base text-gray-600 mb-1">ROOM CODE</p>
+          <p className="text-4xl sm:text-5xl font-mono font-black tracking-widest text-gray-900 animate-pulse">{quizRoom.code}</p>
+          <p className="text-xs sm:text-sm text-gray-600 mt-2">Share this code with participants</p>
         </div>
       </div>
       
       <div className="mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold flex items-center gap-2">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
             <span className="text-2xl">👥</span>
             Participants
           </h3>
-          <span className="bg-violet-600 text-white px-3 py-1 rounded-full font-bold text-sm">
+          <span className="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full font-bold text-sm">
             {studentCount}
           </span>
         </div>
-  <div className="bg-zinc-800 p-4 rounded-xl h-56 overflow-y-auto border border-zinc-700">
+  <div className="bg-gray-50 p-4 rounded-2xl h-56 overflow-y-auto border-2 border-gray-200">
           {studentCount > 0 ? (
             <ul className="space-y-2">
               {quizRoom.students?.map((student, idx) => (
                 <li 
                   key={student.id} 
-                  className="text-dark-text bg-card-bg p-3 rounded-lg animate-fade-in flex items-center justify-between shadow-sm hover:shadow-md transition-shadow"
+                  className="text-gray-900 bg-white p-3 rounded-xl animate-fade-in flex items-center justify-between shadow-sm hover:shadow-md transition-shadow border border-gray-200"
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-8 h-8 bg-cyan-200 rounded-full flex items-center justify-center text-gray-900 font-bold">
                       {student.name.charAt(0).toUpperCase()}
                     </div>
                     <span className="font-semibold">{student.name}</span>
@@ -132,8 +135,8 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
           ) : (
             <div className="text-center pt-16">
               <p className="text-4xl mb-2">⏳</p>
-              <p className="text-subtle-text font-semibold">Waiting for participants to join...</p>
-              <p className="text-xs text-subtle-text mt-2">Students should enter the room code above</p>
+              <p className="text-gray-600 font-semibold">Waiting for participants to join...</p>
+              <p className="text-xs text-gray-500 mt-2">Students should enter the room code above</p>
             </div>
           )}
         </div>

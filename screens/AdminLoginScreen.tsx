@@ -101,11 +101,16 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
         />
       </div>
       
-      <div className="p-8 bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
-        <h2 className="text-4xl font-black mb-2 text-center bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
+      <div className="p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
+        <div className="flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
+            <span className="text-3xl">👑</span>
+          </div>
+        </div>
+        <h2 className="text-4xl font-black mb-2 text-center text-gray-900">
           Admin Login
         </h2>
-        <p className="text-zinc-400 text-center mb-6">Sign in with your admin credentials</p>
+        <p className="text-gray-600 text-center mb-6">Sign in with your admin credentials</p>
       
       <form onSubmit={handleLogin} className="space-y-6">
         <Input
@@ -147,7 +152,7 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
           <button
             type="button"
             onClick={() => setShowForgotPassword(true)}
-            className="text-sm text-violet-400 hover:text-violet-300 font-medium underline transition-colors"
+            className="text-sm text-gray-700 hover:text-gray-900 font-medium underline transition-colors"
           >
             Forgot Password?
           </button>
@@ -155,8 +160,8 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
       </form>
 
       {showForgotPassword && (
-        <div className="mt-4 p-4 bg-violet-500/10 rounded-lg border border-violet-500/30">
-          <p className="text-sm text-zinc-300 mb-3">
+        <div className="mt-4 p-4 bg-yellow-50 rounded-xl border-2 border-yellow-200">
+          <p className="text-sm text-gray-700 mb-3 font-medium">
             Enter your email to receive a password reset link:
           </p>
           <div className="flex gap-2">
@@ -170,8 +175,7 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
             </Button>
             <Button
               onClick={() => setShowForgotPassword(false)}
-              variant="secondary"
-              className="!bg-zinc-800 hover:!bg-zinc-700"
+              variant="outline"
             >
               Cancel
             </Button>
@@ -180,11 +184,11 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
       )}
 
       <div className="mt-6 text-center">
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-gray-600">
           Don't have an account?{' '}
           <button
             onClick={() => setScreen('admin_signup')}
-            className="text-violet-400 font-bold hover:text-violet-300 transition-colors underline"
+            className="text-gray-900 font-bold hover:text-yellow-600 transition-colors underline"
           >
             Sign up here
           </button>
@@ -200,9 +204,9 @@ const AdminLoginScreen: React.FC<AdminLoginScreenProps> = ({ setScreen }) => {
         ← Back to Home
       </Button>
       
-      <div className="mt-6 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
-        <p className="text-xs text-zinc-400 text-center">
-          💡 <strong className="text-zinc-300">First time?</strong> Ask your system admin to create an account and grant admin privileges.
+      <div className="mt-6 p-4 bg-gray-100 rounded-xl border border-gray-200">
+        <p className="text-xs text-gray-600 text-center">
+          💡 <strong className="text-gray-900">First time?</strong> Ask your system admin to create an account and grant admin privileges.
         </p>
       </div>
     </div>

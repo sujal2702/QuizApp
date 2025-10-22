@@ -53,9 +53,9 @@ function AppContent() {
   const showSidebar = userRole !== null && !isLandingPage && !isAuthScreen;
 
   return (
-    <div className="text-zinc-100 bg-gradient-to-br from-black via-zinc-950 to-zinc-900 min-h-screen flex font-sans relative z-0">
-      {/* PixelBlast Background - Fixed positioning */}
-      {screen !== 'landing' && (
+    <div className="text-gray-900 bg-white min-h-screen flex font-sans relative z-0">
+      {/* Remove PixelBlast - keeping clean white background */}
+      {false && screen !== 'landing' && (
         <div className="fixed inset-0 z-0 pointer-events-none">
           <PixelBlast
             variant="circle"

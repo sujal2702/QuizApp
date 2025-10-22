@@ -61,19 +61,24 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
   const isQuizEnded = quizRoom.status === 'ended';
 
   return (
-  <div className="w-full max-w-4xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
-      <h2 className="text-4xl font-extrabold text-center mb-2 text-gradient">
-        {isQuizEnded ? '🏆 Final Results' : '📊 Live Leaderboard'}
-      </h2>
-      {!isQuizEnded && (
-        <p className="text-center text-amber-600 mb-6 animate-pulse font-semibold">Quiz is still in progress...</p>
-      )}
+  <div className="w-full max-w-4xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
+      <div className="text-center mb-6">
+        <div className="w-20 h-20 rounded-full bg-yellow-400 flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <span className="text-4xl">{isQuizEnded ? '🏆' : '📊'}</span>
+        </div>
+        <h2 className="text-4xl font-extrabold mb-2 text-gray-900">
+          {isQuizEnded ? 'Final Results' : 'Live Leaderboard'}
+        </h2>
+        {!isQuizEnded && (
+          <p className="text-center text-amber-600 mb-2 animate-pulse font-semibold">Quiz is still in progress...</p>
+        )}
+      </div>
       
       {/* Toggle View Button */}
       <div className="flex justify-center mb-6">
         <button
           onClick={() => setShowDetailedView(!showDetailedView)}
-          className="px-6 py-3 min-h-[44px] rounded-lg bg-light-bg hover:bg-border-color transition-colors font-semibold"
+          className="px-6 py-3 min-h-[44px] rounded-full bg-gray-100 hover:bg-gray-200 transition-colors font-semibold text-gray-900 border-2 border-gray-300"
         >
           {showDetailedView ? '📊 Simple View' : '📋 Detailed View'}
         </button>
@@ -134,31 +139,35 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
             return (
             <div
               key={score.studentId}
-              className={`bg-zinc-800/60 rounded-lg shadow-md overflow-hidden animate-slide-in ${isWinner ? 'ring-4 ring-yellow-400/40' : ''}`}
+              className={`bg-white rounded-2xl shadow-md overflow-hidden animate-slide-in border-2 ${isWinner ? 'border-yellow-400 ring-4 ring-yellow-400/20' : 'border-gray-200'}`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div
-                className="flex items-center justify-between p-4 cursor-pointer hover:bg-border-color/50"
+                className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
                 onClick={() => handleToggleDetails(score.studentId)}
               >
                 <div className="flex items-center">
-                  <div className="w-12 text-center text-2xl font-bold">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold ${
+                    index === 0 ? 'bg-yellow-400 text-gray-900' : 
+                    index === 1 ? 'bg-cyan-200 text-gray-900' : 
+                    'bg-gray-200 text-gray-900'
+                  }`}>
                     #{index + 1}
                   </div>
-                  <span className={`text-lg font-semibold ml-4 ${isWinner ? 'text-yellow-300' : ''}`}>{score.name}</span>
+                  <span className={`text-lg font-semibold ml-4 ${isWinner ? 'text-yellow-600' : 'text-gray-900'}`}>{score.name}</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
-                    <p className="text-xl font-bold text-green-700">{score.score} pts</p>
-                    <p className="text-xs text-subtle-text">{score.totalTime.toFixed(2)}s</p>
+                    <p className="text-xl font-bold text-green-600">{score.score} pts</p>
+                    <p className="text-xs text-gray-600">{score.totalTime.toFixed(2)}s</p>
                   </div>
                   <ChevronIcon isExpanded={isExpanded} />
                 </div>
               </div>
 
               {isExpanded && (
-                <div className="p-4 border-t border-zinc-700 bg-zinc-900">
-                  <h4 className="font-semibold mb-2 text-violet-400">Question Breakdown:</h4>
+                <div className="p-4 border-t border-gray-200 bg-gray-50">
+                  <h4 className="font-semibold mb-2 text-cyan-600">Question Breakdown:</h4>
                   <ul className="space-y-2">
                     {quizRoom.questions.map((question, qIndex) => {
                       const response = studentResponses.find(r => r.questionId === question.id);
@@ -167,8 +176,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
                       const wasAnswered = response !== undefined;
 
                       return (
-                        <li key={question.id} className="flex justify-between items-center text-sm p-2 bg-zinc-800/50 rounded-md">
-                          <span className="truncate pr-4">{`Q${qIndex + 1}: ${question.text}`}</span>
+                        <li key={question.id} className="flex justify-between items-center text-sm p-2 bg-white rounded-xl border border-gray-200">
+                          <span className="truncate pr-4 text-gray-900">{`Q${qIndex + 1}: ${question.text}`}</span>
                           <div className="flex items-center flex-shrink-0">
                             {wasAnswered ? (
                                 <>
