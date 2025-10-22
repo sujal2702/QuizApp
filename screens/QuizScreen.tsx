@@ -111,7 +111,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     }
   };
 
-  // Keyboard shortcuts: 1-4 for options (students). Admin shortcuts: Enter -> reveal, N -> next
+  // Keyboard shortcuts: 1-4 for options (students). Admin shortcuts: Enter -> reveal, N -> next, O -> open, C -> close
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!quizRoom || !currentQuestion) return;
     if (userRole === 'student' && !isAnswered && quizRoom.acceptingAnswers) {
@@ -123,15 +123,23 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     }
 
     if (userRole === 'admin') {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && !quizRoom.answersRevealed) {
         // reveal answers
         revealAnswers();
       }
       if (e.key.toLowerCase() === 'n') {
         adminAdvance();
       }
+      if (e.key.toLowerCase() === 'o' && !quizRoom.acceptingAnswers) {
+        // Open question
+        openQuestion(undefined, currentQuestion.timeLimit);
+      }
+      if (e.key.toLowerCase() === 'c' && quizRoom.acceptingAnswers) {
+        // Close question
+        closeQuestion();
+      }
     }
-  }, [quizRoom, currentQuestion, userRole, isAnswered, handleOptionClick, revealAnswers, adminAdvance]);
+  }, [quizRoom, currentQuestion, userRole, isAnswered, handleOptionClick, revealAnswers, adminAdvance, openQuestion, closeQuestion]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -174,124 +182,291 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
       { label: 'D', color: 'blue', bg: 'bg-blue-500', border: 'border-blue-600', symbol: '★' },
     ];
 
+    const responsesForQuestion = (quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id);
+    const responseCount = responsesForQuestion.length;
+    const totalStudents = quizRoom.students?.length || 0;
+    const responseRate = totalStudents > 0 ? (responseCount / totalStudents) * 100 : 0;
+
+    // Calculate option distribution
+    const optionStats = currentQuestion.options.map((_, idx) => {
+      const count = responsesForQuestion.filter(r => r.selectedOption === idx).length;
+      const percentage = responseCount > 0 ? (count / responseCount) * 100 : 0;
+      return { count, percentage };
+    });
+
      return (
-      <div className="w-full max-w-5xl p-8 bg-white border-2 border-gray-200 rounded-3xl shadow-xl animate-fade-in-up">
-          <div className="w-full bg-gray-200 rounded-full h-3 mb-6">
-            <div className="bg-yellow-400 h-3 rounded-full transition-all" style={{ width: `${progressPercentage}%` }}></div>
+      <div className="w-full max-w-6xl p-8 bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-3xl shadow-2xl animate-fade-in-up">
+        {/* Header with Mode Badge */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg">
+              <span className="text-3xl">🎯</span>
+            </div>
+            <div>
+              <h1 className="text-3xl font-black text-gray-900">🎮 Host Controls</h1>
+              <p className="text-sm text-gray-600 font-semibold">
+                Mode: {quizRoom.mode === 'full-manual' ? '✍️ Manual + AI' : '🎯 Option Only'}
+              </p>
+            </div>
           </div>
-        
-        <div className="flex justify-between items-center mb-6">
-          <p className="text-2xl font-bold text-gray-900">Question {quizRoom.currentQuestionIndex + 1}/{quizRoom.questions.length}</p>
+          
           <div className="flex gap-2">
             {quizRoom.acceptingAnswers && (
-              <span className="bg-green-500 text-white px-4 py-2 rounded-full font-semibold animate-pulse flex items-center gap-2">
-                <span className="w-2 h-2 bg-white rounded-full"></span>
-                ACCEPTING ANSWERS
+              <span className="bg-green-500 text-white px-4 py-2 rounded-full font-semibold animate-pulse flex items-center gap-2 shadow-lg">
+                <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+                LIVE
               </span>
             )}
             {quizRoom.answersRevealed && (
-              <span className="bg-cyan-200 text-gray-900 px-4 py-2 rounded-full font-semibold">
-                📊 ANSWERS REVEALED
+              <span className="bg-cyan-400 text-gray-900 px-4 py-2 rounded-full font-semibold shadow-lg">
+                �️ REVEALED
               </span>
             )}
           </div>
         </div>
 
-        <div className="bg-gray-50 p-6 rounded-2xl mb-6 border-2 border-gray-200">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">{currentQuestion.text}</h2>
+        {/* Progress Bar */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-bold text-gray-700">
+              Question {quizRoom.currentQuestionIndex + 1} of {quizRoom.questions.length}
+            </span>
+            <span className="text-sm font-bold text-yellow-600">
+              {Math.round(progressPercentage)}% Complete
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-4 shadow-inner">
+            <div 
+              className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-4 rounded-full transition-all duration-500 shadow-lg" 
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Question Display */}
+        <div className="bg-gradient-to-br from-yellow-50 to-white p-8 rounded-2xl mb-6 border-2 border-yellow-400/40 shadow-lg">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+              <span className="text-2xl">❓</span>
+            </div>
+            <div className="flex-1">
+              <h2 className="text-3xl font-black text-gray-900 mb-2">{currentQuestion.text}</h2>
+              <div className="flex items-center gap-4 text-sm text-gray-600">
+                <span className="flex items-center gap-1">
+                  <span>⏱️</span>
+                  <span className="font-semibold">{currentQuestion.timeLimit}s</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <span>💯</span>
+                  <span className="font-semibold">ID: {currentQuestion.id}</span>
+                </span>
+              </div>
+            </div>
+          </div>
           
-          <p className="text-sm font-semibold text-gray-600 mb-3">Students will see these colored options:</p>
+          {quizRoom.mode === 'full-manual' && (
+            <p className="text-sm font-semibold text-gray-600 mb-4 bg-white/60 px-4 py-2 rounded-xl border border-gray-200">
+              ℹ️ Students can see this question and all options on their devices
+            </p>
+          )}
           
-          <div className="grid grid-cols-2 gap-4">
+          {quizRoom.mode === 'option-only' && (
+            <p className="text-sm font-semibold text-gray-600 mb-4 bg-white/60 px-4 py-2 rounded-xl border border-gray-200">
+              📽️ Question shown on projector - Students only see colored buttons
+            </p>
+          )}
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentQuestion.options.map((option, index) => {
               const isCorrect = index === currentQuestion.correctOption;
               const config = optionConfig[index];
+              const stats = optionStats[index];
               
               return (
                 <div 
                   key={index} 
-                  className={`p-5 rounded-xl border-4 text-white transition-all relative ${
+                  className={`group relative p-6 rounded-2xl border-3 text-white transition-all transform hover:scale-[1.02] ${
                     quizRoom.answersRevealed && isCorrect
-                      ? 'ring-8 ring-yellow-400 scale-105 shadow-2xl' 
-                      : ''
+                      ? 'ring-4 ring-yellow-400 scale-[1.02] shadow-2xl' 
+                      : 'shadow-lg'
                   } ${config.bg} ${config.border}`}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="text-5xl">{config.symbol}</div>
-                    <div className="flex-1">
-                      <div className="text-2xl font-black mb-1">{config.label}</div>
-                      <div className="text-lg font-semibold">{option}</div>
+                  <div className="flex items-start gap-4">
+                    <div className="text-6xl flex-shrink-0">{config.symbol}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-3xl font-black mb-2">{config.label}</div>
+                      <div className="text-lg font-semibold break-words">{option}</div>
+                      
+                      {/* Show response stats */}
+                      {quizRoom.answersRevealed && (
+                        <div className="mt-4 pt-4 border-t-2 border-white/30">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-semibold opacity-90">Responses:</span>
+                            <span className="text-xl font-black">{stats.count} ({stats.percentage.toFixed(0)}%)</span>
+                          </div>
+                          <div className="w-full bg-white/30 rounded-full h-2">
+                            <div 
+                              className="bg-white h-2 rounded-full transition-all duration-500"
+                              style={{ width: `${stats.percentage}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    {isCorrect && (
-                      <div className="absolute -top-3 -right-3 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-black border-2 border-yellow-600 shadow-lg">
-                        ✓ CORRECT
-                      </div>
-                    )}
-                    {quizRoom.answersRevealed && isCorrect && (
-                      <div className="text-4xl animate-bounce">✓</div>
-                    )}
                   </div>
+                  
+                  {isCorrect && (
+                    <div className="absolute -top-3 -right-3 bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-sm font-black border-3 border-yellow-600 shadow-xl flex items-center gap-1">
+                      <span className={quizRoom.answersRevealed ? 'animate-bounce text-xl' : ''}>✓</span>
+                      <span>CORRECT</span>
+                    </div>
+                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Response Stats */}
-        <div className="bg-gray-50 p-4 rounded-2xl mb-6 border-2 border-gray-200">
-          <div className="flex justify-between items-center">
-            <span className="font-semibold text-gray-700">Responses Received:</span>
+        {/* Response Statistics */}
+        <div className="bg-gradient-to-br from-cyan-50 to-white p-6 rounded-2xl mb-6 border-2 border-cyan-400/40 shadow-lg">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="text-3xl font-black text-gray-900">
-                {(quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id).length} / {quizRoom.students?.length || 0}
+              <div className="w-10 h-10 bg-cyan-400 rounded-xl flex items-center justify-center shadow-md">
+                <span className="text-xl">📊</span>
               </div>
-              <div className="w-32 bg-gray-200 rounded-full h-3">
+              <div>
+                <h3 className="text-lg font-black text-gray-900">Response Tracker</h3>
+                <p className="text-sm text-gray-600">Real-time submission data</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <div className="text-4xl font-black text-gray-900">
+                  {responseCount} <span className="text-2xl text-gray-500">/ {totalStudents}</span>
+                </div>
+                <div className="text-sm font-semibold text-gray-600">Students Answered</div>
+              </div>
+              <div className="w-40 bg-gray-200 rounded-full h-4 shadow-inner">
                 <div 
-                  className="bg-cyan-400 h-3 rounded-full transition-all"
-                  style={{ width: `${((quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id).length / ((quizRoom.students?.length || 1))) * 100}%` }}
+                  className="bg-gradient-to-r from-cyan-400 to-cyan-500 h-4 rounded-full transition-all duration-500 shadow-md"
+                  style={{ width: `${responseRate}%` }}
                 ></div>
               </div>
             </div>
           </div>
+          
+          {responseCount > 0 && (
+            <div className="grid grid-cols-4 gap-3 mt-4">
+              {optionStats.map((stat, idx) => (
+                <div key={idx} className={`p-3 rounded-xl ${optionConfig[idx].bg}/10 border-2 ${optionConfig[idx].border}/30`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-2xl">{optionConfig[idx].symbol}</span>
+                    <span className="text-sm font-black text-gray-700">Option {optionConfig[idx].label}</span>
+                  </div>
+                  <div className="text-2xl font-black text-gray-900">{stat.count}</div>
+                  <div className="text-xs text-gray-600 font-semibold">{stat.percentage.toFixed(0)}% chose this</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
+        {/* Control Panel */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           <Button 
-            onClick={() => openQuestion(undefined, currentQuestion.timeLimit)} 
+            onClick={() => {
+              openQuestion(undefined, currentQuestion.timeLimit);
+              playSound('countdown');
+            }} 
             disabled={quizRoom.acceptingAnswers}
-            className="!w-full"
+            className="!w-full !bg-green-500 hover:!bg-green-600 !shadow-lg"
           >
-            ▶️ Open ({currentQuestion.timeLimit}s)
+            <span className="flex flex-col items-center gap-1">
+              <span className="text-2xl">▶️</span>
+              <span className="text-xs">Open</span>
+              <span className="text-[10px] opacity-75">{currentQuestion.timeLimit}s</span>
+            </span>
           </Button>
+          
           <Button 
-            onClick={closeQuestion} 
+            onClick={() => {
+              closeQuestion();
+              playSound('whoosh');
+            }} 
             variant="secondary" 
             disabled={!quizRoom.acceptingAnswers}
-            className="!w-full"
+            className="!w-full !shadow-lg"
           >
-            ⏸️ Close
+            <span className="flex flex-col items-center gap-1">
+              <span className="text-2xl">⏸️</span>
+              <span className="text-xs">Close</span>
+              <span className="text-[10px] opacity-75">Stop Answers</span>
+            </span>
           </Button>
+          
           <Button 
-            onClick={revealAnswers} 
+            onClick={() => {
+              revealAnswers();
+              playSound('success');
+            }} 
             variant="secondary"
             disabled={quizRoom.answersRevealed}
-            className="!w-full"
+            className="!w-full !bg-cyan-400 hover:!bg-cyan-500 !text-gray-900 !shadow-lg"
           >
-            👁️ Reveal
+            <span className="flex flex-col items-center gap-1">
+              <span className="text-2xl">👁️</span>
+              <span className="text-xs font-black">Reveal</span>
+              <span className="text-[10px] opacity-75">Show Answer</span>
+            </span>
           </Button>
+          
           <Button 
-            onClick={() => setScreen('results')} 
+            onClick={() => {
+              setScreen('results');
+              playSound('whoosh');
+            }} 
             variant="secondary" 
-            className="!w-full"
+            className="!w-full !bg-purple-500 hover:!bg-purple-600 !text-white !shadow-lg"
           >
-            📊 Results
+            <span className="flex flex-col items-center gap-1">
+              <span className="text-2xl">🏆</span>
+              <span className="text-xs">Results</span>
+              <span className="text-[10px] opacity-75">View Scores</span>
+            </span>
           </Button>
+          
           <Button 
-            onClick={adminAdvance} 
-            className="!w-full"
+            onClick={() => {
+              adminAdvance();
+              playSound('whoosh');
+            }} 
+            className="!w-full !bg-gradient-to-r !from-yellow-400 !to-yellow-500 hover:!from-yellow-500 hover:!to-yellow-600 !shadow-xl !scale-105"
           >
-            {quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 ? '⏭️ Next' : '🏁 End'}
+            <span className="flex flex-col items-center gap-1">
+              <span className="text-2xl">{quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 ? '⏭️' : '🏁'}</span>
+              <span className="text-xs font-black">{quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 ? 'Next' : 'Finish'}</span>
+              <span className="text-[10px] opacity-75">
+                {quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 
+                  ? `${quizRoom.questions.length - quizRoom.currentQuestionIndex - 1} left` 
+                  : 'End Quiz'}
+              </span>
+            </span>
           </Button>
+        </div>
+
+        {/* Keyboard Shortcuts Help */}
+        <div className="mt-6 p-4 bg-gray-50 rounded-xl border-2 border-gray-200">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-lg">⌨️</span>
+            <span className="text-sm font-bold text-gray-700">Keyboard Shortcuts:</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-600">
+            <div><kbd className="px-2 py-1 bg-white rounded border border-gray-300 font-mono">Enter</kbd> = Reveal</div>
+            <div><kbd className="px-2 py-1 bg-white rounded border border-gray-300 font-mono">N</kbd> = Next Question</div>
+            <div><kbd className="px-2 py-1 bg-white rounded border border-gray-300 font-mono">O</kbd> = Open Question</div>
+            <div><kbd className="px-2 py-1 bg-white rounded border border-gray-300 font-mono">C</kbd> = Close Question</div>
+          </div>
         </div>
       </div>
     );
