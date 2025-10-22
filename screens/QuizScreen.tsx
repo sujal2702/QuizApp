@@ -7,6 +7,7 @@ import Timer from '../components/Timer';
 import LiveLeaderboardModal from '../components/LiveLeaderboardModal';
 import { Student } from '../types';
 import Button from '../components/Button';
+import { Target, Gamepad2, Edit3, Play, Pause, Eye, Trophy, ChevronRight, Flag, Keyboard, Clock, Hash, Info, Presentation, BarChart3 } from 'lucide-react';
 
 interface QuizScreenProps {
   setScreen: (screen: Screen) => void;
@@ -200,12 +201,19 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-3xl">🎯</span>
+              <Target className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-black text-gray-900">🎮 Host Controls</h1>
-              <p className="text-sm text-gray-600 font-semibold">
-                Mode: {quizRoom.mode === 'full-manual' ? '✍️ Manual + AI' : '🎯 Option Only'}
+              <h1 className="text-3xl font-black text-gray-900 flex items-center gap-2">
+                <Gamepad2 className="w-8 h-8" />
+                Host Controls
+              </h1>
+              <p className="text-sm text-gray-600 font-semibold flex items-center gap-1">
+                Mode: {quizRoom.mode === 'full-manual' ? (
+                  <><Edit3 className="w-4 h-4" /> Manual + AI</>
+                ) : (
+                  <><Target className="w-4 h-4" /> Option Only</>
+                )}
               </p>
             </div>
           </div>
@@ -218,8 +226,9 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
               </span>
             )}
             {quizRoom.answersRevealed && (
-              <span className="bg-cyan-400 text-gray-900 px-4 py-2 rounded-full font-semibold shadow-lg">
-                �️ REVEALED
+              <span className="bg-purple-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg flex items-center gap-2">
+                <Eye className="w-4 h-4" />
+                REVEALED
               </span>
             )}
           </div>
@@ -247,17 +256,17 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         <div className="bg-gradient-to-br from-yellow-50 to-white p-8 rounded-2xl mb-6 border-2 border-yellow-400/40 shadow-lg">
           <div className="flex items-start gap-4 mb-6">
             <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
-              <span className="text-2xl">❓</span>
+              <Hash className="w-6 h-6 text-white" />
             </div>
             <div className="flex-1">
               <h2 className="text-3xl font-black text-gray-900 mb-2">{currentQuestion.text}</h2>
               <div className="flex items-center gap-4 text-sm text-gray-600">
                 <span className="flex items-center gap-1">
-                  <span>⏱️</span>
+                  <Clock className="w-4 h-4" />
                   <span className="font-semibold">{currentQuestion.timeLimit}s</span>
                 </span>
                 <span className="flex items-center gap-1">
-                  <span>💯</span>
+                  <Hash className="w-4 h-4" />
                   <span className="font-semibold">ID: {currentQuestion.id}</span>
                 </span>
               </div>
@@ -265,14 +274,16 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
           </div>
           
           {quizRoom.mode === 'full-manual' && (
-            <p className="text-sm font-semibold text-gray-600 mb-4 bg-white/60 px-4 py-2 rounded-xl border border-gray-200">
-              ℹ️ Students can see this question and all options on their devices
+            <p className="text-sm font-semibold text-gray-600 mb-4 bg-white/60 px-4 py-2 rounded-xl border border-gray-200 flex items-center gap-2">
+              <Info className="w-4 h-4" />
+              Students can see this question and all options on their devices
             </p>
           )}
           
           {quizRoom.mode === 'option-only' && (
-            <p className="text-sm font-semibold text-gray-600 mb-4 bg-white/60 px-4 py-2 rounded-xl border border-gray-200">
-              📽️ Question shown on projector - Students only see colored buttons
+            <p className="text-sm font-semibold text-gray-600 mb-4 bg-white/60 px-4 py-2 rounded-xl border border-gray-200 flex items-center gap-2">
+              <Presentation className="w-4 h-4" />
+              Question shown on projector - Students only see colored buttons
             </p>
           )}
           
@@ -328,11 +339,11 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         </div>
 
         {/* Response Statistics */}
-        <div className="bg-gradient-to-br from-cyan-50 to-white p-6 rounded-2xl mb-6 border-2 border-cyan-400/40 shadow-lg">
+        <div className="bg-gradient-to-br from-purple-50 to-white p-6 rounded-2xl mb-6 border-2 border-purple-400/40 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-cyan-400 rounded-xl flex items-center justify-center shadow-md">
-                <span className="text-xl">📊</span>
+              <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center shadow-md">
+                <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h3 className="text-lg font-black text-gray-900">Response Tracker</h3>
@@ -349,7 +360,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
               </div>
               <div className="w-40 bg-gray-200 rounded-full h-4 shadow-inner">
                 <div 
-                  className="bg-gradient-to-r from-cyan-400 to-cyan-500 h-4 rounded-full transition-all duration-500 shadow-md"
+                  className="bg-gradient-to-r from-purple-400 to-purple-500 h-4 rounded-full transition-all duration-500 shadow-md"
                   style={{ width: `${responseRate}%` }}
                 ></div>
               </div>
@@ -383,7 +394,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             className="!w-full !bg-green-500 hover:!bg-green-600 !shadow-lg"
           >
             <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">▶️</span>
+              <Play className="w-6 h-6" />
               <span className="text-xs">Open</span>
               <span className="text-[10px] opacity-75">{currentQuestion.timeLimit}s</span>
             </span>
@@ -399,7 +410,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             className="!w-full !shadow-lg"
           >
             <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">⏸️</span>
+              <Pause className="w-6 h-6" />
               <span className="text-xs">Close</span>
               <span className="text-[10px] opacity-75">Stop Answers</span>
             </span>
@@ -412,10 +423,10 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             }} 
             variant="secondary"
             disabled={quizRoom.answersRevealed}
-            className="!w-full !bg-cyan-400 hover:!bg-cyan-500 !text-gray-900 !shadow-lg"
+            className="!w-full !bg-purple-500 hover:!bg-purple-600 !text-white !shadow-lg"
           >
             <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">👁️</span>
+              <Eye className="w-6 h-6" />
               <span className="text-xs font-black">Reveal</span>
               <span className="text-[10px] opacity-75">Show Answer</span>
             </span>
@@ -427,10 +438,10 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
               playSound('whoosh');
             }} 
             variant="secondary" 
-            className="!w-full !bg-purple-500 hover:!bg-purple-600 !text-white !shadow-lg"
+            className="!w-full !bg-indigo-500 hover:!bg-indigo-600 !text-white !shadow-lg"
           >
             <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">🏆</span>
+              <Trophy className="w-6 h-6" />
               <span className="text-xs">Results</span>
               <span className="text-[10px] opacity-75">View Scores</span>
             </span>
@@ -444,7 +455,11 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             className="!w-full !bg-gradient-to-r !from-yellow-400 !to-yellow-500 hover:!from-yellow-500 hover:!to-yellow-600 !shadow-xl !scale-105"
           >
             <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">{quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 ? '⏭️' : '🏁'}</span>
+              {quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 ? (
+                <ChevronRight className="w-6 h-6" />
+              ) : (
+                <Flag className="w-6 h-6" />
+              )}
               <span className="text-xs font-black">{quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 ? 'Next' : 'Finish'}</span>
               <span className="text-[10px] opacity-75">
                 {quizRoom.currentQuestionIndex < quizRoom.questions.length - 1 
@@ -458,7 +473,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         {/* Keyboard Shortcuts Help */}
         <div className="mt-6 p-4 bg-gray-50 rounded-xl border-2 border-gray-200">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-lg">⌨️</span>
+            <Keyboard className="w-5 h-5 text-gray-700" />
             <span className="text-sm font-bold text-gray-700">Keyboard Shortcuts:</span>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-600">
