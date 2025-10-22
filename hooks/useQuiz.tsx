@@ -5,7 +5,7 @@ import { dbSet, dbOnValue, dbPush, dbUpdate, database } from '../firebase';
 import { ref, get, query, orderByChild, equalTo } from 'firebase/database';
 
 export type UserRole = 'admin' | 'student';
-export type Screen = 'landing' | 'home' | 'admin_login' | 'admin_signup' | 'admin_dashboard' | 'student_join' | 'lobby' | 'quiz' | 'results';
+export type Screen = 'landing' | 'home' | 'pricing' | 'admin_login' | 'admin_signup' | 'admin_dashboard' | 'student_join' | 'lobby' | 'quiz' | 'results';
 
 const QuizContext = createContext<QuizContextType | undefined>(undefined);
 

@@ -60,8 +60,8 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ setScreen }) => {
             <Button onClick={() => setScreen('home')} variant="secondary" size="lg">
               Get Started 🚀
             </Button>
-            <Button onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })} variant="outline" size="lg">
-              See Demo 👀
+            <Button onClick={() => setScreen('pricing' as Screen)} variant="outline" size="lg">
+              View Pricing �
             </Button>
           </div>
         </div>
