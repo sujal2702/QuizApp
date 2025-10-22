@@ -105,12 +105,34 @@ function CreativePricing({
 
                             {/* Price */}
                             <div className="mb-6 font-handwritten">
-                                <span className="text-4xl font-bold text-zinc-900 dark:text-white">
-                                    ₹{tier.price}
-                                </span>
-                                <span className="text-zinc-600 dark:text-zinc-400">
-                                    /month
-                                </span>
+                                {tier.name === 'Enterprise' && tier.price === 0 ? (
+                                    <>
+                                        <span className="text-4xl font-bold text-zinc-900 dark:text-white">
+                                            Custom
+                                        </span>
+                                        <span className="text-zinc-600 dark:text-zinc-400">
+                                            {' '}pricing
+                                        </span>
+                                    </>
+                                ) : tier.price === 0 ? (
+                                    <>
+                                        <span className="text-4xl font-bold text-zinc-900 dark:text-white">
+                                            Free
+                                        </span>
+                                        <span className="text-zinc-600 dark:text-zinc-400">
+                                            {' '}forever
+                                        </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="text-4xl font-bold text-zinc-900 dark:text-white">
+                                            ₹{tier.price.toLocaleString('en-IN')}
+                                        </span>
+                                        <span className="text-zinc-600 dark:text-zinc-400">
+                                            /month
+                                        </span>
+                                    </>
+                                )}
                             </div>
 
                             <div className="space-y-3 mb-6">

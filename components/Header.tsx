@@ -115,9 +115,9 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMen
               {/* CTA Button */}
               <Button 
                 onClick={() => setScreen('home')} 
-                variant="secondary"
+                variant="primary"
                 size="md"
-                className="shadow-lg hover:shadow-xl"
+                className="shadow-xl hover:shadow-2xl !bg-gradient-to-r !from-yellow-400 !to-yellow-500 hover:!from-yellow-500 hover:!to-yellow-600 font-black"
               >
                 <span className="hidden sm:inline">Get Started</span>
                 <span className="sm:hidden">Start</span>
@@ -245,20 +245,20 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMen
                   )}
                 </div>
               ) : (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2 lg:gap-3">
                   <Button 
                     onClick={() => setScreen('admin_login')} 
                     variant="outline"
                     size="sm"
-                    className="hidden sm:flex"
+                    className="hidden sm:flex !border-2 !border-gray-900 !text-gray-900 hover:!bg-gray-900 hover:!text-white font-bold"
                   >
                     Login
                   </Button>
                   <Button 
                     onClick={() => setScreen('home')} 
-                    variant="secondary"
+                    variant="primary"
                     size="sm"
-                    className="shadow-lg hover:shadow-xl"
+                    className="shadow-xl hover:shadow-2xl !bg-gradient-to-r !from-yellow-400 !to-yellow-500 hover:!from-yellow-500 hover:!to-yellow-600 font-black"
                   >
                     <span className="hidden sm:inline">Get Started</span>
                     <span className="sm:hidden">Start</span>
