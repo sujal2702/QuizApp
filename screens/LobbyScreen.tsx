@@ -12,23 +12,36 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   const { quizRoom, startQuiz } = useQuiz();
 
   React.useEffect(() => {
+    console.log('LobbyScreen mounted, userRole:', userRole, 'quizRoom:', quizRoom);
+  }, []);
+
+  React.useEffect(() => {
     if (quizRoom?.status === 'active') {
+      console.log('Quiz status changed to active, navigating to quiz screen');
       setScreen('quiz');
     }
   }, [quizRoom?.status, setScreen]);
 
-  if (!quizRoom) {
-     React.useEffect(() => {
+  React.useEffect(() => {
+    if (!quizRoom) {
+      console.log('No quiz room found, redirecting to home in 2s');
       const timer = setTimeout(() => setScreen('home'), 2000);
       return () => clearTimeout(timer);
-    }, [setScreen]);
+    }
+  }, [quizRoom, setScreen]);
 
+  if (!quizRoom) {
     return (
-      <div className="text-center">
-        <p>Quiz room not found. Redirecting...</p>
+      <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+        <div className="text-center">
+          <p className="text-xl text-white">Quiz room not found. Redirecting...</p>
+        </div>
       </div>
     );
   }
+
+  const studentCount = quizRoom.students?.length || 0;
+  console.log('Rendering lobby with room:', quizRoom.name, 'Code:', quizRoom.code, 'Students:', studentCount);
 
   const handleStartQuiz = () => {
     startQuiz();
@@ -53,13 +66,13 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
             Participants
           </h3>
           <span className="bg-violet-600 text-white px-3 py-1 rounded-full font-bold text-sm">
-            {quizRoom.students.length}
+            {studentCount}
           </span>
         </div>
   <div className="bg-zinc-800 p-4 rounded-xl h-56 overflow-y-auto border border-zinc-700">
-          {quizRoom.students.length > 0 ? (
+          {studentCount > 0 ? (
             <ul className="space-y-2">
-              {quizRoom.students.map((student, idx) => (
+              {quizRoom.students?.map((student, idx) => (
                 <li 
                   key={student.id} 
                   className="text-dark-text bg-card-bg p-3 rounded-lg animate-fade-in flex items-center justify-between shadow-sm hover:shadow-md transition-shadow"
@@ -87,11 +100,11 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
 
       {userRole === 'admin' && (
         <div className="space-y-3">
-          <Button onClick={handleStartQuiz} disabled={quizRoom.students.length === 0}>
-            {quizRoom.students.length === 0 ? '⏳ Waiting for players' : `🚀 Start Quiz (${quizRoom.students.length} player${quizRoom.students.length > 1 ? 's' : ''})`}
+          <Button onClick={handleStartQuiz} disabled={studentCount === 0}>
+            {studentCount === 0 ? '⏳ Waiting for players' : `🚀 Start Quiz (${studentCount} player${studentCount > 1 ? 's' : ''})`}
           </Button>
           <p className="text-center text-xs text-subtle-text">
-            {quizRoom.questions.length} questions • {quizRoom.mode === 'option-only' ? 'Option-Only Mode' : 'Standard Mode'}
+            {quizRoom.questions?.length || 0} questions • {quizRoom.mode === 'option-only' ? 'Option-Only Mode' : 'Standard Mode'}
           </p>
         </div>
       )}

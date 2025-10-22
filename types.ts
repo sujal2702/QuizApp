@@ -43,7 +43,7 @@ export interface QuizRoom {
 export interface QuizContextType {
   quizRoom: QuizRoom | null;
   createRoom: (name: string, questions: Question[], mode?: 'option-only' | string) => void;
-  joinRoom: (name: string, code: string) => Student | null;
+  joinRoom: (name: string, code: string) => Promise<Student | null>;
   startQuiz: () => void;
   openQuestion: (questionIndex?: number, durationSec?: number) => void;
   closeQuestion: () => void;

@@ -14,24 +14,26 @@ const StudentJoinScreen: React.FC<StudentJoinScreenProps> = ({ setScreen }) => {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
 
-  const handleJoin = (e: React.FormEvent) => {
+  const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !code.trim()) {
       setError('Please enter your name and a room code.');
       return;
     }
 
-    if (!quizRoom) {
-      setError('No active quiz room. Please ask the admin to create one.');
-      return;
-    }
-
-    const student = joinRoom(name.trim(), code.trim().toUpperCase());
-    if (student) {
-      setError('');
-      setScreen('lobby');
-    } else {
-      setError('Invalid room code. Please check and try again.');
+    setError('Joining room...');
+    
+    try {
+      const student = await joinRoom(name.trim(), code.trim().toUpperCase());
+      if (student) {
+        setError('');
+        setScreen('lobby');
+      } else {
+        setError('Invalid room code. Please check and try again.');
+      }
+    } catch (err) {
+      console.error('Join error:', err);
+      setError('Failed to join room. Please try again.');
     }
   };
 

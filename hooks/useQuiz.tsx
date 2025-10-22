@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { QuizRoom, QuizContextType, Question, Student, Response, QuizStatus } from '../types';
 import { DEFAULT_QUIZ_QUESTIONS } from '../constants';
-import { dbSet, dbOnValue, dbPush, dbUpdate } from '../firebase';
+import { dbSet, dbOnValue, dbPush, dbUpdate, database } from '../firebase';
+import { ref, get, query, orderByChild, equalTo } from 'firebase/database';
 
 export type UserRole = 'admin' | 'student';
 export type Screen = 'landing' | 'home' | 'admin_login' | 'admin_signup' | 'admin_dashboard' | 'student_join' | 'lobby' | 'quiz' | 'results';
@@ -20,7 +21,7 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setQuizRoom(val as QuizRoom);
     });
     return () => unsubscribe();
-  }, [quizRoom]);
+  }, [quizRoom?.id]); // Only re-subscribe when room ID changes, not on every quizRoom update
 
   const createRoom = (name: string, questions: Question[], mode?: 'option-only' | string) => {
     const newRoom: QuizRoom = {
@@ -38,23 +39,90 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       questionStartTime: null,
       questionTimer: null,
     };
+    console.log('QuizRoom created:', newRoom);
     setQuizRoom(newRoom);
     // Persist the new room to Firebase Realtime Database
-    dbSet(`/rooms/${newRoom.id}`, newRoom).catch(console.error);
+    dbSet(`/rooms/${newRoom.id}`, newRoom)
+      .then(() => {
+        console.log('✅ Room saved to Firebase successfully');
+        console.log('Room ID:', newRoom.id, 'Code:', newRoom.code);
+      })
+      .catch((error) => {
+        console.error('❌ Firebase save error:', error);
+        console.error('⚠️ PERMISSION_DENIED - Please update Firebase Database Rules');
+        console.error('See FIREBASE_SETUP.md for instructions');
+      });
   };
 
-  const joinRoom = (name: string, code: string): Student | null => {
-    if (quizRoom && quizRoom.code === code) {
+  const findRoomByCode = async (code: string): Promise<QuizRoom | null> => {
+    try {
+      console.log('Searching for room with code:', code);
+      const roomsRef = ref(database, 'rooms');
+      const snapshot = await get(roomsRef);
+      
+      if (snapshot.exists()) {
+        const rooms = snapshot.val();
+        // Search through all rooms to find matching code
+        for (const roomId in rooms) {
+          const room = rooms[roomId];
+          if (room.code === code) {
+            console.log('Found room:', room);
+            return room as QuizRoom;
+          }
+        }
+      }
+      console.log('No room found with code:', code);
+      return null;
+    } catch (error) {
+      console.error('Error finding room:', error);
+      return null;
+    }
+  };
+
+  const joinRoom = async (name: string, code: string): Promise<Student | null> => {
+    try {
+      // First, find the room by code
+      const room = await findRoomByCode(code);
+      
+      if (!room) {
+        console.log('Room not found with code:', code);
+        return null;
+      }
+
+      console.log('Joining room:', room.name, 'Code:', room.code);
+      
       const newStudent: Student = { id: Date.now().toString(), name };
-      const updated = quizRoom ? { ...quizRoom, students: [...quizRoom.students, newStudent] } : null;
+      
+      // Check if student already exists (prevent duplicates from multiple joins)
+      const existingStudents = room.students || [];
+      const alreadyJoined = existingStudents.some(s => s.name === name);
+      
+      if (alreadyJoined) {
+        console.log('Student already joined:', name);
+        const existingStudent = existingStudents.find(s => s.name === name)!;
+        setQuizRoom(room);
+        sessionStorage.setItem('quizStudent', JSON.stringify(existingStudent));
+        return existingStudent;
+      }
+      
+      const updatedStudents = [...existingStudents, newStudent];
+      const updated = { ...room, students: updatedStudents };
+      
+      // Set local state
       setQuizRoom(updated);
-      // Update room in DB
-      if (updated) dbUpdate(`/rooms/${updated.id}/students`, updated.students as any).catch(console.error);
+      
+      // Update room in DB - use dbSet for the students array
+      await dbSet(`/rooms/${updated.id}/students`, updatedStudents);
+      
       // Store student info in session storage to persist across re-renders
       sessionStorage.setItem('quizStudent', JSON.stringify(newStudent));
+      
+      console.log('Successfully joined room as:', newStudent.name);
       return newStudent;
+    } catch (error) {
+      console.error('Error joining room:', error);
+      return null;
     }
-    return null;
   };
   
   const startQuiz = () => {

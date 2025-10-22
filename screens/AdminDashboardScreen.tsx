@@ -174,8 +174,10 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
       }));
     }
 
+    console.log('Creating room with:', { name: quizName.trim(), questions, mode });
     setError('');
     createRoom(quizName.trim(), questions, mode);
+    console.log('Room created, navigating to lobby');
     setScreen('lobby');
   };
 
@@ -187,7 +189,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
   ];
 
   return (
-    <div className="flex min-h-screen bg-slate-100">
+    <div className="flex min-h-screen bg-zinc-900">
       {/* Sidebar */}
       <AdminSidebar
         onNavigate={(key) => {
@@ -201,23 +203,23 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
         active={activeNav}
       />
       {/* Main dashboard content */}
-      <main className="flex-1 flex flex-col items-center justify-start py-12 px-6">
-        <div className="w-full max-w-5xl p-10 bg-zinc-900 border border-zinc-800 rounded-3xl shadow-2xl animate-fade-in-up">
-          <div className="text-center mb-10">
-            <h2 className="text-6xl font-black mb-3 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-sm">
+      <main className="flex-1 flex flex-col items-center justify-start py-8 px-8">
+        <div className="w-full max-w-6xl p-8 bg-zinc-800 border border-zinc-700 rounded-2xl shadow-2xl animate-fade-in-up">
+          <div className="text-center mb-8">
+            <h2 className="text-5xl font-black mb-2 bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-sm">
               Create Quiz
             </h2>
-            <p className="text-zinc-400 text-xl font-medium">Design your interactive quiz experience</p>
+            <p className="text-zinc-400 text-lg font-medium">Design your interactive quiz experience</p>
           </div>
 
           {/* Mode Selection */}
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-2 gap-4 mb-6">
             <button
               onClick={() => setMode('option-only')}
-              className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-105 ${
+              className={`p-6 rounded-xl border-2 transition-all transform hover:scale-[1.02] ${
                 mode === 'option-only'
-                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-500 text-white shadow-xl scale-105'
-                  : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-violet-500'
+                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-400 text-white shadow-xl scale-[1.02]'
+                  : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:border-violet-500'
               }`}
             >
               <div className="text-4xl mb-2">🎯</div>
@@ -229,10 +231,10 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
 
             <button
               onClick={() => setMode('full-manual')}
-              className={`p-6 rounded-2xl border-2 transition-all transform hover:scale-105 ${
+              className={`p-6 rounded-xl border-2 transition-all transform hover:scale-[1.02] ${
                 mode === 'full-manual'
-                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-500 text-white shadow-xl scale-105'
-                  : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-violet-500'
+                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-violet-400 text-white shadow-xl scale-[1.02]'
+                  : 'bg-zinc-900 border-zinc-700 text-zinc-300 hover:border-violet-500'
               }`}
             >
               <div className="text-4xl mb-2">✍️</div>
@@ -252,9 +254,9 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
               placeholder="e.g., Science Quiz - Chapter 5"
             />
 
-            <div className="bg-zinc-800 p-6 rounded-2xl border border-zinc-700 shadow-sm">
+            <div className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <label className="text-sm font-bold text-zinc-300">
+                <label className="text-sm font-bold text-white">
                   Number of Questions
                 </label>
                 <div className="flex items-center gap-4">
@@ -264,7 +266,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                     max="100"
                     value={numQuestions}
                     onChange={(e) => setNumQuestions(Math.min(100, Math.max(1, Number(e.target.value))))}
-                    className="w-20 px-3 py-2 text-center text-xl font-black text-violet-400 bg-zinc-900 border-2 border-zinc-700 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50"
+                    className="w-20 px-3 py-2 text-center text-xl font-black text-violet-400 bg-zinc-800 border-2 border-zinc-700 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50"
                   />
                   <span className="text-sm text-zinc-400">/ 100 max</span>
                 </div>
@@ -295,8 +297,8 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
             </div>
 
             {mode === 'full-manual' && (
-              <div className="bg-violet-500/10 p-6 rounded-2xl border-2 border-violet-500/30">
-                <h3 className="font-bold text-lg text-white mb-3 flex items-center gap-2">
+              <div className="bg-violet-500/10 p-6 rounded-xl border-2 border-violet-500/40">
+                <h3 className="font-bold text-xl text-white mb-4 flex items-center gap-2">
                   <span className="text-2xl">🤖</span>
                   AI Question Generator
                 </h3>
@@ -324,32 +326,32 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
               </div>
             )}
 
-            <div className="bg-zinc-800/50 p-6 rounded-2xl border border-zinc-700">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <div className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700">
+              <h3 className="text-xl font-bold text-white mb-5 flex items-center gap-2">
                 <span className="text-2xl">⚙️</span>
                 {mode === 'option-only' ? 'Answer Key Configuration' : 'Question Editor'}
               </h3>
               
-              <div className="max-h-[500px] overflow-y-auto space-y-4 pr-2">
+              <div className="max-h-[520px] overflow-y-auto space-y-4 pr-2">
                 {mode === 'option-only' ? (
                   // Option Mode: Only correct answers
                   questionSettings.map((setting, index) => (
-                    <div key={index} className="bg-zinc-800 p-6 rounded-xl border border-zinc-700 hover:border-violet-500 hover:shadow-md transition-all">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                          <span className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-black">
+                    <div key={index} className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700 hover:border-violet-500 hover:shadow-lg transition-all">
+                      <div className="flex items-center justify-between mb-5">
+                        <h4 className="text-lg font-bold text-white flex items-center gap-3">
+                          <span className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-lg font-black shadow-lg border-2 border-violet-400">
                             {index + 1}
                           </span>
                           Question {index + 1}
                         </h4>
-                        <span className="text-xs text-zinc-400 bg-zinc-900 px-3 py-1 rounded-full font-medium">
+                        <span className="text-xs text-zinc-400 bg-zinc-800 px-3 py-1.5 rounded-lg font-medium border border-zinc-700">
                           📽️ On Projector
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-bold text-zinc-300 mb-3">
+                          <label className="block text-sm font-bold text-white mb-3">
                             Correct Answer *
                           </label>
                           <div className="grid grid-cols-4 gap-2">
@@ -357,10 +359,10 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                               <button
                                 key={optIdx}
                                 onClick={() => updateQuestionSetting(index, 'correctAnswer', optIdx)}
-                                className={`p-4 rounded-xl border-2 transition-all transform ${
+                                className={`p-4 rounded-lg border-2 transition-all transform ${
                                   setting.correctAnswer === optIdx
-                                    ? `${option.bg} ${option.border} scale-110 shadow-lg text-white ring-4 ring-violet-500/50`
-                                    : 'bg-zinc-900 border-zinc-700 hover:scale-105 hover:border-violet-500'
+                                    ? `${option.bg} ${option.border} scale-105 shadow-xl text-white ring-2 ring-violet-400`
+                                    : 'bg-zinc-800 border-zinc-700 hover:scale-105 hover:border-violet-500'
                                 }`}
                               >
                                 <div className="text-center">
@@ -373,7 +375,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                         </div>
 
                         <div>
-                          <label className="block text-sm font-bold text-zinc-300 mb-3">
+                          <label className="block text-sm font-bold text-white mb-3">
                             Time Limit (seconds)
                           </label>
                           <input
@@ -382,7 +384,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                             max="600"
                             value={setting.timeLimit}
                             onChange={(e) => updateQuestionSetting(index, 'timeLimit', Number(e.target.value))}
-                            className="w-full p-4 text-3xl font-black text-center text-violet-400 rounded-xl border-2 border-zinc-700 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/50 bg-zinc-900"
+                            className="w-full p-4 text-3xl font-black text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/50 bg-zinc-800"
                           />
                         </div>
                       </div>
@@ -391,10 +393,10 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                 ) : (
                   // Full Manual Mode: Complete questions
                   manualQuestions.map((q, index) => (
-                    <div key={index} className="bg-zinc-800 p-6 rounded-xl border border-zinc-700 hover:border-violet-500 hover:shadow-md transition-all">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                          <span className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-black">
+                    <div key={index} className="bg-zinc-900 p-6 rounded-xl border-2 border-zinc-700 hover:border-violet-500 hover:shadow-lg transition-all">
+                      <div className="flex items-center justify-between mb-5">
+                        <h4 className="text-lg font-bold text-white flex items-center gap-3">
+                          <span className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-600 text-white rounded-lg flex items-center justify-center text-lg font-black shadow-lg border-2 border-violet-400">
                             {index + 1}
                           </span>
                           Question {index + 1}
@@ -425,7 +427,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
 
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-bold text-zinc-300 mb-2">Correct Answer *</label>
+                            <label className="block text-sm font-bold text-white mb-3">Correct Answer *</label>
                             <div className="grid grid-cols-4 gap-2">
                               {optionColors.map((option, optIdx) => (
                                 <button
@@ -433,8 +435,8 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                                   onClick={() => updateManualQuestion(index, 'correctAnswer', optIdx)}
                                   className={`p-3 rounded-lg border-2 transition-all ${
                                     q.correctAnswer === optIdx
-                                      ? `${option.bg} ${option.border} scale-105 shadow text-white`
-                                      : 'bg-zinc-900 border-zinc-700 hover:scale-105'
+                                      ? `${option.bg} ${option.border} scale-105 shadow-xl text-white ring-2 ring-violet-400`
+                                      : 'bg-zinc-800 border-zinc-700 hover:scale-105 hover:border-violet-500'
                                   }`}
                                 >
                                   <div className="text-center">
@@ -447,14 +449,14 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                           </div>
 
                           <div>
-                            <label className="block text-sm font-bold text-zinc-300 mb-2">Time Limit (sec)</label>
+                            <label className="block text-sm font-bold text-white mb-3">Time Limit (sec)</label>
                             <input
                               type="number"
                               min="5"
                               max="600"
                               value={q.timeLimit}
                               onChange={(e) => updateManualQuestion(index, 'timeLimit', Number(e.target.value))}
-                              className="w-full p-3 text-xl font-bold text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 bg-zinc-900"
+                              className="w-full p-3 text-xl font-bold text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 bg-zinc-800"
                             />
                           </div>
                         </div>
@@ -465,14 +467,14 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
               </div>
             </div>
 
-            <div className="pt-6">
-              <Button onClick={handleCreateRoom} className="!w-full !py-5 !text-2xl !font-black !bg-gradient-to-r !from-violet-600 !to-fuchsia-600 hover:!from-violet-700 hover:!to-fuchsia-700 !shadow-xl">
+            <div className="pt-4">
+              <Button onClick={handleCreateRoom} className="!w-full !py-5 !text-xl !font-black !bg-gradient-to-r !from-violet-600 !to-fuchsia-600 hover:!from-violet-700 hover:!to-fuchsia-700 !shadow-2xl !border-2 !border-violet-400">
                 🚀 Create Room - {numQuestions} Question{numQuestions > 1 ? 's' : ''}
               </Button>
             </div>
             
             {error && (
-              <div className="p-4 bg-red-500/10 border-2 border-red-500/30 rounded-xl animate-pulse">
+              <div className="p-4 bg-red-500/10 border-2 border-red-500/40 rounded-xl animate-pulse">
                 <p className="text-red-400 font-bold text-center">{error}</p>
               </div>
             )}

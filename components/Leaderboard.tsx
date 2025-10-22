@@ -30,13 +30,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ scores, currentUserId, isLive
   const getRankBg = (rank: number) => {
     switch (rank) {
       case 1:
-        return 'bg-gradient-to-r from-yellow-200 to-yellow-300 border-yellow-500';
+        return 'bg-gradient-to-r from-violet-600 to-purple-600 border-violet-500 text-white';
       case 2:
-        return 'bg-gradient-to-r from-gray-100 to-gray-200 border-gray-400';
+        return 'bg-zinc-800 border-zinc-700';
       case 3:
-        return 'bg-gradient-to-r from-amber-100 to-amber-200 border-amber-600';
+        return 'bg-zinc-800 border-zinc-700';
       default:
-        return 'bg-card-bg border-border-color';
+        return 'bg-zinc-800 border-zinc-700';
     }
   };
 
@@ -64,7 +64,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ scores, currentUserId, isLive
               <div
                 key={student.studentId}
                 className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${getRankBg(rank)} ${
-                  isCurrentUser ? 'ring-4 ring-brand-peach ring-opacity-50 scale-105' : ''
+                  isCurrentUser ? 'ring-4 ring-violet-500 ring-opacity-40 scale-105' : ''
                 } hover:scale-105`}
               >
                 <div className="flex-shrink-0 w-12 flex items-center justify-center">
@@ -75,7 +75,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ scores, currentUserId, isLive
                   <div className="flex items-center gap-2">
                     <p className="font-bold text-lg truncate">
                       {student.name}
-                      {isCurrentUser && <span className="text-brand-peach ml-2">(You)</span>}
+                      {isCurrentUser && <span className="text-violet-400 ml-2">(You)</span>}
                     </p>
                   </div>
                   <p className="text-sm text-subtle-text">

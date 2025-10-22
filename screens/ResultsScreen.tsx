@@ -53,7 +53,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
   const isQuizEnded = quizRoom.status === 'ended';
 
   return (
-    <div className="w-full max-w-4xl p-8 bg-card-bg/80 backdrop-blur-sm border border-border-color rounded-2xl shadow-2xl animate-fade-in-up">
+  <div className="w-full max-w-4xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
       <h2 className="text-4xl font-extrabold text-center mb-2 text-gradient">
         {isQuizEnded ? '🏆 Final Results' : '📊 Live Leaderboard'}
       </h2>
@@ -83,10 +83,10 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
           const isExpanded = expandedStudentId === score.studentId;
           const studentResponses = getStudentResponses(score.studentId);
 
-          return (
+            return (
             <div
               key={score.studentId}
-              className="bg-brand-cream/50 rounded-lg shadow-md overflow-hidden animate-slide-in"
+              className="bg-zinc-800/60 rounded-lg shadow-md overflow-hidden animate-slide-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div
@@ -109,8 +109,8 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
               </div>
 
               {isExpanded && (
-                <div className="p-4 border-t border-border-color bg-card-bg">
-                  <h4 className="font-semibold mb-2 text-brand-peach">Question Breakdown:</h4>
+                <div className="p-4 border-t border-zinc-700 bg-zinc-900">
+                  <h4 className="font-semibold mb-2 text-violet-400">Question Breakdown:</h4>
                   <ul className="space-y-2">
                     {quizRoom.questions.map((question, qIndex) => {
                       const response = studentResponses.find(r => r.questionId === question.id);
@@ -119,7 +119,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
                       const wasAnswered = response !== undefined;
 
                       return (
-                        <li key={question.id} className="flex justify-between items-center text-sm p-2 bg-brand-cream/50 rounded-md">
+                        <li key={question.id} className="flex justify-between items-center text-sm p-2 bg-zinc-800/50 rounded-md">
                           <span className="truncate pr-4">{`Q${qIndex + 1}: ${question.text}`}</span>
                           <div className="flex items-center flex-shrink-0">
                             {wasAnswered ? (

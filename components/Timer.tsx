@@ -4,12 +4,11 @@ interface TimerProps {
   duration: number;
   onTimeUp: () => void;
   isPaused: boolean;
-  key: any;
   // optional UTC ms epoch when the question was started; if provided, timer will sync to this
   startedAt?: number | null;
 }
 
-const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, key, startedAt }) => {
+const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, startedAt }) => {
   const computeInitial = () => {
     if (startedAt && typeof startedAt === 'number') {
       const elapsed = Math.floor((Date.now() - startedAt) / 1000);
@@ -23,7 +22,7 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, key, starte
   useEffect(() => {
     setTimeLeft(computeInitial());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [duration, key, startedAt]);
+  }, [duration, startedAt]);
 
   useEffect(() => {
     if (isPaused) return;
@@ -55,13 +54,13 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, key, starte
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (timeLeft / duration) * circumference;
 
-  const timeColor = timeLeft <= 5 ? 'text-red-500' : 'text-brand-peach';
+  const timeColor = timeLeft <= 5 ? 'text-red-500' : 'text-violet-400';
 
   return (
     <div className="relative w-28 h-28">
       <svg className="w-full h-full" viewBox="0 0 100 100">
         <circle
-          className="text-border-color"
+          className="text-zinc-700"
           strokeWidth="10"
           stroke="currentColor"
           fill="transparent"

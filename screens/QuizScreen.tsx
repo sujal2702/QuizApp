@@ -61,14 +61,21 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     }
   };
   
+  useEffect(() => {
+    if (!quizRoom) {
+      const timer = setTimeout(() => setScreen('home'), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [quizRoom, setScreen]);
+
   if (!quizRoom || !currentQuestion) {
-    useEffect(() => {
-      if(!quizRoom) {
-        const timer = setTimeout(() => setScreen('home'), 1000);
-        return () => clearTimeout(timer);
-      }
-    }, [quizRoom, setScreen]);
-    return <div className="text-center">Loading quiz...</div>;
+    return (
+      <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+        <div className="text-center">
+          <p className="text-xl text-white">Loading quiz...</p>
+        </div>
+      </div>
+    );
   }
 
   const progressPercentage = ((quizRoom.currentQuestionIndex + 1) / quizRoom.questions.length) * 100;
@@ -82,10 +89,10 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     ];
 
      return (
-      <div className="w-full max-w-5xl p-8 bg-card-bg/80 backdrop-blur-sm border border-border-color rounded-2xl shadow-2xl animate-fade-in-up">
-        <div className="w-full bg-border-color rounded-full h-3 mb-6">
-          <div className="bg-gradient-to-r from-orange-400 to-brand-peach h-3 rounded-full transition-all" style={{ width: `${progressPercentage}%` }}></div>
-        </div>
+      <div className="w-full max-w-5xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
+          <div className="w-full bg-zinc-800 rounded-full h-3 mb-6">
+            <div className="bg-gradient-to-r from-violet-500 to-purple-600 h-3 rounded-full transition-all" style={{ width: `${progressPercentage}%` }}></div>
+          </div>
         
         <div className="flex justify-between items-center mb-6">
           <p className="text-2xl font-bold">Question {quizRoom.currentQuestionIndex + 1}/{quizRoom.questions.length}</p>
@@ -104,10 +111,10 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-xl mb-6 border-2 border-indigo-200">
-          <h2 className="text-3xl font-bold mb-6 text-gray-800">{currentQuestion.text}</h2>
+        <div className="bg-zinc-800 p-6 rounded-xl mb-6 border-2 border-zinc-700">
+          <h2 className="text-3xl font-bold mb-6 text-white">{currentQuestion.text}</h2>
           
-          <p className="text-sm font-semibold text-gray-600 mb-3">Students will see these colored options:</p>
+          <p className="text-sm font-semibold text-zinc-400 mb-3">Students will see these colored options:</p>
           
           <div className="grid grid-cols-2 gap-4">
             {currentQuestion.options.map((option, index) => {
@@ -145,17 +152,17 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         </div>
 
         {/* Response Stats */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg mb-6 border-2 border-blue-200">
+        <div className="bg-zinc-800 p-4 rounded-lg mb-6 border-2 border-zinc-700">
           <div className="flex justify-between items-center">
             <span className="font-semibold text-gray-700">Responses Received:</span>
             <div className="flex items-center gap-3">
               <div className="text-3xl font-black text-blue-600">
-                {quizRoom.responses.filter(r => r.questionId === currentQuestion.id).length} / {quizRoom.students.length}
+                {(quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id).length} / {quizRoom.students?.length || 0}
               </div>
-              <div className="w-32 bg-gray-200 rounded-full h-3">
+              <div className="w-32 bg-zinc-800 rounded-full h-3">
                 <div 
-                  className="bg-blue-600 h-3 rounded-full transition-all"
-                  style={{ width: `${(quizRoom.responses.filter(r => r.questionId === currentQuestion.id).length / (quizRoom.students.length || 1)) * 100}%` }}
+                  className="bg-gradient-to-r from-violet-500 to-purple-600 h-3 rounded-full transition-all"
+                  style={{ width: `${((quizRoom.responses || []).filter(r => r.questionId === currentQuestion.id).length / ((quizRoom.students?.length || 1))) * 100}%` }}
                 ></div>
               </div>
             </div>
