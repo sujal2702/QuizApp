@@ -47,13 +47,15 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     setStartTime(Date.now());
     setShowRevealAnimation(false);
     setShowLiveLeaderboard(false);
+    // Reset leaderboard tracking when question changes
     setLeaderboardShownForQuestion(-1);
     
     // Save previous scores for rank comparison
     if (quizRoom) {
       setPreviousScores(getScores());
     }
-  }, [quizRoom?.currentQuestionIndex, quizRoom?.status, setScreen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizRoom?.currentQuestionIndex, quizRoom?.status]);
 
   // Show reveal animation when answers are revealed
   useEffect(() => {
@@ -66,13 +68,15 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
       } else {
         playSound('wrong');
       }
+      // Mark that we've shown the leaderboard for this question
+      setLeaderboardShownForQuestion(currentQIndex);
+      
       // Auto-hide after 5 seconds, then show leaderboard
       const timer = setTimeout(() => {
         setShowRevealAnimation(false);
         // Show leaderboard after answer reveal
         setTimeout(() => {
           setShowLiveLeaderboard(true);
-          setLeaderboardShownForQuestion(currentQIndex);
           playSound('whoosh'); // Leaderboard entrance sound
         }, 300);
       }, 5000);
