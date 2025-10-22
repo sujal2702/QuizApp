@@ -10,3 +10,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-zinc-800/50 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-violet-600 rounded-full hover:bg-violet-500;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-violet-400 via-purple-500 to-violet-400 bg-clip-text text-transparent;
+  }
+
+  /* Glow effect */
+  .drop-shadow-glow {
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+  }
+}

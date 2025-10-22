@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { QuizProvider, Screen, UserRole } from './hooks/useQuiz';
 import { AuthProvider } from './hooks/useAuth';
+import { ToastProvider } from './hooks/useToast';
 import LandingScreen from './screens/LandingScreen';
 import HomeScreen from './screens/HomeScreen';
 import AdminLoginScreen from './screens/AdminLoginScreen';
@@ -59,11 +60,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <QuizProvider>
-        <AppContent />
-      </QuizProvider>
-    </AuthProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <QuizProvider>
+          <AppContent />
+        </QuizProvider>
+      </AuthProvider>
+    </ToastProvider>
   );
 }
 

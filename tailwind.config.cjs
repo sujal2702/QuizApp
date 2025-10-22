@@ -59,6 +59,18 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'slide-in-right': {
+          '0%': { opacity: '0', transform: 'translateX(100px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        'slide-in': {
+          '0%': { opacity: '0', transform: 'translateX(-20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
         'bounce-in': {
           '0%': { transform: 'scale(0.3)', opacity: '0' },
           '50%': { transform: 'scale(1.05)' },
@@ -74,6 +86,10 @@ module.exports = {
           '0%': { transform: 'scale(0)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        'pulse-scale': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
         'confetti': {
           '0%': { transform: 'translateY(0) rotate(0deg)', opacity: '1' },
           '100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' },
@@ -81,10 +97,17 @@ module.exports = {
       },
       animation: {
         'fade-in': 'fade-in 0.3s ease-out',
+        'fade-in-up': 'fade-in-up 0.5s ease-out',
+        'slide-in-right': 'slide-in-right 0.4s ease-out',
+        'slide-in': 'slide-in 0.3s ease-out forwards',
         'bounce-in': 'bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
         'shake': 'shake 0.5s ease-in-out',
         'scale-up': 'scale-up 0.4s ease-out',
+        'pulse-scale': 'pulse-scale 2s ease-in-out infinite',
         'confetti': 'confetti 3s ease-out forwards',
+      },
+      scale: {
+        '102': '1.02',
       },
     },
   },

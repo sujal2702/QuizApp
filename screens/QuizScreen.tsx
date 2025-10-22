@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { Screen, UserRole } from '../hooks/useQuiz';
+import { useToast } from '../hooks/useToast';
 import Timer from '../components/Timer';
+import LiveLeaderboardModal from '../components/LiveLeaderboardModal';
 import { Student } from '../types';
 import Button from '../components/Button';
 
@@ -11,12 +13,15 @@ interface QuizScreenProps {
 }
 
 const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
-  const { quizRoom, nextQuestion, submitAnswer, openQuestion, closeQuestion, revealAnswers, adminAdvance } = useQuiz();
+  const { quizRoom, nextQuestion, submitAnswer, openQuestion, closeQuestion, revealAnswers, adminAdvance, getScores } = useQuiz();
+  const { showToast } = useToast();
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [student, setStudent] = useState<Student | null>(null);
   const [showRevealAnimation, setShowRevealAnimation] = useState(false);
+  const [showLiveLeaderboard, setShowLiveLeaderboard] = useState(false);
+  const [previousScores, setPreviousScores] = useState<any[]>([]);
 
   const currentQuestion = quizRoom?.questions[quizRoom.currentQuestionIndex];
 
@@ -39,17 +44,35 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     setIsAnswered(false);
     setStartTime(Date.now());
     setShowRevealAnimation(false);
+    setShowLiveLeaderboard(false);
+    
+    // Save previous scores for rank comparison
+    if (quizRoom) {
+      setPreviousScores(getScores());
+    }
   }, [quizRoom?.currentQuestionIndex, quizRoom?.status, setScreen]);
 
   // Show reveal animation when answers are revealed
   useEffect(() => {
     if (quizRoom?.answersRevealed && userRole === 'student' && isAnswered) {
       setShowRevealAnimation(true);
-      // Auto-hide after 5 seconds
-      const timer = setTimeout(() => setShowRevealAnimation(false), 5000);
+      // Auto-hide after 5 seconds, then show leaderboard
+      const timer = setTimeout(() => {
+        setShowRevealAnimation(false);
+        // Show leaderboard after answer reveal
+        setTimeout(() => setShowLiveLeaderboard(true), 300);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [quizRoom?.answersRevealed, userRole, isAnswered]);
+
+  // Show leaderboard for admin immediately after reveal
+  useEffect(() => {
+    if (quizRoom?.answersRevealed && userRole === 'admin') {
+      const timer = setTimeout(() => setShowLiveLeaderboard(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [quizRoom?.answersRevealed, userRole]);
 
   const handleOptionClick = (index: number) => {
     if (isAnswered || userRole !== 'student') return;
@@ -61,6 +84,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
     if (student && currentQuestion) {
       submitAnswer(student.id, currentQuestion.id, index, timeTaken);
+      showToast('Answer submitted!', 'success');
     }
   };
   
@@ -373,6 +397,30 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Live Leaderboard Modal */}
+      {showLiveLeaderboard && (
+        <LiveLeaderboardModal
+          scores={getScores().map((score, index) => {
+            const prevRank = previousScores.findIndex(s => s.studentId === score.studentId);
+            return {
+              ...score,
+              currentRank: index + 1,
+              previousRank: prevRank >= 0 ? prevRank + 1 : undefined,
+            };
+          })}
+          currentUserId={student?.id}
+          questionNumber={quizRoom.currentQuestionIndex + 1}
+          totalQuestions={quizRoom.questions.length}
+          onClose={() => {
+            setShowLiveLeaderboard(false);
+            if (userRole === 'admin') {
+              // Admin can continue from here
+              showToast('Ready for next question', 'info');
+            }
+          }}
+        />
       )}
     </div>
   );
