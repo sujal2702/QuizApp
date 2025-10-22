@@ -20,11 +20,8 @@ class SoundManager {
       tick: '/sounds/tick.mp3',
       countdown: '/sounds/countdown.mp3',
       applause: '/sounds/applause.mp3',
-      whoosh: '/sounds/whoosh.mp3',
+      whoosh: '/sounds/whoose.mp3', // Note: file is named 'whoose.mp3'
       join: '/sounds/join.mp3',
-      bell: '/sounds/bell.mp3',
-      success: '/sounds/success.mp3',
-      powerup: '/sounds/powerup.mp3',
     };
 
     Object.entries(soundFiles).forEach(([key, path]) => {

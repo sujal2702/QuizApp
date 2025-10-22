@@ -1,4 +1,4 @@
-// Firebase initialization for Live Quiz Pro
+// Firebase initialization for ArenaQuest
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue, push, update } from "firebase/database";
 import { 

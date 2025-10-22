@@ -82,20 +82,20 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md animate-fade-in p-4">
-      <div className="relative max-w-2xl w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-3xl border-2 border-violet-500/30 shadow-2xl overflow-hidden">
+      <div className="relative max-w-lg sm:max-w-2xl w-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-3xl border-2 border-violet-500/30 shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-violet-600 to-purple-600 p-6 text-center relative overflow-hidden">
+        <div className="bg-gradient-to-r from-violet-600 to-purple-600 p-4 sm:p-6 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          <h2 className="text-4xl font-black text-white drop-shadow-lg relative z-10">
+          <h2 className="text-2xl sm:text-4xl font-black text-white drop-shadow-lg relative z-10">
             📊 Live Leaderboard
           </h2>
-          <p className="text-violet-200 mt-2 font-semibold relative z-10">
+          <p className="text-sm sm:text-base text-violet-200 mt-2 font-semibold relative z-10">
             After Question {questionNumber} of {totalQuestions}
           </p>
         </div>
 
         {/* Scores Container */}
-        <div className="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
+        <div className="p-4 sm:p-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
           {showScores ? (
             <div className="space-y-3">
               {scores.map((student, index) => {
@@ -105,7 +105,7 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
                 return (
                   <div
                     key={student.studentId}
-                    className={`flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-500 transform ${
+                    className={`flex items-center gap-2 sm:gap-4 p-3 sm:p-4 rounded-xl border-2 transition-all duration-500 transform ${
                       index === 0
                         ? 'bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border-yellow-500/50 scale-105'
                         : index === 1
@@ -128,23 +128,23 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
                     }}
                   >
                     {/* Rank Icon */}
-                    <div className="flex-shrink-0 w-16 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 sm:w-16 flex items-center justify-center">
                       {getRankIcon(student.currentRank)}
                     </div>
 
                     {/* Student Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-bold text-xl text-white truncate">
+                        <p className="font-bold text-lg sm:text-xl text-white truncate">
                           {student.name}
                         </p>
                         {isCurrentUser && (
-                          <span className="text-violet-400 text-sm font-semibold px-2 py-1 bg-violet-500/20 rounded-full">
+                          <span className="text-violet-400 text-xs sm:text-sm font-semibold px-2 py-1 bg-violet-500/20 rounded-full">
                             YOU
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-zinc-400">
+                      <p className="text-xs sm:text-sm text-zinc-400">
                         Total Time: {student.totalTime.toFixed(1)}s
                       </p>
                     </div>
@@ -158,7 +158,7 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
 
                     {/* Score */}
                     <div className="flex-shrink-0 text-right">
-                      <p className="text-4xl font-black bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
+                      <p className="text-2xl sm:text-4xl font-black bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
                         {student.score}
                       </p>
                       <p className="text-xs text-zinc-400 font-semibold">points</p>
@@ -168,10 +168,10 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
               })}
             </div>
           ) : (
-            <div className="flex items-center justify-center h-64">
+            <div className="flex items-center justify-center h-48 sm:h-64">
               <div className="text-center">
-                <div className="w-20 h-20 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-xl font-semibold text-white">Calculating rankings...</p>
+                <div className="w-16 h-16 sm:w-20 sm:h-20 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-lg sm:text-xl font-semibold text-white">Calculating rankings...</p>
               </div>
             </div>
           )}
@@ -181,7 +181,7 @@ const LiveLeaderboardModal: React.FC<LiveLeaderboardModalProps> = ({
         <div className="p-4 bg-zinc-900/80 border-t border-zinc-700 flex justify-center">
           <button
             onClick={onClose}
-            className="px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all transform hover:scale-105 shadow-lg"
+            className="px-6 sm:px-8 py-3 min-h-[44px] bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all transform hover:scale-105 shadow-lg text-sm sm:text-base"
           >
             Continue →
           </button>

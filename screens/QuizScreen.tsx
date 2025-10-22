@@ -107,7 +107,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
     if (student && currentQuestion) {
       submitAnswer(student.id, currentQuestion.id, index, timeTaken);
       showToast('Answer submitted!', 'success');
-      playSound('success'); // Play success sound
+      playSound('join'); // Play join sound when answer is submitted
     }
   };
 
@@ -334,7 +334,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 h-full rounded-full transition-all duration-500" style={{ width: `${progressPercentage}%` }}></div>
           </div>
           <div className="text-center">
-            <span className="text-xl lg:text-2xl font-black text-white drop-shadow-lg">
+            <span className="text-lg sm:text-xl lg:text-2xl font-black text-white drop-shadow-lg">
               Question {quizRoom.currentQuestionIndex + 1} / {quizRoom.questions.length}
             </span>
           </div>
@@ -354,13 +354,13 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         {/* Status Messages */}
         {!quizRoom.acceptingAnswers && !isAnswered && (
           <div className="bg-yellow-400 border-4 border-yellow-600 rounded-3xl p-4 lg:p-6 shadow-2xl animate-bounce">
-            <p className="text-lg lg:text-2xl font-black text-yellow-900 text-center">⏳ Waiting...</p>
+            <p className="text-lg sm:text-xl lg:text-2xl font-black text-yellow-900 text-center">⏳ Waiting...</p>
           </div>
         )}
 
         {quizRoom.acceptingAnswers && !isAnswered && (
           <div className="bg-gradient-to-br from-purple-500 via-violet-500 to-purple-600 border-4 border-purple-300 rounded-3xl p-4 lg:p-6 shadow-2xl animate-pulse">
-            <p className="text-lg lg:text-2xl font-black text-white text-center drop-shadow-lg">
+            <p className="text-base sm:text-lg lg:text-2xl font-black text-white text-center drop-shadow-lg">
               👀 Choose Now!
             </p>
           </div>
@@ -368,8 +368,8 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
         
         {isAnswered && !showRevealAnimation && (
           <div className="bg-green-500 border-4 border-green-700 rounded-3xl p-4 lg:p-6 shadow-2xl animate-pulse">
-            <p className="text-lg lg:text-2xl font-black text-white text-center">✓ Submitted!</p>
-            <p className="text-sm lg:text-base font-semibold text-green-100 mt-2 text-center">Waiting...</p>
+            <p className="text-base sm:text-lg lg:text-2xl font-black text-white text-center">✓ Submitted!</p>
+            <p className="text-sm sm:text-base font-semibold text-green-100 mt-2 text-center">Waiting...</p>
           </div>
         )}
       </div>
@@ -385,8 +385,8 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
               className={getOptionClasses(index)}
             >
               <div className="flex flex-col items-center justify-center gap-2 lg:gap-4">
-                <div className="text-5xl sm:text-6xl lg:text-8xl">{config.symbol}</div>
-                <div className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-wider">{config.label}</div>
+                <div className="text-6xl sm:text-7xl lg:text-8xl">{config.symbol}</div>
+                <div className="text-4xl sm:text-5xl lg:text-8xl font-black tracking-wider">{config.label}</div>
               </div>
             </button>
           ))}
@@ -396,8 +396,8 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
 
       {/* Answer Reveal Modal - Student View */}
       {showRevealAnimation && selectedOption !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className={`relative max-w-2xl w-full mx-4 p-12 rounded-3xl shadow-2xl transform transition-all duration-500 ${
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in p-4">
+          <div className={`relative max-w-lg sm:max-w-2xl w-full mx-4 p-6 sm:p-12 rounded-3xl shadow-2xl transform transition-all duration-500 ${
             selectedOption === currentQuestion.correctOption 
               ? 'bg-gradient-to-br from-green-400 via-green-500 to-green-600 animate-bounce-in scale-110' 
               : 'bg-gradient-to-br from-red-400 via-red-500 to-red-600 animate-shake'
@@ -422,16 +422,16 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             )}
 
             {/* Icon */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-6 sm:mb-8">
               {selectedOption === currentQuestion.correctOption ? (
                 <div className="inline-block text-white animate-scale-up">
-                  <svg className="w-32 h-32 mx-auto drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-24 h-24 sm:w-32 sm:h-32 mx-auto drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
               ) : (
                 <div className="inline-block text-white animate-scale-up">
-                  <svg className="w-32 h-32 mx-auto drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-24 h-24 sm:w-32 sm:h-32 mx-auto drop-shadow-2xl" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
@@ -439,15 +439,15 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             </div>
 
             {/* Message */}
-            <div className="text-center space-y-4">
-              <h2 className="text-5xl font-black text-white drop-shadow-lg">
+            <div className="text-center space-y-3 sm:space-y-4">
+              <h2 className="text-3xl sm:text-5xl font-black text-white drop-shadow-lg">
                 {selectedOption === currentQuestion.correctOption ? '🎉 CORRECT! 🎉' : '❌ WRONG!'}
               </h2>
-              <p className="text-2xl font-bold text-white/90">
+              <p className="text-lg sm:text-2xl font-bold text-white/90">
                 Correct Answer: <span className="font-black text-white drop-shadow-md">{optionConfig[currentQuestion.correctOption].label}</span>
               </p>
               {selectedOption !== currentQuestion.correctOption && (
-                <p className="text-xl font-semibold text-white/80">
+                <p className="text-base sm:text-xl font-semibold text-white/80">
                   Your Answer: <span className="line-through">{optionConfig[selectedOption].label}</span>
                 </p>
               )}
@@ -456,7 +456,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
             {/* Close button */}
             <button
               onClick={() => setShowRevealAnimation(false)}
-              className="absolute top-4 right-4 text-white/80 hover:text-white text-3xl font-bold w-12 h-12 rounded-full bg-black/20 hover:bg-black/40 transition-all"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 text-white/80 hover:text-white text-2xl sm:text-3xl font-bold w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/20 hover:bg-black/40 transition-all flex items-center justify-center"
             >
               ×
             </button>

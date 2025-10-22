@@ -30,7 +30,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
             <QuizIcon className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-            Welcome to QuizPro
+            Welcome to ArenaQuest
           </h1>
         </div>
         <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
@@ -45,7 +45,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
           variant="gradient" 
           hover 
           onClick={handleAdminClick}
-          className="group cursor-pointer overflow-hidden relative border-2 border-transparent hover:border-violet-500/50"
+          className="group cursor-pointer overflow-hidden relative border-2 border-transparent hover:border-violet-500/50 min-h-[200px] sm:min-h-[220px]"
         >
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-violet-500/20 to-purple-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
           <div className="relative z-10">
@@ -90,7 +90,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
           variant="gradient" 
           hover 
           onClick={handleStudentClick}
-          className="group cursor-pointer overflow-hidden relative border-2 border-transparent hover:border-cyan-500/50"
+          className="group cursor-pointer overflow-hidden relative border-2 border-transparent hover:border-cyan-500/50 min-h-[200px] sm:min-h-[220px]"
         >
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500" />
           <div className="relative z-10">
@@ -133,7 +133,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
 
       {/* Features Section */}
       <Card variant="glass">
-        <h3 className="text-xl font-bold text-white mb-4 text-center">Why Choose QuizPro?</h3>
+        <h3 className="text-xl font-bold text-white mb-4 text-center">Why Choose ArenaQuest?</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 rounded-xl bg-zinc-800/30 hover:bg-zinc-800/50 transition-colors">
             <div className="text-3xl mb-2">⚡</div>

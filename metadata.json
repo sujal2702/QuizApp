@@ -1,5 +1,5 @@
 {
-  "name": "Live Quiz Pro",
+  "name": "ArenaQuest",
   "description": "A mobile-first web application for conducting real-time quizzes in a college environment. Features separate panels for admins to control the quiz and for students to participate.",
   "requestFramePermissions": []
 }

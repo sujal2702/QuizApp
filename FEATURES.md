@@ -1,7 +1,7 @@
-# Live Quiz Pro - Complete Feature Guide
+# ArenaQuest - Complete Feature Guide
 
 ## 🎯 Overview
-Live Quiz Pro is a real-time interactive quiz platform with Firebase backend, designed for classroom or event scenarios where an admin projects questions and students respond via their devices.
+ArenaQuest is a real-time interactive quiz platform with Firebase backend, designed for classroom or event scenarios where an admin projects questions and students respond via their devices.
 
 ## ✨ Key Features Implemented
 

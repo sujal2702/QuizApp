@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center space-x-2 mb-3">
               <QuizIcon className="w-7 h-7 text-violet-500" />
               <h3 className="text-xl font-black bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-                Live Quiz Pro
+                ArenaQuest
               </h3>
             </div>
             <p className="text-sm text-zinc-500">The future of interactive, AI-powered quizzing.</p>
@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
       </div>
       <div className="border-t border-zinc-800 py-4 bg-zinc-950">
          <p className="text-xs text-center text-zinc-600">
-          © 2025 Live Quiz Pro. All rights reserved.
+          © 2025 ArenaQuest. All rights reserved.
         </p>
       </div>
     </footer>

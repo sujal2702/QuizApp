@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { playSound } from '../utils/sounds';
 
 interface TimerProps {
   duration: number;
@@ -38,10 +39,21 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isPaused, startedAt }
         const newLeft = Math.max(0, duration - elapsed);
         setTimeLeft(newLeft);
         if (newLeft <= 0) onTimeUp();
+        
+        // Play tick sound for last 5 seconds
+        if (newLeft <= 5 && newLeft > 0) {
+          playSound('tick');
+        }
       } else {
         setTimeLeft(prev => {
           const next = prev - 1;
           if (next <= 0) onTimeUp();
+          
+          // Play tick sound for last 5 seconds
+          if (next <= 5 && next > 0) {
+            playSound('tick');
+          }
+          
           return next;
         });
       }

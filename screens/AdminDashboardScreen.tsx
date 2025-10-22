@@ -351,7 +351,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-bold text-white mb-3">
+                          <label className="block text-sm sm:text-base font-bold text-white mb-3">
                             Correct Answer *
                           </label>
                           <div className="grid grid-cols-4 gap-2">
@@ -366,8 +366,8 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                                 }`}
                               >
                                 <div className="text-center">
-                                  <div className="text-3xl mb-1">{option.symbol}</div>
-                                  <div className="text-sm font-black">{option.label}</div>
+                                  <div className="text-2xl sm:text-3xl mb-1">{option.symbol}</div>
+                                  <div className="text-sm sm:text-base font-black">{option.label}</div>
                                 </div>
                               </button>
                             ))}
@@ -375,7 +375,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                         </div>
 
                         <div>
-                          <label className="block text-sm font-bold text-white mb-3">
+                          <label className="block text-sm sm:text-base font-bold text-white mb-3">
                             Time Limit (seconds)
                           </label>
                           <input
@@ -384,7 +384,7 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                             max="600"
                             value={setting.timeLimit}
                             onChange={(e) => updateQuestionSetting(index, 'timeLimit', Number(e.target.value))}
-                            className="w-full p-4 text-3xl font-black text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/50 bg-zinc-800"
+                            className="w-full p-4 text-2xl sm:text-3xl font-black text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/50 bg-zinc-800"
                           />
                         </div>
                       </div>
@@ -425,9 +425,9 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                           ))}
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
-                            <label className="block text-sm font-bold text-white mb-3">Correct Answer *</label>
+                            <label className="block text-sm sm:text-base font-bold text-white mb-3">Correct Answer *</label>
                             <div className="grid grid-cols-4 gap-2">
                               {optionColors.map((option, optIdx) => (
                                 <button
@@ -440,8 +440,8 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                                   }`}
                                 >
                                   <div className="text-center">
-                                    <div className="text-xl">{option.symbol}</div>
-                                    <div className="text-xs font-black">{option.label}</div>
+                                    <div className="text-lg sm:text-xl">{option.symbol}</div>
+                                    <div className="text-xs sm:text-sm font-black">{option.label}</div>
                                   </div>
                                 </button>
                               ))}
@@ -449,14 +449,14 @@ const AdminDashboardScreen: React.FC<AdminDashboardScreenProps> = ({ setScreen }
                           </div>
 
                           <div>
-                            <label className="block text-sm font-bold text-white mb-3">Time Limit (sec)</label>
+                            <label className="block text-sm sm:text-base font-bold text-white mb-3">Time Limit (sec)</label>
                             <input
                               type="number"
                               min="5"
                               max="600"
                               value={q.timeLimit}
                               onChange={(e) => updateManualQuestion(index, 'timeLimit', Number(e.target.value))}
-                              className="w-full p-3 text-xl font-bold text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 bg-zinc-800"
+                              className="w-full p-3 text-lg sm:text-xl font-bold text-center text-violet-400 rounded-lg border-2 border-zinc-700 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/50 bg-zinc-800"
                             />
                           </div>
                         </div>

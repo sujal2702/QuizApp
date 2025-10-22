@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMen
               <div className="absolute inset-0 bg-violet-500/30 blur-xl group-hover:bg-violet-400/40 transition-all"></div>
             </div>
             <h1 className="text-2xl font-black bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent tracking-tight">
-              QuizPro
+              ArenaQuest
             </h1>
           </div>
         </div>

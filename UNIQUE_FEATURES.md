@@ -1,4 +1,4 @@
-# 🚀 Unique Features & Optimizations for Live Quiz Pro
+# 🚀 Unique Features & Optimizations for ArenaQuest
 
 ## ✅ Already Implemented (Production-Ready)
 - Real-time multiplayer quiz system

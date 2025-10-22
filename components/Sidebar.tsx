@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ screen, userRole, setScreen, isOpen, 
                 </div>
                 <div>
                   <h1 className="text-xl font-black bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
-                    QuizPro
+                    ArenaQuest
                   </h1>
                   <p className="text-xs text-zinc-500 font-semibold">
                     {userRole === 'admin' ? 'Admin Panel' : 'Student Portal'}

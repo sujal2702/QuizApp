@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { Screen, UserRole } from '../hooks/useQuiz';
 import Button from '../components/Button';
 import Leaderboard from '../components/Leaderboard';
+import { playSound } from '../utils/sounds';
 
 // A new component for the expand/collapse icon
 const ChevronIcon = ({ isExpanded }: { isExpanded: boolean }) => (
@@ -37,6 +38,13 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
     ? JSON.parse(sessionStorage.getItem('quizStudent') || '{}')
     : null;
 
+  // Play applause sound when results are shown for completed quiz
+  useEffect(() => {
+    if (quizRoom && quizRoom.status === 'ended') {
+      playSound('applause');
+    }
+  }, [quizRoom?.status]);
+
   const handleToggleDetails = (studentId: string) => {
     setExpandedStudentId(prevId => (prevId === studentId ? null : studentId));
   };
@@ -65,7 +73,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
       <div className="flex justify-center mb-6">
         <button
           onClick={() => setShowDetailedView(!showDetailedView)}
-          className="px-6 py-2 rounded-lg bg-light-bg hover:bg-border-color transition-colors font-semibold"
+          className="px-6 py-3 min-h-[44px] rounded-lg bg-light-bg hover:bg-border-color transition-colors font-semibold"
         >
           {showDetailedView ? '📊 Simple View' : '📋 Detailed View'}
         </button>

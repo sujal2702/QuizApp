@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { Screen, UserRole } from '../hooks/useQuiz';
 import Button from '../components/Button';
+import { playSound } from '../utils/sounds';
 
 interface LobbyScreenProps {
   setScreen: (screen: Screen) => void;
@@ -45,6 +46,13 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   const studentCount = quizRoom.students?.length || 0;
   console.log('Rendering lobby with room:', quizRoom.name, 'Code:', quizRoom.code, 'Students:', studentCount);
 
+  // Play join sound when new students join
+  useEffect(() => {
+    if (studentCount > 0) {
+      playSound('join');
+    }
+  }, [studentCount]);
+
   const handleStartQuiz = () => {
     // start a short countdown for nicer UX, then call startQuiz
     if ((quizRoom?.students?.length || 0) === 0) {
@@ -54,6 +62,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
     }
 
     setCountdown(5);
+    playSound('countdown'); // Play countdown sound when starting
   };
 
   // countdown effect: when it reaches 0, fire startQuiz()
@@ -82,12 +91,12 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   return (
   <div className="w-full max-w-2xl p-8 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl shadow-2xl animate-fade-in-up">
       <div className="text-center mb-6">
-        <h2 className="text-4xl font-bold mb-2 text-gradient">🎮 Quiz Lobby</h2>
-  <p className="text-2xl text-violet-400 font-bold mb-4">{quizRoom.name}</p>
-  <div className="bg-gradient-to-r from-violet-900/10 to-transparent p-6 rounded-xl mb-4 border-2 border-zinc-700">
-          <p className="text-subtle-text text-sm font-semibold mb-1">ROOM CODE</p>
-          <p className="text-5xl font-mono font-black tracking-widest text-gradient animate-pulse">{quizRoom.code}</p>
-          <p className="text-xs text-subtle-text mt-2">Share this code with participants</p>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-2 text-gradient">🎮 Quiz Lobby</h2>
+  <p className="text-lg sm:text-2xl text-violet-400 font-bold mb-4">{quizRoom.name}</p>
+  <div className="bg-gradient-to-r from-violet-900/10 to-transparent p-4 sm:p-6 rounded-xl mb-4 border-2 border-zinc-700">
+          <p className="text-sm sm:text-base text-subtle-text mb-1">ROOM CODE</p>
+          <p className="text-4xl sm:text-5xl font-mono font-black tracking-widest text-gradient animate-pulse">{quizRoom.code}</p>
+          <p className="text-xs sm:text-sm text-subtle-text mt-2">Share this code with participants</p>
         </div>
       </div>
       
