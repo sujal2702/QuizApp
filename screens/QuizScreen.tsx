@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { Screen, UserRole } from '../hooks/useQuiz';
 import { useToast } from '../hooks/useToast';
@@ -110,6 +110,33 @@ const QuizScreen: React.FC<QuizScreenProps> = ({ setScreen, userRole }) => {
       playSound('success'); // Play success sound
     }
   };
+
+  // Keyboard shortcuts: 1-4 for options (students). Admin shortcuts: Enter -> reveal, N -> next
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!quizRoom || !currentQuestion) return;
+    if (userRole === 'student' && !isAnswered && quizRoom.acceptingAnswers) {
+      const key = e.key;
+      if (['1','2','3','4'].includes(key)) {
+        const idx = parseInt(key, 10) - 1;
+        handleOptionClick(idx);
+      }
+    }
+
+    if (userRole === 'admin') {
+      if (e.key === 'Enter') {
+        // reveal answers
+        revealAnswers();
+      }
+      if (e.key.toLowerCase() === 'n') {
+        adminAdvance();
+      }
+    }
+  }, [quizRoom, currentQuestion, userRole, isAnswered, handleOptionClick, revealAnswers, adminAdvance]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
   
   const handleTimeUp = () => {
     if (isAnswered || userRole !== 'student') return;

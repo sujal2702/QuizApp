@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuiz } from '../hooks/useQuiz';
 import { Screen, UserRole } from '../hooks/useQuiz';
 import Button from '../components/Button';
@@ -10,6 +10,8 @@ interface LobbyScreenProps {
 
 const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   const { quizRoom, startQuiz } = useQuiz();
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const roomLink = typeof window !== 'undefined' ? `${window.location.origin}?room=${quizRoom?.code ?? ''}` : '';
 
   React.useEffect(() => {
     console.log('LobbyScreen mounted, userRole:', userRole, 'quizRoom:', quizRoom);
@@ -44,7 +46,37 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ setScreen, userRole }) => {
   console.log('Rendering lobby with room:', quizRoom.name, 'Code:', quizRoom.code, 'Students:', studentCount);
 
   const handleStartQuiz = () => {
-    startQuiz();
+    // start a short countdown for nicer UX, then call startQuiz
+    if ((quizRoom?.students?.length || 0) === 0) {
+      // fallback: still call startQuiz if no players (admin choice)
+      startQuiz();
+      return;
+    }
+
+    setCountdown(5);
+  };
+
+  // countdown effect: when it reaches 0, fire startQuiz()
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown <= 0) {
+      startQuiz();
+      setCountdown(null);
+      return;
+    }
+
+    const timer = setTimeout(() => setCountdown(prev => (prev !== null ? prev - 1 : null)), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown, startQuiz]);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(roomLink);
+      // if a global toast helper exists, call it
+      if ((window as any).showToast) (window as any).showToast('Room link copied to clipboard', 'success');
+    } catch (e) {
+      console.error('copy failed', e);
+    }
   };
 
   return (

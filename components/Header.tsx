@@ -16,6 +16,23 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMen
   const [showUserMenu, setShowUserMenu] = useState(false);
   const isLandingPage = screen === 'landing';
   
+  // Define simple linear flows for navigation (used by Prev / Next buttons)
+  const studentFlow: Screen[] = ['home', 'student_join', 'lobby', 'quiz', 'results'];
+  const adminFlow: Screen[] = ['home', 'admin_login', 'admin_signup', 'admin_dashboard', 'quiz', 'results'];
+
+  const getFlow = (): Screen[] => {
+    // Prefer admin flow for admins, otherwise student flow
+    if (isAdmin) return adminFlow;
+    return studentFlow;
+  };
+
+  const flow = getFlow();
+  const idx = flow.indexOf(screen as Screen);
+  const hasPrev = idx > 0;
+  const hasNext = idx >= 0 && idx < flow.length - 1;
+  const prevScreen = hasPrev ? flow[idx - 1] : undefined;
+  const nextScreen = hasNext ? flow[idx + 1] : undefined;
+  
   const handleLogout = async () => {
     await logout();
     setShowUserMenu(false);
@@ -80,6 +97,33 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMen
           </div>
         ) : (
           <div className="flex items-center space-x-4">
+            {/* Prev / Next navigation */}
+            <div className="hidden md:flex items-center gap-2 mr-2">
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => prevScreen && setScreen(prevScreen)}
+                disabled={!hasPrev}
+                className="!w-10 !h-10"
+                aria-label="Previous"
+              >
+                <svg className="w-5 h-5 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </Button>
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => nextScreen && setScreen(nextScreen)}
+                disabled={!hasNext}
+                className="!w-10 !h-10"
+                aria-label="Next"
+              >
+                <svg className="w-5 h-5 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </Button>
+            </div>
             {/* Navigation for logged-in users */}
             {user && (
               <nav className="hidden md:flex items-center space-x-4">

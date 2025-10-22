@@ -72,21 +72,61 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
       </div>
 
       {!showDetailedView ? (
-        <Leaderboard 
-          scores={scores} 
-          currentUserId={currentStudent?.id}
-          isLive={!isQuizEnded}
-        />
+        <>
+          <div className="flex justify-end mb-4">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                // prepare CSV
+                const csvRows = [
+                  ['Rank','Name','Score','TotalTime']
+                ];
+                scores.forEach((s, i) => csvRows.push([String(i+1), s.name, String(s.score), String(s.totalTime)]));
+                const csvContent = csvRows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                // Use file-saver if available else fallback to link
+                // Prefer an existing saveAs (if file-saver is present), otherwise fallback to anchor download
+                try {
+                  if ((window as any).saveAs) {
+                    (window as any).saveAs(blob, `${quizRoom?.name || 'results'}-results.csv`);
+                  } else {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${quizRoom?.name || 'results'}-results.csv`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                  }
+                } catch (e) {
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${quizRoom?.name || 'results'}-results.csv`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }
+              }}
+            >
+              ⬇️ Export CSV
+            </Button>
+          </div>
+          <Leaderboard 
+            scores={scores} 
+            currentUserId={currentStudent?.id}
+            isLive={!isQuizEnded}
+          />
+        </>
       ) : (
         <div className="space-y-3">
         {scores.map((score, index) => {
           const isExpanded = expandedStudentId === score.studentId;
           const studentResponses = getStudentResponses(score.studentId);
+          const isWinner = index === 0 && isQuizEnded;
 
             return (
             <div
               key={score.studentId}
-              className="bg-zinc-800/60 rounded-lg shadow-md overflow-hidden animate-slide-in"
+              className={`bg-zinc-800/60 rounded-lg shadow-md overflow-hidden animate-slide-in ${isWinner ? 'ring-4 ring-yellow-400/40' : ''}`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div
@@ -97,7 +137,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({ setScreen, userRole }) =>
                   <div className="w-12 text-center text-2xl font-bold">
                     #{index + 1}
                   </div>
-                  <span className="text-lg font-semibold ml-4">{score.name}</span>
+                  <span className={`text-lg font-semibold ml-4 ${isWinner ? 'text-yellow-300' : ''}`}>{score.name}</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
