@@ -27,14 +27,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
       <Card variant="elevated" className="text-center">
         <div className="flex items-center justify-center gap-4 mb-4">
           <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-lg">
-            <QuizIcon className="w-10 h-10 text-gray-900" />
+            <span className="text-4xl animate-pulse">✨</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900">
+          <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
             Welcome to ArenaQuest
           </h1>
         </div>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Choose your role to get started with interactive live quizzes
+          Choose your role to get started with interactive live quizzes 🎯
         </p>
       </Card>
 
@@ -54,9 +54,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
               </div>
               <div className="text-left">
                 <h3 className="text-3xl font-black text-gray-900 group-hover:text-yellow-600 transition-colors">
-                  Quiz Master
+                  👑 Quiz Master
                 </h3>
-                <p className="text-sm text-yellow-600 font-bold">Admin Access</p>
+                <p className="text-sm text-yellow-600 font-bold">Admin Access 🔑</p>
               </div>
             </div>
             <div className="space-y-3 text-left">
@@ -98,9 +98,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ setScreen, setUserRole }) => {
               </div>
               <div className="text-left">
                 <h3 className="text-3xl font-black text-gray-900 group-hover:text-cyan-600 transition-colors">
-                  Participant
+                  🎓 Participant
                 </h3>
-                <p className="text-sm text-cyan-600 font-bold">Student Access</p>
+                <p className="text-sm text-cyan-600 font-bold">Student Access 👨‍🎓</p>
               </div>
             </div>
             <div className="space-y-3 text-left">

@@ -11,12 +11,12 @@ const Footer: React.FC = () => {
           {/* Column 1: Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center space-x-2 mb-3">
-              <QuizIcon className="w-7 h-7 text-yellow-400" />
-              <h3 className="text-xl font-black text-gray-900">
+              <span className="text-2xl animate-pulse">✨</span>
+              <h3 className="text-xl font-black bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
                 ArenaQuest
               </h3>
             </div>
-            <p className="text-sm text-gray-500">The future of interactive, AI-powered quizzing.</p>
+            <p className="text-sm text-gray-500">The future of interactive, AI-powered quizzing. ⚡</p>
           </div>
 
           {/* Column 2: Product */}

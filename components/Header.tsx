@@ -75,11 +75,14 @@ const Header: React.FC<HeaderProps> = ({ screen, setScreen, onMenuClick, showMen
               className="flex items-center space-x-2 lg:space-x-3 cursor-pointer group"
               onClick={() => setScreen('landing')}
             >
-              <div className="relative">
-                <QuizIcon className="w-9 h-9 lg:w-10 lg:h-10 text-yellow-400 group-hover:text-yellow-500 transition-all duration-300 group-hover:rotate-12 group-hover:scale-110" />
+              <div className="relative flex items-center">
+                {/* Sparkle Symbol */}
+                <div className="text-2xl lg:text-3xl group-hover:scale-110 transition-transform duration-300 animate-pulse">
+                  ✨
+                </div>
                 <div className="absolute inset-0 bg-yellow-400/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h1 className="text-xl lg:text-2xl font-black text-gray-900 tracking-tight group-hover:text-gray-700 transition-colors">
+              <h1 className="text-xl lg:text-2xl font-black bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent group-hover:from-yellow-500 group-hover:to-yellow-700 transition-all">
                 ArenaQuest
               </h1>
             </div>

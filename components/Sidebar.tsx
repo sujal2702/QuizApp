@@ -49,14 +49,14 @@ const Sidebar: React.FC<SidebarProps> = ({ screen, userRole, setScreen, isOpen, 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center shadow-md">
-                  <QuizIcon className="w-6 h-6 text-gray-900" />
+                  <span className="text-2xl animate-pulse">✨</span>
                 </div>
                 <div>
-                  <h1 className="text-xl font-black text-gray-900">
+                  <h1 className="text-xl font-black bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
                     ArenaQuest
                   </h1>
                   <p className="text-xs text-gray-500 font-semibold">
-                    {userRole === 'admin' ? 'Admin Panel' : 'Student Portal'}
+                    {userRole === 'admin' ? '📊 Admin Panel' : '🎓 Student Portal'}
                   </p>
                 </div>
               </div>
